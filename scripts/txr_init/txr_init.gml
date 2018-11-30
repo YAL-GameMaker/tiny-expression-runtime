@@ -11,6 +11,7 @@ enum txr_token {
     number = 4, // 37
     ident = 5, // some
     comma = 6, // ,
+    ret = 7, // return
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -34,6 +35,9 @@ enum txr_node {
 	unop = 3, // (unop, node)
 	binop = 4, // (binop, a, b)
 	call = 5, // (script, args_array)
+	block = 6, // (nodes_array) { ...nodes }
+	ret = 7, // (node) return <node>
+	discard = 8, // (node) - when we don't care
 }
 enum txr_unop {
 	negate = 1, // -value
@@ -51,6 +55,8 @@ enum txr_action {
 	unop = 3, // (unop): push(-pop())
 	binop = 4, // (op): a = pop(); b = pop(); push(binop(op, a, b))
 	call = 5, // (script, argc): 
+	ret = 6, // (): return pop()
+	discard = 7, // (): pop() - for when we don't care for output
 }
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;

@@ -21,6 +21,21 @@ switch (q[0]) {
 		}
 		ds_list_add(out, [txr_action.call, q[1], q[2], argc]);
 		break;
+	case txr_node.block:
+	    var nodes = q[2];
+	    var n = array_length_1d(nodes);
+	    for (var i = 0; i < n; i++) {
+	        if (txr_compile_expr(nodes[i])) return true;
+	    }
+	    break;
+    case txr_node.ret:
+		if (txr_compile_expr(q[2])) return true;
+        ds_list_add(out, [txr_action.ret, q[1]]);
+		break;
+    case txr_node.discard:
+        if (txr_compile_expr(q[2])) return true;
+        ds_list_add(out, [txr_action.discard, q[1]]);
+        break;
 	default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 }
 return false;

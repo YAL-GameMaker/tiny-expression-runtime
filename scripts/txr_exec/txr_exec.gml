@@ -46,10 +46,15 @@ while (pos < len) {
 				ds_stack_push(stack, v);
 			} else return txr_exec_exit(txr_function_error, q, stack);
 			break;
+		case txr_action.ret: pos = len; break;
+		case txr_action.discard: ds_stack_pop(stack); break;
 		default: return txr_exec_exit("Can't run action " + string(q[0]), q, stack);
 	}
 }
-var r = ds_stack_pop(stack);
+var r;
+if (ds_stack_empty(stack)) {
+    r = 0; // if nothing is returned, assume 0 to be returned
+} else r = ds_stack_pop(stack);
 ds_stack_destroy(stack);
 txr_error = "";
 return r;

@@ -46,6 +46,7 @@ while (pos <= len) {
 				switch (name) {
 					case "mod": ds_list_add(out, [txr_token.op, start, txr_op.fmod]); break;
 					case "div": ds_list_add(out, [txr_token.op, start, txr_op.idiv]); break;
+					case "return": ds_list_add(out, [txr_token.ret, start]); break;
 					default: ds_list_add(out, [txr_token.ident, start, name]); break;
 				}
 			}
