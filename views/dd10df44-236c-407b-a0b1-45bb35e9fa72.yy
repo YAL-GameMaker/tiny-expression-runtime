@@ -14,7 +14,8 @@
         "4da0ecb4-8c0c-46c8-aec0-b1072d5aeb95",
         "8be386cc-dca0-4f33-a8f3-d436f277c949",
         "4dc16478-599a-4b35-850b-9cded2b97237",
-        "760a30d7-a722-454d-89cb-a0aae9bf76a8"
+        "760a30d7-a722-454d-89cb-a0aae9bf76a8",
+        "ac35b148-8d7a-96bc-11ce-718a2a3114dc"
     ],
     "filterType": "GMScript",
     "folderName": "Tiny Expression Runtime",

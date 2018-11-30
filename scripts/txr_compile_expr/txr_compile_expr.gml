@@ -13,6 +13,14 @@ switch (q[0]) {
 		if (txr_compile_expr(q[4])) return true;
 		ds_list_add(out, [txr_action.binop, q[1], q[2]]);
 		break;
+	case txr_node.call:
+		var args = q[3];
+		var argc = array_length_1d(args);
+		for (var i = 0; i < argc; i++) {
+			if (txr_compile_expr(args[i])) return true;
+		}
+		ds_list_add(out, [txr_action.call, q[1], q[2], argc]);
+		break;
 	default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 }
 return false;

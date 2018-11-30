@@ -11,6 +11,7 @@ while (pos <= len) {
 		case ord(" "): case ord("\t"): case ord("\r"): case ord("\n"): break;
 		case ord("("): ds_list_add(out, [txr_token.par_open, start]); break;
 		case ord(")"): ds_list_add(out, [txr_token.par_close, start]); break;
+		case ord(","): ds_list_add(out, [txr_token.comma, start]); break;
         case ord("+"): ds_list_add(out, [txr_token.op, start, txr_op.add]); break;
 		case ord("-"): ds_list_add(out, [txr_token.op, start, txr_op.sub]); break;
 		case ord("*"): ds_list_add(out, [txr_token.op, start, txr_op.mul]); break;

@@ -24,9 +24,27 @@ while (pos < len) {
 			break;
 		case txr_action.ident:
 			var v = variable_instance_get(id, q[2]);
-			if (is_real(v) || is_int64(v) || is_bool(v)) {
+			if (is_real(v) || is_int64(v) || is_bool(v) || is_int32(v)) {
 				ds_stack_push(stack, v);
 			} else return txr_exec_exit("Variable `" + q[2] + "` is not a number", q, stack);
+			break;
+		case txr_action.call:
+			var args = global.txr_exec_args;
+			ds_list_clear(args);
+			var i = q[3], v;
+			while (--i >= 0) args[|i] = ds_stack_pop(stack);
+			txr_function_error = undefined;
+			switch (q[3]) {
+				case 0: v = script_execute(q[2]); break;
+				case 1: v = script_execute(q[2], args[|0]); break;
+				case 2: v = script_execute(q[2], args[|0], args[|1]); break;
+				case 3: v = script_execute(q[2], args[|0], args[|1], args[|2]); break;
+				// and so on
+				default: return txr_exec_exit("Too many arguments (" + string(q[3]) + ")", q, stack);
+			}
+			if (txr_function_error == undefined) {
+				ds_stack_push(stack, v);
+			} else return txr_exec_exit(txr_function_error, q, stack);
 			break;
 		default: return txr_exec_exit("Can't run action " + string(q[0]), q, stack);
 	}

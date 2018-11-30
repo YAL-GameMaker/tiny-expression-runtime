@@ -10,6 +10,7 @@ enum txr_token {
     par_close = 3, // )
     number = 4, // 37
     ident = 5, // some
+    comma = 6, // ,
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -26,11 +27,13 @@ enum txr_op {
 #macro txr_build_node global.txr_build_node_val
 #macro txr_build_pos  global.txr_build_pos_val
 #macro txr_build_len  global.txr_build_len_val
+global.txr_function_map = ds_map_create();
 enum txr_node {
 	number = 1, // (number)
 	ident = 2, // (name)
 	unop = 3, // (unop, node)
 	binop = 4, // (binop, a, b)
+	call = 5, // (script, args_array)
 }
 enum txr_unop {
 	negate = 1, // -value
@@ -47,4 +50,8 @@ enum txr_action {
 	ident = 2, // (name): push(self[name])
 	unop = 3, // (unop): push(-pop())
 	binop = 4, // (op): a = pop(); b = pop(); push(binop(op, a, b))
+	call = 5, // (script, argc): 
 }
+#macro txr_function_error global.txr_function_error_val
+txr_function_error = undefined;
+global.txr_exec_args = ds_list_create();
