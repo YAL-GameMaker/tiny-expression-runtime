@@ -16,9 +16,24 @@ switch (tk[0]) {
             txr_build_node = [txr_node.if_then_else, tk[1], _cond, _then, txr_build_node];
         } else txr_build_node = [txr_node.if_then, tk[1], _cond, _then];
         break;
+    case txr_token.cub_open: // { ... statements }
+        var nodes = [], found = 0, closed = false;
+        while (txr_build_pos < txr_build_len) {
+            tkn = txr_build_list[|txr_build_pos];
+            if (tkn[0] == txr_token.cub_close) {
+                txr_build_pos += 1;
+                closed = true;
+                break;
+            }
+            if (txr_build_stat()) return true;
+            nodes[found++] = txr_build_node;
+        }
+        if (!closed) return txr_throw_at("Unclosed {} starting", tk);
+        txr_build_node = [txr_node.block, tk[1], nodes];
+        break;
     default:
         txr_build_pos -= 1;
-        if (txr_build_expr(0)) return true;
+        if (txr_build_expr(txr_build_flag.no_ops)) return true;
         switch (txr_build_node[0]) {
             case txr_node.call:
                 // select expressions are allowed to be statements,

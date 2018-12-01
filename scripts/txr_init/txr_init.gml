@@ -15,6 +15,8 @@ enum txr_token {
     _if = 8,
     _else = 9,
     _string = 10, // "hi!"
+    cub_open = 11, // {
+    cub_close = 12, // }
 }
 enum txr_op {
     mul  = 0x01, // *
