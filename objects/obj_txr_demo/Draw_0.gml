@@ -13,6 +13,10 @@ draw_text_ext(4, 4, "Type an expression and press Enter."
 	+ "\nInput: " + keyboard_string
 	+ "\nOutput: " + s,
 	-1, room_width - 8);
+if (keyboard_check(vk_control) && os_browser == browser_not_a_browser) {
+    if (keyboard_check_pressed(ord("C"))) clipboard_set_text(keyboard_string);
+    if (keyboard_check_pressed(ord("V"))) keyboard_string = clipboard_get_text();
+}
 if (keyboard_check_pressed(vk_enter)) {
 	program = txr_compile(keyboard_string);
 	if (program == undefined) {
