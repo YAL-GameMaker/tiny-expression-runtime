@@ -1,5 +1,6 @@
 /// @desc Converts a number to string with automatic precision.
 /// @arg number
+if (!is_real(s)) return string(s); // https://bugs.yoyogames.com/view.php?id=30274
 var s = string_format(argument0, 0, 15);
 var d = string_pos(".", s);
 if (d > 0) {
