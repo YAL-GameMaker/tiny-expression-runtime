@@ -30,9 +30,15 @@ while (pos <= len) {
 		    break;
 		default:
 			if (char >= ord("0") && char <= ord("9")) {
+			    var pre_dot = true;
 				while (pos <= len) {
 					char = string_ord_at(str, pos);
-					if (char >= ord("0") && char <= ord("9")) {
+					if (char == ord(".")) {
+					    if (pre_dot) {
+					        pre_dot = false;
+					        pos += 1;
+					    } else break;
+					} else if (char >= ord("0") && char <= ord("9")) {
 						pos += 1;
 					} else break;
 				}
