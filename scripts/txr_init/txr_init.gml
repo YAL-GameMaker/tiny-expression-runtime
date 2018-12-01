@@ -12,7 +12,11 @@ enum txr_token {
     ident = 5, // some
     comma = 6, // ,
     ret = 7, // return
+    _if = 8,
+    _else = 9,
 }
+#macro txr_eof global.txr_eof_val
+txr_eof = [txr_token.eof, -1];
 enum txr_op {
     mul  = 0x01, // *
     fdiv = 0x02, // /
@@ -38,6 +42,8 @@ enum txr_node {
 	block = 6, // (nodes_array) { ...nodes }
 	ret = 7, // (node) return <node>
 	discard = 8, // (node) - when we don't care
+	if_then = 9, // (cond_node, then_node)
+	if_then_else = 10, // (cond_node, then_node, else_node)
 }
 enum txr_unop {
 	negate = 1, // -value
@@ -57,6 +63,8 @@ enum txr_action {
 	call = 5, // (script, argc): 
 	ret = 6, // (): return pop()
 	discard = 7, // (): pop() - for when we don't care for output
+	jump = 8, // (pos): pc = pos
+	jump_unless = 9, // (pos): if (!pop()) pc = pos
 }
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;

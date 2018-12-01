@@ -48,6 +48,12 @@ while (pos < len) {
 			break;
 		case txr_action.ret: pos = len; break;
 		case txr_action.discard: ds_stack_pop(stack); break;
+		case txr_action.jump: pos = q[2]; break;
+		case txr_action.jump_unless:
+		    if (ds_stack_pop(stack)) {
+		        // OK!
+		    } else pos = q[2];
+		    break;
 		default: return txr_exec_exit("Can't run action " + string(q[0]), q, stack);
 	}
 }

@@ -36,6 +36,24 @@ switch (q[0]) {
         if (txr_compile_expr(q[2])) return true;
         ds_list_add(out, [txr_action.discard, q[1]]);
         break;
+    case txr_node.if_then: // -> <cond>; jump_unless(l1); <then>; l1:
+        if (txr_compile_expr(q[2])) return true;
+        var jmp = [txr_action.jump_unless, q[1], 0];
+        ds_list_add(out, jmp);
+        if (txr_compile_expr(q[3])) return true;
+        jmp[@2] = ds_list_size(out);
+        break;
+    case txr_node.if_then_else: // -> <cond>; jump_unless(l1); <then>; goto l2; l1: <else>; l2:
+        if (txr_compile_expr(q[2])) return true;
+        var jmp_else = [txr_action.jump_unless, q[1], 0];
+        ds_list_add(out, jmp_else);
+        if (txr_compile_expr(q[3])) return true;
+        var jmp_then = [txr_action.jump, q[1], 0];
+        ds_list_add(out, jmp_then);
+        jmp_else[@2] = ds_list_size(out);
+        if (txr_compile_expr(q[4])) return true;
+        jmp_then[@2] = ds_list_size(out);
+        break;
 	default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 }
 return false;
