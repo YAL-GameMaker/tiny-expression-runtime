@@ -17,6 +17,17 @@ while (pos <= len) {
 		case ord("*"): ds_list_add(out, [txr_token.op, start, txr_op.mul]); break;
 		case ord("/"): ds_list_add(out, [txr_token.op, start, txr_op.fdiv]); break;
 		case ord("%"): ds_list_add(out, [txr_token.op, start, txr_op.fmod]); break;
+		case ord("'"): case ord("\""): // ord('"') in GMS1
+		    while (pos <= len) {
+		        if (string_ord_at(str, pos) == char) break;
+		        pos += 1;
+		    }
+		    if (pos <= len) {
+		        pos += 1;
+		        ds_list_add(out, [txr_token._string, start,
+		            string_copy(str, start + 1, pos - start - 2)]);
+		    } else return txr_throw("Unclosed string starting at", start);
+		    break;
 		default:
 			if (char >= ord("0") && char <= ord("9")) {
 				while (pos <= len) {

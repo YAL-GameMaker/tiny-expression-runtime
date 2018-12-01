@@ -3,6 +3,7 @@ var q = argument0;
 var out = txr_compile_list;
 switch (q[0]) {
 	case txr_node.number: ds_list_add(out, [txr_action.number, q[1], q[2]]); break;
+	case txr_node._string: ds_list_add(out, [txr_action._string, q[1], q[2]]); break;
 	case txr_node.ident: ds_list_add(out, [txr_action.ident, q[1], q[2]]); break;
 	case txr_node.unop:
 		if (txr_compile_expr(q[3])) return true;

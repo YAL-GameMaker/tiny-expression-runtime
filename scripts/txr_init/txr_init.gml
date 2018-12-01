@@ -14,6 +14,7 @@ enum txr_token {
     ret = 7, // return
     _if = 8,
     _else = 9,
+    _string = 10, // "hi!"
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -32,8 +33,8 @@ enum txr_op {
 #macro txr_build_len  global.txr_build_len_val
 global.txr_function_map = ds_map_create();
 enum txr_node {
-	number = 1, // (number)
-	ident = 2, // (name)
+	number = 1, // (val:number)
+	ident = 2, // (name:string)
 	unop = 3, // (unop, node)
 	binop = 4, // (binop, a, b)
 	call = 5, // (script, args_array)
@@ -42,6 +43,7 @@ enum txr_node {
 	discard = 8, // (node) - when we don't care
 	if_then = 9, // (cond_node, then_node)
 	if_then_else = 10, // (cond_node, then_node, else_node)
+	_string = 11, // (val:string)
 }
 enum txr_unop {
 	negate = 1, // -value
@@ -63,6 +65,7 @@ enum txr_action {
 	discard = 7, // (): pop() - for when we don't care for output
 	jump = 8, // (pos): pc = pos
 	jump_unless = 9, // (pos): if (!pop()) pc = pos
+	_string = 10, // (value:string): push(value)
 }
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;

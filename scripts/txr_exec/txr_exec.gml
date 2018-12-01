@@ -7,11 +7,25 @@ while (pos < len) {
 	var q = arr[pos++];
 	switch (q[0]) {
 		case txr_action.number: ds_stack_push(stack, q[2]); break;
-		case txr_action.unop: ds_stack_push(stack, -ds_stack_pop(stack)); break;
+		case txr_action._string: ds_stack_push(stack, q[2]); break;
+		case txr_action.unop:
+		    var v = ds_stack_pop(stack);
+		    if (is_string(v)) {
+		        return txr_exec_exit("Can't apply unary - to string", q, stack);
+		    } else ds_stack_push(stack, -v);
+		    break;
 		case txr_action.binop:
 			var b = ds_stack_pop(stack);
 			var a = ds_stack_pop(stack);
-			switch (q[2]) {
+			if (is_string(a) || is_string(b)) {
+			    if (q[2] == txr_op.add) {
+			        if (!is_string(a)) a = string(a);
+			        if (!is_string(b)) b = string(b);
+			        a += b;
+			    } else return txr_exec_exit("Can't apply operator " + string(q[2])
+			        + " to " + typeof(a) + " and " + typeof(b), q, stack);
+			}
+			else switch (q[2]) {
 				case txr_op.add: a += b; break;
 				case txr_op.sub: a -= b; break;
 				case txr_op.mul: a *= b; break;

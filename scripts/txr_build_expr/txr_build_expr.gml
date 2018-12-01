@@ -3,6 +3,7 @@ var flags = argument0;
 var tk = txr_build_list[|txr_build_pos++];
 switch (tk[0]) {
 	case txr_token.number: txr_build_node = [txr_node.number, tk[1], tk[2]]; break;
+	case txr_token._string: txr_build_node = [txr_node._string, tk[1], tk[2]]; break;
 	case txr_token.ident:
 		var tkn = txr_build_list[|txr_build_pos];
 		if (tkn[0] == txr_token.par_open) { // `ident(`
