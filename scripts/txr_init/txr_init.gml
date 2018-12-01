@@ -15,8 +15,6 @@ enum txr_token {
     _if = 8,
     _else = 9,
 }
-#macro txr_eof global.txr_eof_val
-txr_eof = [txr_token.eof, -1];
 enum txr_op {
     mul  = 0x01, // *
     fdiv = 0x02, // /

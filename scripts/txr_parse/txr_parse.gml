@@ -58,5 +58,5 @@ while (pos <= len) {
 			}
     }
 }
-ds_list_add(out, txr_eof);
+ds_list_add(out, [txr_token.eof, string_length(str)]);
 return false;

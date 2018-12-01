@@ -5,15 +5,13 @@ switch (tk[0]) {
 	case txr_token.number: txr_build_node = [txr_node.number, tk[1], tk[2]]; break;
 	case txr_token.ident:
 		var tkn = txr_build_list[|txr_build_pos];
-		if (tkn != undefined && tkn[0] == txr_token.par_open) { // `ident(`
+		if (tkn[0] == txr_token.par_open) { // `ident(`
 			txr_build_pos += 1;
 			// read the arguments and the closing `)`:
-			var args = [], argc = 0, closed = false;;
-			tkn = txr_build_list[|txr_build_pos];
+			var args = [], argc = 0, closed = false;
 			while (txr_build_pos < txr_build_len) {
 				// hit a closing `)` yet?
 				tkn = txr_build_list[|txr_build_pos];
-				if (tkn == undefined) break;
 				if (tkn[0] == txr_token.par_close) {
 					txr_build_pos += 1;
 					closed = true;
@@ -24,7 +22,6 @@ switch (tk[0]) {
 				args[argc++] = txr_build_node;
 				// skip a `,`:
 				tkn = txr_build_list[|txr_build_pos];
-				if (tkn == undefined) break;
 				if (tkn[0] == txr_token.comma) {
 					txr_build_pos += 1;
 				} else if (tkn[0] != txr_token.par_close) {
@@ -54,10 +51,10 @@ switch (tk[0]) {
 				if (txr_build_expr(txr_build_flag.no_ops)) return true;
 				txr_build_node = [txr_node.unop, tk[1], txr_unop.negate, txr_build_node];
 				break;
-			default: return txr_throw_at("Unexpected token", tk);
+			default: return txr_throw_at("Expected an expression", tk);
 		}
 		break;
-	default: return txr_throw_at("Unexpected token", tk);
+	default: return txr_throw_at("Expected an expression", tk);
 }
 if ((flags & txr_build_flag.no_ops) == 0) {
 	tk = txr_build_list[|txr_build_pos];
