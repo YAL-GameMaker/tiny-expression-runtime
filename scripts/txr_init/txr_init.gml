@@ -18,6 +18,7 @@ enum txr_token {
     cub_open = 11, // {
     cub_close = 12, // }
     set = 13, // =
+    unop = 14, // !
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -26,7 +27,15 @@ enum txr_op {
     idiv = 0x04, // div
     add  = 0x10, // +
     sub  = 0x11, // -
-    maxp = 0x20 // maximum priority
+    // << and >> are 0x2x
+    // & | ^ are 0x3x
+    eq = 0x40, // ==
+    ne = 0x41, // !=
+    lt = 0x42, // <
+    le = 0x43, // <=
+    gt = 0x44, // >
+    ge = 0x45, // >=
+    maxp = 0x50 // maximum priority
 }
 
 // builder:
@@ -51,6 +60,7 @@ enum txr_node {
 }
 enum txr_unop {
     negate = 1, // -value
+    invert = 2, // !value
 }
 enum txr_build_flag {
     no_ops = 1

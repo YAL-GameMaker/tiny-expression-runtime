@@ -10,14 +10,22 @@ while (pos < len) {
         case txr_action._string: ds_stack_push(stack, q[2]); break;
         case txr_action.unop:
             var v = ds_stack_pop(stack);
-            if (is_string(v)) {
+            if (q[2] == txr_unop.invert) {
+                ds_stack_push(stack, v ? false : true);
+            } else if (is_string(v)) {
                 return txr_exec_exit("Can't apply unary - to string", q, stack);
             } else ds_stack_push(stack, -v);
             break;
         case txr_action.binop:
             var b = ds_stack_pop(stack);
             var a = ds_stack_pop(stack);
-            if (is_string(a) || is_string(b)) {
+            if (q[2] == txr_op.eq) {
+                a = (a == b);
+            }
+            else if (q[2] == txr_op.ne) {
+                a = (a != b);
+            }
+            else if (is_string(a) || is_string(b)) {
                 if (q[2] == txr_op.add) {
                     if (!is_string(a)) a = string(a);
                     if (!is_string(b)) b = string(b);
@@ -32,6 +40,10 @@ while (pos < len) {
                 case txr_op.fdiv: a /= b; break;
                 case txr_op.fmod: if (b != 0) a %= b; else a = 0; break;
                 case txr_op.idiv: if (b != 0) a = a div b; else a = 0; break;
+                case txr_op.lt: a = (a < b); break;
+                case txr_op.le: a = (a <= b); break;
+                case txr_op.gt: a = (a > b); break;
+                case txr_op.ge: a = (a >= b); break;
                 default: return txr_exec_exit("Can't apply operator " + string(q[2]), q, stack);
             }
             ds_stack_push(stack, a);

@@ -55,6 +55,10 @@ switch (tk[0]) {
             default: return txr_throw_at("Expected an expression", tk);
         }
         break;
+    case txr_token.unop: // !value
+        if (txr_build_expr(txr_build_flag.no_ops)) return true;
+        txr_build_node = [txr_node.unop, tk[1], tk[2], txr_build_node];
+        break;
     default: return txr_throw_at("Expected an expression", tk);
 }
 if ((flags & txr_build_flag.no_ops) == 0) {

@@ -19,7 +19,30 @@ while (pos <= len) {
         case ord("*"): ds_list_add(out, [txr_token.op, start, txr_op.mul]); break;
         case ord("/"): ds_list_add(out, [txr_token.op, start, txr_op.fdiv]); break;
         case ord("%"): ds_list_add(out, [txr_token.op, start, txr_op.fmod]); break;
-        case ord("="): ds_list_add(out, [txr_token.set, start]); break;
+        case ord("!"):
+            if (string_ord_at(str, pos) == ord("=")) { // !=
+                pos += 1;
+                ds_list_add(out, [txr_token.op, start, txr_op.ne]);
+            } else ds_list_add(out, [txr_token.unop, start, txr_unop.invert]);
+            break;
+        case ord("="):
+            if (string_ord_at(str, pos) == ord("=")) { // ==
+                pos += 1;
+                ds_list_add(out, [txr_token.op, start, txr_op.eq]);
+            } else ds_list_add(out, [txr_token.set, start]);
+            break;
+        case ord("<"):
+            if (string_ord_at(str, pos) == ord("=")) { // <=
+                pos += 1;
+                ds_list_add(out, [txr_token.op, start, txr_op.le]);
+            } else ds_list_add(out, [txr_token.op, start, txr_op.lt]);
+            break;
+        case ord(">"):
+            if (string_ord_at(str, pos) == ord("=")) { // >=
+                pos += 1;
+                ds_list_add(out, [txr_token.op, start, txr_op.ge]);
+            } else ds_list_add(out, [txr_token.op, start, txr_op.gt]);
+            break;
         case ord("'"): case ord("\""): // ord('"') in GMS1
             while (pos <= len) {
                 if (string_ord_at(str, pos) == char) break;
