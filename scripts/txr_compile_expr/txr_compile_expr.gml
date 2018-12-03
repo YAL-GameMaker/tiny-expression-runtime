@@ -55,6 +55,16 @@ switch (q[0]) {
         if (txr_compile_expr(q[4])) return true;
         jmp_then[@2] = ds_list_size(out);
         break;
+    case txr_node.set:
+        if (txr_compile_expr(q[3])) return true;
+        var _expr = q[2];
+        switch (_expr[0]) {
+            case txr_node.ident:
+                ds_list_add(out, [txr_action.set_ident, q[1], _expr[2]]);
+                break;
+            default: return txr_throw_at("Expression is not settable", _expr);
+        }
+        break;
 	default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 }
 return false;

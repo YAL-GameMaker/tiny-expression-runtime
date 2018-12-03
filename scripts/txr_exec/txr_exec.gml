@@ -42,6 +42,9 @@ while (pos < len) {
 				ds_stack_push(stack, v);
 			} else return txr_exec_exit("Variable `" + q[2] + "` is not a number", q, stack);
 			break;
+		case txr_action.set_ident:
+			variable_instance_set(id, q[2], ds_stack_pop(stack));
+			break;
 		case txr_action.call:
 			var args = global.txr_exec_args;
 			ds_list_clear(args);

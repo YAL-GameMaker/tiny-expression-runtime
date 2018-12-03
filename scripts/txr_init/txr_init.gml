@@ -19,6 +19,7 @@ enum txr_token {
     cub_close = 12, // }
 }
 enum txr_op {
+    set  =   -1, // =
     mul  = 0x01, // *
     fdiv = 0x02, // /
     fmod = 0x03, // %
@@ -46,6 +47,7 @@ enum txr_node {
 	if_then = 9, // (cond_node, then_node)
 	if_then_else = 10, // (cond_node, then_node, else_node)
 	_string = 11, // (val:string)
+	set = 12, // (node, value:node)
 }
 enum txr_unop {
 	negate = 1, // -value
@@ -68,6 +70,7 @@ enum txr_action {
 	jump = 8, // (pos): pc = pos
 	jump_unless = 9, // (pos): if (!pop()) pc = pos
 	_string = 10, // (value:string): push(value)
+	set_ident = 11, // (name:string): self[name] = pop()
 }
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;
