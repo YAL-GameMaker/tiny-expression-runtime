@@ -40,6 +40,11 @@ while (pos < len) {
                 case txr_op.fdiv: a /= b; break;
                 case txr_op.fmod: if (b != 0) a %= b; else a = 0; break;
                 case txr_op.idiv: if (b != 0) a = a div b; else a = 0; break;
+                case txr_op.shl: a = (a << b); break;
+                case txr_op.shr: a = (a >> b); break;
+                case txr_op.iand: a &= b; break;
+                case txr_op.ior: a |= b; break;
+                case txr_op.ixor: a ^= b; break;
                 case txr_op.lt: a = (a < b); break;
                 case txr_op.le: a = (a <= b); break;
                 case txr_op.gt: a = (a > b); break;
@@ -82,6 +87,16 @@ while (pos < len) {
             if (ds_stack_pop(stack)) {
                 // OK!
             } else pos = q[2];
+            break;
+        case txr_action.band:
+            if (ds_stack_top(stack)) {
+                ds_stack_pop(stack);
+            } else pos = q[2];
+            break;
+        case txr_action.bor:
+            if (ds_stack_top(stack)) {
+                pos = q[2];
+            } else ds_stack_pop(stack);
             break;
         default: return txr_exec_exit("Can't run action " + string(q[0]), q, stack);
     }

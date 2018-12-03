@@ -32,16 +32,32 @@ while (pos <= len) {
             } else ds_list_add(out, [txr_token.set, start]);
             break;
         case ord("<"):
-            if (string_ord_at(str, pos) == ord("=")) { // <=
-                pos += 1;
-                ds_list_add(out, [txr_token.op, start, txr_op.le]);
-            } else ds_list_add(out, [txr_token.op, start, txr_op.lt]);
+            switch (string_ord_at(str, pos)) {
+                case ord("="): // <=
+                    pos += 1;
+                    ds_list_add(out, [txr_token.op, start, txr_op.le]);
+                    break;
+                case ord("<"): // <<
+                    pos += 1;
+                    ds_list_add(out, [txr_token.op, start, txr_op.shl]);
+                    break;
+                default:
+                    ds_list_add(out, [txr_token.op, start, txr_op.lt]);
+            }
             break;
         case ord(">"):
-            if (string_ord_at(str, pos) == ord("=")) { // >=
-                pos += 1;
-                ds_list_add(out, [txr_token.op, start, txr_op.ge]);
-            } else ds_list_add(out, [txr_token.op, start, txr_op.gt]);
+            switch (string_ord_at(str, pos)) {
+                case ord("="): // >=
+                    pos += 1;
+                    ds_list_add(out, [txr_token.op, start, txr_op.ge]);
+                    break;
+                case ord(">"): // >>
+                    pos += 1;
+                    ds_list_add(out, [txr_token.op, start, txr_op.shr]);
+                    break;
+                default:
+                    ds_list_add(out, [txr_token.op, start, txr_op.gt]);
+            }
             break;
         case ord("'"): case ord("\""): // ord('"') in GMS1
             while (pos <= len) {
@@ -54,6 +70,19 @@ while (pos <= len) {
                     string_copy(str, start + 1, pos - start - 2)]);
             } else return txr_throw("Unclosed string starting at", start);
             break;
+        case ord("|"):
+            if (string_ord_at(str, pos) == ord("|")) { // ||
+                pos += 1;
+                ds_list_add(out, [txr_token.op, start, txr_op.bor]);
+            } else ds_list_add(out, [txr_token.op, start, txr_op.ior]);
+            break;
+        case ord("&"):
+            if (string_ord_at(str, pos) == ord("&")) { // &&
+                pos += 1;
+                ds_list_add(out, [txr_token.op, start, txr_op.band]);
+            } else ds_list_add(out, [txr_token.op, start, txr_op.iand]);
+            break;
+        case ord("^"): ds_list_add(out, [txr_token.op, start, txr_op.ixor]); break;
         default:
             if (char >= ord("0") && char <= ord("9")) {
                 var pre_dot = true;

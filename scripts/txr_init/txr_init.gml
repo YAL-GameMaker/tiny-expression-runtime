@@ -27,15 +27,20 @@ enum txr_op {
     idiv = 0x04, // div
     add  = 0x10, // +
     sub  = 0x11, // -
-    // << and >> are 0x2x
-    // & | ^ are 0x3x
-    eq = 0x40, // ==
-    ne = 0x41, // !=
-    lt = 0x42, // <
-    le = 0x43, // <=
-    gt = 0x44, // >
-    ge = 0x45, // >=
-    maxp = 0x50 // maximum priority
+    shl  = 0x20, // <<
+    shr  = 0x21, // >>
+    iand = 0x30, // &
+    ior  = 0x31, // |
+    ixor = 0x32, // ^
+    eq   = 0x40, // ==
+    ne   = 0x41, // !=
+    lt   = 0x42, // <
+    le   = 0x43, // <=
+    gt   = 0x44, // >
+    ge   = 0x45, // >=
+    band = 0x50, // &&
+    bor  = 0x60, // ||
+    maxp = 0x70, // maximum priority
 }
 
 // builder:
@@ -81,6 +86,8 @@ enum txr_action {
     jump_unless = 9, // (pos): if (!pop()) pc = pos
     _string = 10, // (value:string): push(value)
     set_ident = 11, // (name:string): self[name] = pop()
+    band = 12, // (pos): if (peek()) pop(); else pc = pos
+    bor = 13, // (pos): if (peek()) pc = pos(); else pop()
 }
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;

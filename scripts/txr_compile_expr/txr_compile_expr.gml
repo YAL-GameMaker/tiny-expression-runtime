@@ -10,9 +10,26 @@ switch (q[0]) {
         ds_list_add(out, [txr_action.unop, q[1], q[2]]);
         break;
     case txr_node.binop:
-        if (txr_compile_expr(q[3])) return true;
-        if (txr_compile_expr(q[4])) return true;
-        ds_list_add(out, [txr_action.binop, q[1], q[2]]);
+        switch (q[2]) {
+            case txr_op.band:
+                if (txr_compile_expr(q[3])) return true;
+                var jmp = [txr_action.band, q[1], 0];
+                ds_list_add(out, jmp);
+                if (txr_compile_expr(q[4])) return true;
+                jmp[@2] = ds_list_size(out);
+                break;
+            case txr_op.bor:
+                if (txr_compile_expr(q[3])) return true;
+                var jmp = [txr_action.bor, q[1], 0];
+                ds_list_add(out, jmp);
+                if (txr_compile_expr(q[4])) return true;
+                jmp[@2] = ds_list_size(out);
+                break;
+            default:
+                if (txr_compile_expr(q[3])) return true;
+                if (txr_compile_expr(q[4])) return true;
+                ds_list_add(out, [txr_action.binop, q[1], q[2]]);
+        }
         break;
     case txr_node.call:
         var args = q[3];
