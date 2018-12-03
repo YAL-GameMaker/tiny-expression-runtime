@@ -19,7 +19,7 @@ while (pos <= len) {
         case ord("*"): ds_list_add(out, [txr_token.op, start, txr_op.mul]); break;
         case ord("/"): ds_list_add(out, [txr_token.op, start, txr_op.fdiv]); break;
         case ord("%"): ds_list_add(out, [txr_token.op, start, txr_op.fmod]); break;
-        case ord("="): ds_list_add(out, [txr_token.op, start, txr_op.set]); break;
+        case ord("="): ds_list_add(out, [txr_token.set, start]); break;
         case ord("'"): case ord("\""): // ord('"') in GMS1
             while (pos <= len) {
                 if (string_ord_at(str, pos) == char) break;

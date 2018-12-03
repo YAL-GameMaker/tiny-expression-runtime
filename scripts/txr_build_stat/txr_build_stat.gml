@@ -43,7 +43,7 @@ switch (tk[0]) {
                 break;
             default:
                 tkn = txr_build_list[|txr_build_pos];
-                if (tkn[0] == txr_token.op && tkn[2] == txr_op.set) { // node = value
+                if (tkn[0] == txr_token.set) { // node = value
                     txr_build_pos += 1;
                     if (txr_build_expr(0)) return true;
                     txr_build_node = [txr_node.set, tkn[1], _expr, txr_build_node];

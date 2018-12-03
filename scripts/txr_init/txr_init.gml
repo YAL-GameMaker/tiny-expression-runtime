@@ -17,9 +17,9 @@ enum txr_token {
     _string = 10, // "hi!"
     cub_open = 11, // {
     cub_close = 12, // }
+    set = 13, // =
 }
 enum txr_op {
-    set  =   -1, // =
     mul  = 0x01, // *
     fdiv = 0x02, // /
     fmod = 0x03, // %
