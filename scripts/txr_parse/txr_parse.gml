@@ -18,7 +18,29 @@ while (pos <= len) {
         case ord("+"): ds_list_add(out, [txr_token.op, start, txr_op.add]); break;
         case ord("-"): ds_list_add(out, [txr_token.op, start, txr_op.sub]); break;
         case ord("*"): ds_list_add(out, [txr_token.op, start, txr_op.mul]); break;
-        case ord("/"): ds_list_add(out, [txr_token.op, start, txr_op.fdiv]); break;
+        case ord("/"):
+            switch (string_ord_at(str, pos)) {
+                case ord("/"): // line comment
+                    while (pos <= len) {
+                        char = string_ord_at(str, pos);
+                        if (char == ord("\r") || char == ord("\n")) break;
+                        pos += 1;
+                    }
+                    break;
+                case ord("*"): // block comment
+                    pos += 1;
+                    while (pos <= len) {
+                        if (string_ord_at(str, pos) == ord("*")
+                        && string_ord_at(str, pos + 1) == ord("/")) {
+                            pos += 2;
+                            break;
+                        }
+                        pos += 1;
+                    }
+                    break;
+                default: ds_list_add(out, [txr_token.op, start, txr_op.fdiv]);
+            }
+            break;
         case ord("%"): ds_list_add(out, [txr_token.op, start, txr_op.fmod]); break;
         case ord("!"):
             if (string_ord_at(str, pos) == ord("=")) { // !=
