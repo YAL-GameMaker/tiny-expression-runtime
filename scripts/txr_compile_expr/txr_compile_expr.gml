@@ -82,6 +82,54 @@ switch (q[0]) {
             default: return txr_throw_at("Expression is not settable", _expr);
         }
         break;
+    case txr_node._while:
+        // l1: {cont} <condition> jump_unless l2
+        var pos_cont = ds_list_size(out);
+        if (txr_compile_expr(q[2])) return true;
+        var jmp = [txr_action.jump_unless, q[1], 0];
+        ds_list_add(out, jmp);
+        // <loop> jump l1
+        var pos_start = ds_list_size(out);
+        if (txr_compile_expr(q[3])) return true;
+        ds_list_add(out, [txr_action.jump, q[1], pos_cont]);
+        // l2: {break}
+        var pos_break = ds_list_size(out);
+        jmp[@2] = pos_break;
+        txr_compile_patch_break_continue(pos_start, pos_break, pos_break, pos_cont);
+        break;
+    case txr_node.do_while:
+        // l1: <loop>
+        var pos_start = ds_list_size(out);
+        if (txr_compile_expr(q[2])) return true;
+        // l2: {cont} <condition> jump_if l1
+        var pos_cont = ds_list_size(out);
+        if (txr_compile_expr(q[3])) return true;
+        ds_list_add(out, [txr_action.jump_if, q[1], pos_start]);
+        // l3: {break}
+        var pos_break = ds_list_size(out);
+        txr_compile_patch_break_continue(pos_start, pos_break, pos_break, pos_cont);
+        break;
+    case txr_node._for:
+        if (txr_compile_expr(q[2])) return true;
+        // l1: <condition> jump_unless l3
+        var pos_loop = ds_list_size(out);
+        if (txr_compile_expr(q[3])) return true;
+        var jmp = [txr_action.jump_unless, q[1], 0];
+        ds_list_add(out, jmp);
+        // <loop>
+        var pos_start = ds_list_size(out);
+        if (txr_compile_expr(q[5])) return true;
+        // l2: {cont} <post> jump l1
+        var pos_cont = ds_list_size(out);
+        if (txr_compile_expr(q[4])) return true;
+        ds_list_add(out, [txr_action.jump, q[1], pos_loop]);
+        // l3: {break}
+        var pos_break = ds_list_size(out);
+        jmp[@2] = pos_break;
+        txr_compile_patch_break_continue(pos_start, pos_break, pos_break, pos_cont);
+        break;
+    case txr_node._break: ds_list_add(out, [txr_action.jump, q[1], -10]); break;
+    case txr_node._continue: ds_list_add(out, [txr_action.jump, q[1], -11]); break;
     default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 }
 return false;

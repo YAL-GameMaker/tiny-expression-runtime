@@ -9,6 +9,7 @@ while (pos <= len) {
     pos += 1;
     switch (char) {
         case ord(" "): case ord("\t"): case ord("\r"): case ord("\n"): break;
+        case ord(";"): ds_list_add(out, [txr_token.semico, start]); break;
         case ord("("): ds_list_add(out, [txr_token.par_open, start]); break;
         case ord(")"): ds_list_add(out, [txr_token.par_close, start]); break;
         case ord("{"): ds_list_add(out, [txr_token.cub_open, start]); break;
@@ -121,6 +122,11 @@ while (pos <= len) {
                     case "if": ds_list_add(out, [txr_token._if, start]); break;
                     case "else": ds_list_add(out, [txr_token._else, start]); break;
                     case "return": ds_list_add(out, [txr_token.ret, start]); break;
+                    case "while": ds_list_add(out, [txr_token._while, start]); break;
+                    case "do": ds_list_add(out, [txr_token._do, start]); break;
+                    case "for": ds_list_add(out, [txr_token._for, start]); break;
+                    case "break": ds_list_add(out, [txr_token._break, start]); break;
+                    case "continue": ds_list_add(out, [txr_token._continue, start]); break;
                     default: ds_list_add(out, [txr_token.ident, start, name]); break;
                 }
             }

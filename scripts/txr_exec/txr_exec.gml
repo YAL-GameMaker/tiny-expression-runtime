@@ -88,6 +88,9 @@ while (pos < len) {
                 // OK!
             } else pos = q[2];
             break;
+        case txr_action.jump_if:
+            if (ds_stack_pop(stack)) pos = q[2];
+            break;
         case txr_action.band:
             if (ds_stack_top(stack)) {
                 ds_stack_pop(stack);

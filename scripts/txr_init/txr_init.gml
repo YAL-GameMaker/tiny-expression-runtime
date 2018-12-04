@@ -19,6 +19,12 @@ enum txr_token {
     cub_close = 12, // }
     set = 13, // =
     unop = 14, // !
+    _while = 15,
+    _do = 16,
+    _for = 17,
+    semico = 18, // ;
+    _break = 19,
+    _continue = 20,
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -48,6 +54,8 @@ enum txr_op {
 #macro txr_build_node global.txr_build_node_val
 #macro txr_build_pos  global.txr_build_pos_val
 #macro txr_build_len  global.txr_build_len_val
+#macro txr_build_can_break    global.txr_build_can_break_val
+#macro txr_build_can_continue global.txr_build_can_continue_val
 global.txr_function_map = ds_map_create();
 enum txr_node {
     number = 1, // (val:number)
@@ -62,6 +70,11 @@ enum txr_node {
     if_then_else = 10, // (cond_node, then_node, else_node)
     _string = 11, // (val:string)
     set = 12, // (node, value:node)
+    _while = 13,
+    do_while = 14,
+    _for = 15,
+    _break = 16,
+    _continue = 17,
 }
 enum txr_unop {
     negate = 1, // -value
@@ -88,6 +101,7 @@ enum txr_action {
     set_ident = 11, // (name:string): self[name] = pop()
     band = 12, // (pos): if (peek()) pop(); else pc = pos
     bor = 13, // (pos): if (peek()) pc = pos(); else pop()
+    jump_if = 14, // (pos): if (pop()) pc = pos
 }
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;
