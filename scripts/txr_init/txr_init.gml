@@ -103,6 +103,8 @@ enum txr_action {
     bor = 13, // (pos): if (peek()) pc = pos(); else pop()
     jump_if = 14, // (pos): if (pop()) pc = pos
 }
+#macro txr_function_default global.txr_function_default_val
+txr_function_default = -1;
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;
 global.txr_exec_args = ds_list_create();

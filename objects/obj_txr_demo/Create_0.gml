@@ -5,4 +5,9 @@ txr_function_add("draw_text", scr_txr_demo_draw_text, 3);
 program = undefined;
 text = "";
 error = "";
+// other scripts or anything
+global.extra_functions = ds_map_create();
+global.extra_functions[?"hi"] = txr_compile(@'return "hi!"');
+txr_function_default = scr_txr_demo_default_func;
+
 keyboard_string = "";

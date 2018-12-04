@@ -1,3 +1,4 @@
+/// @param code:string
 if (txr_parse(argument0)) return undefined;
 if (txr_build()) return undefined;
 var out = txr_compile_list;
