@@ -33,7 +33,7 @@ while (pos < len) {
                 } else return txr_exec_exit("Can't apply operator " + string(q[2])
                     + " to " + typeof(a) + " and " + typeof(b), q, stack);
             }
-            else switch (q[2]) {
+            else if (txr_is_number(a) && txr_is_number(b)) switch (q[2]) {
                 case txr_op.add: a += b; break;
                 case txr_op.sub: a -= b; break;
                 case txr_op.mul: a *= b; break;
@@ -50,14 +50,13 @@ while (pos < len) {
                 case txr_op.gt: a = (a > b); break;
                 case txr_op.ge: a = (a >= b); break;
                 default: return txr_exec_exit("Can't apply operator " + string(q[2]), q, stack);
-            }
+            } else return txr_exec_exit("Can't apply operator " + string(q[2])
+                + " to " + typeof(a) + " and " + typeof(b), q, stack);
             ds_stack_push(stack, a);
             break;
         case txr_action.ident:
             var v = variable_instance_get(id, q[2]);
-            if (is_real(v) || is_int64(v) || is_bool(v) || is_int32(v)) {
-                ds_stack_push(stack, v);
-            } else return txr_exec_exit("Variable `" + q[2] + "` is not a number", q, stack);
+            ds_stack_push(stack, v);
             break;
         case txr_action.set_ident:
             variable_instance_set(id, q[2], ds_stack_pop(stack));
