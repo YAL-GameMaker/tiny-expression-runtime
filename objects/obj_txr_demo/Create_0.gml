@@ -7,7 +7,11 @@ text = "";
 error = "";
 // other scripts or anything
 global.extra_functions = ds_map_create();
-global.extra_functions[?"hi"] = txr_compile(@'return "hi!"');
+global.extra_functions[?"hi"] = txr_compile(@'
+if (argument_count > 0) {
+    return "hi, " + argument0 + "!";
+} else return "hi!";
+');
 txr_function_default = scr_txr_demo_default_func;
 
 keyboard_string = "";

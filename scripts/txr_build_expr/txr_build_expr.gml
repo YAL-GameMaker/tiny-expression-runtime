@@ -50,6 +50,8 @@ switch (tk[0]) {
             txr_build_node = [txr_node.call, tk[1], fn_script, args];
         } else txr_build_node = [txr_node.ident, tk[1], tk[2]];
         break;
+    case txr_token._argument: txr_build_node = [txr_node._argument, tk[1], tk[2], tk[3]]; break;
+    case txr_token._argument_count: txr_build_node = [txr_node._argument_count, tk[1]]; break;
     case txr_token.par_open: // (value)
         if (txr_build_expr(0)) return true;
         tk = txr_build_list[|txr_build_pos++];

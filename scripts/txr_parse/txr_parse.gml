@@ -149,7 +149,18 @@ while (pos <= len) {
                     case "for": ds_list_add(out, [txr_token._for, start]); break;
                     case "break": ds_list_add(out, [txr_token._break, start]); break;
                     case "continue": ds_list_add(out, [txr_token._continue, start]); break;
-                    default: ds_list_add(out, [txr_token.ident, start, name]); break;
+                    case "var": ds_list_add(out, [txr_token._var, start]); break;
+                    case "argument_count": ds_list_add(out, [txr_token._argument_count, start]); break;
+                    default:
+                        if (string_length(name) > 8 && string_copy(name, 1, 8) == "argument") {
+                            var sfx = string_delete(name, 1, 8); // substring(8) in non-GML
+                            if (string_digits(sfx) == sfx) {
+                                ds_list_add(out, [txr_token._argument, start, real(sfx), name]);
+                                break;
+                            }
+                        }
+                        ds_list_add(out, [txr_token.ident, start, name]);
+                        break;
                 }
             }
             else {

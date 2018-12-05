@@ -25,6 +25,9 @@ enum txr_token {
     semico = 18, // ;
     _break = 19,
     _continue = 20,
+    _var = 21,
+    _argument = 22, // argument#
+    _argument_count = 23,
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -56,7 +59,9 @@ enum txr_op {
 #macro txr_build_len  global.txr_build_len_val
 #macro txr_build_can_break    global.txr_build_can_break_val
 #macro txr_build_can_continue global.txr_build_can_continue_val
-global.txr_function_map = ds_map_create();
+#macro txr_build_locals global.txr_build_locals_val
+txr_build_locals = ds_map_create(); // <varname:string, is_local:bool>
+global.txr_function_map = ds_map_create(); // <funcname:string, [script, argcount]>
 enum txr_node {
     number = 1, // (val:number)
     ident = 2, // (name:string)
@@ -75,6 +80,8 @@ enum txr_node {
     _for = 15,
     _break = 16,
     _continue = 17,
+    _argument = 18, // (index:int)
+    _argument_count = 19,
 }
 enum txr_unop {
     negate = 1, // -value
@@ -102,6 +109,8 @@ enum txr_action {
     band = 12, // (pos): if (peek()) pop(); else pc = pos
     bor = 13, // (pos): if (peek()) pc = pos(); else pop()
     jump_if = 14, // (pos): if (pop()) pc = pos
+    get_local = 15, // (name): push(locals[name])
+    set_local = 16, // (name): locals[name] = pop()
 }
 #macro txr_function_default global.txr_function_default_val
 txr_function_default = -1;

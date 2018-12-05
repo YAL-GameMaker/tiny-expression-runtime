@@ -84,6 +84,29 @@ switch (tk[0]) {
             txr_build_node = [txr_node._continue, tk[1]];
         } else return txr_throw_at("Can't `continue` here", tk);
         break;
+    case txr_token._var:
+        var nodes = [], found = 0;
+        do {
+            tkn = txr_build_list[|txr_build_pos++];
+            if (tkn[0] != txr_token.ident) return txr_throw_at("Expected a variable name", tkn);
+            var name = tkn[2];
+            tkn = txr_build_list[|txr_build_pos];
+            txr_build_locals[?name] = true;
+            // check for value:
+            if (tkn[0] == txr_token.set) {
+                txr_build_pos += 1;
+                if (txr_build_expr(0)) return true;
+                nodes[found++] = [txr_node.set, tkn[1],
+                    [txr_node.ident, tkn[1], name], txr_build_node];
+            }
+            // check for comma:
+            tkn = txr_build_list[|txr_build_pos];
+            if (tkn[0] == txr_token.comma) {
+                txr_build_pos += 1;
+            } else break;
+        } until (txr_build_pos >= txr_build_len);
+        txr_build_node = [txr_node.block, tk[1], nodes];
+        break;
     default:
         txr_build_pos -= 1;
         if (txr_build_expr(txr_build_flag.no_ops)) return true;

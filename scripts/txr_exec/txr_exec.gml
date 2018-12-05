@@ -1,8 +1,21 @@
 /// @param actions
-var arr = argument0;
+/// @param ?arguments:array|ds_map
+var arr = argument[0];
+var argd = argument_count > 1 ? argument[1] : undefined;
 var len = array_length_1d(arr);
 var pos = 0;
 var stack = ds_stack_create();
+var locals = ds_map_create();
+if (argd != undefined) {
+    if (is_array(argd)) { // an array of arguments
+        var i = array_length_1d(argd);
+        locals[?"argument_count"] = i;
+        locals[?"argument"] = argd;
+        while (--i >= 0) locals[?"argument" + string(i)] = argd[i];
+    } else { // a ds_map with initial local scope
+        ds_map_copy(locals, argd);
+    }
+}
 while (pos < len) {
     var q = arr[pos++];
     switch (q[0]) {
@@ -13,7 +26,7 @@ while (pos < len) {
             if (q[2] == txr_unop.invert) {
                 ds_stack_push(stack, v ? false : true);
             } else if (is_string(v)) {
-                return txr_exec_exit("Can't apply unary - to string", q, stack);
+                return txr_exec_exit("Can't apply unary - to string", q, stack, locals);
             } else ds_stack_push(stack, -v);
             break;
         case txr_action.binop:
@@ -31,7 +44,7 @@ while (pos < len) {
                     if (!is_string(b)) b = string(b);
                     a += b;
                 } else return txr_exec_exit("Can't apply operator " + string(q[2])
-                    + " to " + typeof(a) + " and " + typeof(b), q, stack);
+                    + " to " + typeof(a) + " and " + typeof(b), q, stack, locals);
             }
             else if (txr_is_number(a) && txr_is_number(b)) switch (q[2]) {
                 case txr_op.add: a += b; break;
@@ -49,9 +62,9 @@ while (pos < len) {
                 case txr_op.le: a = (a <= b); break;
                 case txr_op.gt: a = (a > b); break;
                 case txr_op.ge: a = (a >= b); break;
-                default: return txr_exec_exit("Can't apply operator " + string(q[2]), q, stack);
+                default: return txr_exec_exit("Can't apply operator " + string(q[2]), q, stack, locals);
             } else return txr_exec_exit("Can't apply operator " + string(q[2])
-                + " to " + typeof(a) + " and " + typeof(b), q, stack);
+                + " to " + typeof(a) + " and " + typeof(b), q, stack, locals);
             ds_stack_push(stack, a);
             break;
         case txr_action.ident:
@@ -60,6 +73,12 @@ while (pos < len) {
             break;
         case txr_action.set_ident:
             variable_instance_set(id, q[2], ds_stack_pop(stack));
+            break;
+        case txr_action.get_local:
+            ds_stack_push(stack, locals[?q[2]]);
+            break;
+        case txr_action.set_local:
+            locals[?q[2]] = ds_stack_pop(stack);
             break;
         case txr_action.call:
             var args = global.txr_exec_args;
@@ -73,11 +92,11 @@ while (pos < len) {
                 case 2: v = script_execute(q[2], args[|0], args[|1]); break;
                 case 3: v = script_execute(q[2], args[|0], args[|1], args[|2]); break;
                 // and so on
-                default: return txr_exec_exit("Too many arguments (" + string(q[3]) + ")", q, stack);
+                default: return txr_exec_exit("Too many arguments (" + string(q[3]) + ")", q, stack, locals);
             }
             if (txr_function_error == undefined) {
                 ds_stack_push(stack, v);
-            } else return txr_exec_exit(txr_function_error, q, stack);
+            } else return txr_exec_exit(txr_function_error, q, stack, locals);
             break;
         case txr_action.ret: pos = len; break;
         case txr_action.discard: ds_stack_pop(stack); break;
@@ -100,7 +119,7 @@ while (pos < len) {
                 pos = q[2];
             } else ds_stack_pop(stack);
             break;
-        default: return txr_exec_exit("Can't run action " + string(q[0]), q, stack);
+        default: return txr_exec_exit("Can't run action " + string(q[0]), q, stack, locals);
     }
 }
 var r;

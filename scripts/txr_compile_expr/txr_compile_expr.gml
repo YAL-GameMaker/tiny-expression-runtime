@@ -4,7 +4,13 @@ var out = txr_compile_list;
 switch (q[0]) {
     case txr_node.number: ds_list_add(out, [txr_action.number, q[1], q[2]]); break;
     case txr_node._string: ds_list_add(out, [txr_action._string, q[1], q[2]]); break;
-    case txr_node.ident: ds_list_add(out, [txr_action.ident, q[1], q[2]]); break;
+    case txr_node.ident:
+        if (ds_map_exists(txr_build_locals, q[2])) {
+            ds_list_add(out, [txr_action.get_local, q[1], q[2]]);
+        } else ds_list_add(out, [txr_action.ident, q[1], q[2]]);
+        break;
+    case txr_node._argument: ds_list_add(out, [txr_action.get_local, q[1], q[3]]); break;
+    case txr_node._argument_count: ds_list_add(out, [txr_action.get_local, q[1], "argument_count"]); break;
     case txr_node.unop:
         if (txr_compile_expr(q[3])) return true;
         ds_list_add(out, [txr_action.unop, q[1], q[2]]);
@@ -77,7 +83,9 @@ switch (q[0]) {
         var _expr = q[2];
         switch (_expr[0]) {
             case txr_node.ident:
-                ds_list_add(out, [txr_action.set_ident, q[1], _expr[2]]);
+                if (ds_map_exists(txr_build_locals, _expr[2])) {
+                    ds_list_add(out, [txr_action.set_local, q[1], _expr[2]]);
+                } else ds_list_add(out, [txr_action.set_ident, q[1], _expr[2]]);
                 break;
             default: return txr_throw_at("Expression is not settable", _expr);
         }
