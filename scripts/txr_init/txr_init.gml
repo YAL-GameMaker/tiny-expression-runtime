@@ -1,3 +1,4 @@
+//!#import "global"
 #macro txr_error global.txr_error_val
 
 // parser:
@@ -51,6 +52,28 @@ enum txr_op {
     bor  = 0x60, // ||
     maxp = 0x70, // maximum priority
 }
+var ops/*:txr_op*/ = array_create(txr_op.maxp, "an operator");
+ops[@txr_op.mul] = "*";
+ops[@txr_op.fdiv] = "/";
+ops[@txr_op.fmod] = "%";
+ops[@txr_op.idiv] = "div";
+ops[@txr_op.add] = "+";
+ops[@txr_op.sub] = "-";
+ops[@txr_op.shl] = "<<";
+ops[@txr_op.shr] = ">>";
+ops[@txr_op.iand] = "&";
+ops[@txr_op.ior] = "|";
+ops[@txr_op.ixor] = "^";
+ops[@txr_op.eq] = "==";
+ops[@txr_op.ne] = "!=";
+ops[@txr_op.lt] = "<";
+ops[@txr_op.le] = "<=";
+ops[@txr_op.gt] = ">";
+ops[@txr_op.ge] = ">=";
+ops[@txr_op.band] = "&&";
+ops[@txr_op.bor] = "||";
+global.txr_op_names = ops;
+
 
 // builder:
 #macro txr_build_list global.txr_build_list_val
@@ -116,4 +139,7 @@ enum txr_action {
 txr_function_default = -1;
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;
+
+#macro txr_thread_current global.txr_thread_current_val
+txr_thread_current = undefined;
 global.txr_exec_args = ds_list_create();
