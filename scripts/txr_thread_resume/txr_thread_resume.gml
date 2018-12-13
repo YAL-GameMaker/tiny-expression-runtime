@@ -158,7 +158,7 @@ if (halt == undefined) {
     } else th[@txr_thread.result] = ds_stack_pop(stack);
 } else if (is_string(halt)) {
     th[@txr_thread.status] = txr_thread_status.error;
-    th[@txr_thread.result] = halt + " at " + string(q[1]);
+    th[@txr_thread.result] = halt + " at " + txr_print_pos(q[1]);
 }
 th[@txr_thread.pos] = pos;
 txr_thread_current = _previous;
