@@ -27,5 +27,6 @@ var th = txr_thread_create(pg);
 if (txr_thread_resume(th) == txr_thread_status.error) {
     show_debug_message(th[txr_thread.result]);
 }
+global.long_exec_th = th;
 
 keyboard_string = "";
