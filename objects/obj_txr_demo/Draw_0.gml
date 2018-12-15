@@ -27,21 +27,21 @@ if (keyboard_check_pressed(vk_enter)) {
 }
 //
 if (keyboard_check_pressed(vk_f5)) {
-	var b = buffer_create(64, buffer_grow, 1);
-	txr_thread_write(global.long_exec_th, b);
-	buffer_save_ext(b, "long.th", 0, buffer_tell(b));
-	buffer_delete(b);
+    var b = buffer_create(64, buffer_grow, 1);
+    txr_thread_write(global.long_exec_th, b);
+    buffer_save_ext(b, "long.th", 0, buffer_tell(b));
+    buffer_delete(b);
 }
 if (keyboard_check_pressed(vk_f6) && file_exists("long.th")) {
-	// clean up the existing thread and anything related:
-	var th = global.long_exec_th;
-	with (obj_txr_demo_wait) if (thread == th) instance_destroy();
-	txr_thread_destroy(th);
-	//
-	var b = buffer_load("long.th");
-	buffer_seek(b, buffer_seek_start, 0);
-	th = txr_thread_read(b);
-	buffer_delete(b);
-	global.long_exec_th = th;
-	txr_thread_resume(th);
+    // clean up the existing thread and anything related:
+    var th = global.long_exec_th;
+    with (obj_txr_demo_wait) if (thread == th) instance_destroy();
+    txr_thread_destroy(th);
+    //
+    var b = buffer_load("long.th");
+    buffer_seek(b, buffer_seek_start, 0);
+    th = txr_thread_read(b);
+    buffer_delete(b);
+    global.long_exec_th = th;
+    txr_thread_resume(th);
 }

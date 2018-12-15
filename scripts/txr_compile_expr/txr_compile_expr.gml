@@ -138,6 +138,29 @@ switch (q[0]) {
         break;
     case txr_node._break: ds_list_add(out, [txr_action.jump, q[1], -10]); break;
     case txr_node._continue: ds_list_add(out, [txr_action.jump, q[1], -11]); break;
+    case txr_node.label:
+        var lbs = txr_compile_labels[?q[2]];
+        if (lbs == undefined) {
+            lbs = [ds_list_size(out)];
+            txr_compile_labels[?q[2]] = lbs;
+        } else lbs[@0] = ds_list_size(out);
+        txr_compile_expr(q[3]);
+        break;
+    case txr_node.jump:
+    case txr_node.jump_push:
+        var lbs = txr_compile_labels[?q[2]];
+        if (lbs == undefined) {
+            lbs = [undefined];
+            txr_compile_labels[?q[2]] = lbs;
+        }
+        var i = (q[0] == txr_node.jump ? txr_action.jump : txr_action.jump_push);
+        var jmp = [i, q[1], undefined];
+        ds_list_add(out, jmp);
+        lbs[@array_length_1d(lbs)] = jmp;
+        break;
+    case txr_node.jump_pop:
+        ds_list_add(out, [txr_action.jump_pop, q[1]]);
+        break;
     default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 }
 return false;

@@ -107,6 +107,26 @@ switch (tk[0]) {
         } until (txr_build_pos >= txr_build_len);
         txr_build_node = [txr_node.block, tk[1], nodes];
         break;
+    case txr_token.label:
+        tkn = txr_build_list[|txr_build_pos++];
+        if (tkn[0] != txr_token.ident) return txr_throw_at("Expected a label name", tkn);
+        var name = tkn[2];
+        tkn = txr_build_list[|txr_build_pos];
+        if (tkn[0] == txr_token.colon) txr_build_pos++; // allow `label some:`
+        if (txr_build_stat()) return true;
+        txr_build_node = [txr_node.label, tk[1], name, txr_build_node];
+        break;
+    case txr_token.jump:
+        tkn = txr_build_list[|txr_build_pos++];
+        if (tkn[0] != txr_token.ident) return txr_throw_at("Expected a label name", tkn);
+        txr_build_node = [txr_node.jump, tk[1], tkn[2]];
+        break;
+    case txr_token.jump_push:
+        tkn = txr_build_list[|txr_build_pos++];
+        if (tkn[0] != txr_token.ident) return txr_throw_at("Expected a label name", tkn);
+        txr_build_node = [txr_node.jump_push, tk[1], tkn[2]];
+        break;
+    case txr_token.jump_pop: txr_build_node = [txr_node.jump_pop, tk[1]]; break;
     default:
         txr_build_pos -= 1;
         if (txr_build_expr(txr_build_flag.no_ops)) return true;

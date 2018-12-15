@@ -14,6 +14,7 @@ while (pos <= len) {
         case ord(" "): case ord("\t"): case ord("\r"): break;
         case ord("\n"): line_number++; line_start = pos; break;
         case ord(";"): ds_list_add(out, [txr_token.semico, inf]); break;
+        case ord(":"): ds_list_add(out, [txr_token.colon, inf]); break;
         case ord("("): ds_list_add(out, [txr_token.par_open, inf]); break;
         case ord(")"): ds_list_add(out, [txr_token.par_close, inf]); break;
         case ord("{"): ds_list_add(out, [txr_token.cub_open, inf]); break;
@@ -155,6 +156,10 @@ while (pos <= len) {
                     case "continue": ds_list_add(out, [txr_token._continue, inf]); break;
                     case "var": ds_list_add(out, [txr_token._var, inf]); break;
                     case "argument_count": ds_list_add(out, [txr_token._argument_count, inf]); break;
+                    case "label": ds_list_add(out, [txr_token.label, inf]); break;
+                    case "jump": ds_list_add(out, [txr_token.jump, inf]); break;
+                    case "call": ds_list_add(out, [txr_token.jump_push, inf]); break;
+                    case "back": ds_list_add(out, [txr_token.jump_pop, inf]); break;
                     default:
                         if (string_length(name) > 8 && string_copy(name, 1, 8) == "argument") {
                             var sfx = string_delete(name, 1, 8); // substring(8) in non-GML

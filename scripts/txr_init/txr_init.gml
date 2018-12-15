@@ -29,6 +29,11 @@ enum txr_token {
     _var = 21,
     _argument = 22, // argument#
     _argument_count = 23,
+    label = 24,
+    jump = 25,
+    jump_push = 26,
+    jump_pop = 27,
+    colon = 28,
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -105,6 +110,10 @@ enum txr_node {
     _continue = 17,
     _argument = 18, // (index:int)
     _argument_count = 19,
+    label = 20, // (name:string)
+    jump = 21, // (name:string)
+    jump_push = 22, // (name:string)
+    jump_pop = 23, // ()
 }
 enum txr_unop {
     negate = 1, // -value
@@ -117,6 +126,8 @@ enum txr_build_flag {
 // compiler:
 #macro txr_compile_list global.txr_compile_list_val
 txr_compile_list = ds_list_create();
+#macro txr_compile_labels global.txr_compile_labels_val
+txr_compile_labels = ds_map_create();
 enum txr_action {
     number = 1, // (value): push(value)
     ident = 2, // (name): push(self[name])
@@ -134,6 +145,8 @@ enum txr_action {
     jump_if = 14, // (pos): if (pop()) pc = pos
     get_local = 15, // (name): push(locals[name])
     set_local = 16, // (name): locals[name] = pop()
+    jump_push = 17, // (pos): js.push(pc); pc = pos
+    jump_pop = 18, // (): pc = js.pop()
 }
 #macro txr_function_default global.txr_function_default_val
 txr_function_default = -1;

@@ -146,6 +146,13 @@ while (pos < len) {
                 pos = q[2];
             } else ds_stack_pop(stack);
             break;
+        case txr_action.jump_push:
+            ds_stack_push(th[txr_thread.jumpstack], pos);
+            pos = q[2];
+            break;
+        case txr_action.jump_pop:
+            pos = ds_stack_pop(th[txr_thread.jumpstack]);
+            break;
         default:
             halt = txr_sfmt("Can't run action ID %", q[0]);
             continue;

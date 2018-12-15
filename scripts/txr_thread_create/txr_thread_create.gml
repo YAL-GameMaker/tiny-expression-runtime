@@ -25,6 +25,7 @@ enum txr_thread {
     pos,
     //
     stack,
+    jumpstack,
     locals,
     //
     result, // status-specific, e.g. returned value or error text
