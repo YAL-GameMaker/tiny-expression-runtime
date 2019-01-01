@@ -7,7 +7,7 @@ var arr = th[txr_thread.actions];
 if (arr == undefined) exit;
 var _previous = txr_thread_current;
 txr_thread_current = th;
-var stack = th[txr_thread.stack];
+var stack/*:Stack*/ = th[txr_thread.stack];
 switch (th[txr_thread.status]) {
     case txr_thread_status.error:
     case txr_thread_status.finished:
@@ -152,6 +152,13 @@ while (pos < len) {
             break;
         case txr_action.jump_pop:
             pos = ds_stack_pop(th[txr_thread.jumpstack]);
+            break;
+        case txr_action._select:
+            var v = ds_stack_pop(stack);
+            var posx = q[2];
+            if (txr_is_number(v) && v >= 0 && v < array_length_1d(posx)) {
+                pos = posx[v];
+            } else pos = q[3];
             break;
         default:
             halt = txr_sfmt("Can't run action ID %", q[0]);

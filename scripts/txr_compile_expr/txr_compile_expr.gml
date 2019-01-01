@@ -1,6 +1,6 @@
 /// @param node
 var q = argument0;
-var out = txr_compile_list;
+var out/*:List*/ = txr_compile_list;
 switch (q[0]) {
     case txr_node.number: ds_list_add(out, [txr_action.number, q[1], q[2]]); break;
     case txr_node._string: ds_list_add(out, [txr_action._string, q[1], q[2]]); break;
@@ -77,6 +77,39 @@ switch (q[0]) {
         jmp_else[@2] = ds_list_size(out);
         if (txr_compile_expr(q[4])) return true;
         jmp_then[@2] = ds_list_size(out);
+        break;
+    case txr_node._select:
+        // select [l1, l2], l3
+        // l1: option 1; jump l4
+        // l2: option 2; jump l4
+        // l3: default
+        // l4: ...
+        if (txr_compile_expr(q[2])) return true;
+        // selector node:
+        var opts = q[3];
+        var optc = array_length_1d(opts);
+        var sel_jmps = array_create(optc);
+        var opt_jmps = array_create(optc);
+        var sel = [txr_action._select, q[1], sel_jmps, 0];
+        ds_list_add(out, sel);
+        // options:
+        for (var i = 0; i < optc; i++) {
+            sel_jmps[@i] = ds_list_size(out);
+            if (txr_compile_expr(opts[i])) return true;
+            var jmp = [txr_action.jump, q[1], 0];
+            opt_jmps[@i] = jmp;
+            ds_list_add(out, jmp);
+        }
+        // default;
+        sel[@3] = ds_list_size(out);
+        if (q[4] != undefined) {
+            if (txr_compile_expr(q[4])) return true;
+        }
+        // point end-of-option jumps to the end of select:
+        for (var i = 0; i < optc; i++) {
+            var jmp = opt_jmps[i];
+            jmp[@2] = ds_list_size(out);
+        }
         break;
     case txr_node.set:
         if (txr_compile_expr(q[3])) return true;

@@ -47,7 +47,7 @@ switch (tk[0]) {
             // find the function, verify argument count, and finally pack up:
             if (fn_argc >= 0 && argc != fn_argc) return txr_throw_at("`" + tk[2] + "` takes "
                 + string(fn_argc) + " argument(s), got " + string(argc), tk);
-            txr_build_node = [txr_node.call, tk[1], fn_script, args];
+            txr_build_node = [txr_node.call, tk[1], fn_script, args, fn_argc];
         } else txr_build_node = [txr_node.ident, tk[1], tk[2]];
         break;
     case txr_token._argument: txr_build_node = [txr_node._argument, tk[1], tk[2], tk[3]]; break;

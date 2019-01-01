@@ -16,6 +16,51 @@ switch (tk[0]) {
             txr_build_node = [txr_node.if_then_else, tk[1], _cond, _then, txr_build_node];
         } else txr_build_node = [txr_node.if_then, tk[1], _cond, _then];
         break;
+    case txr_token._select: // select func(...) { option <v1>: <x1>; option <v2>: <x2> }
+        if (txr_build_expr(0)) return true;
+        // verify that it's a vararg function call:
+        var _func = txr_build_node;
+        if (_func[0] != txr_node.call) return txr_throw_at("Expected a function call", _func);
+        if (_func[4] != -1) return txr_throw_at("Function does not accept extra arguments", _func);
+        var _args = _func[3];
+        var _argc = array_length_1d(_args);
+        //
+        tkn = txr_build_list[|txr_build_pos++];
+        if (tkn[0] != txr_token.cub_open) return txr_throw_at("Expected a `{`", tkn);
+        var _opts = [], _optc = 0;
+        var _default = undefined;
+        var closed = false;
+        while (txr_build_pos < txr_build_len) {
+            tkn = txr_build_list[|txr_build_pos++];
+            if (tkn[0] == txr_token.cub_close) {
+                closed = true;
+                break;
+            } else if (tkn[0] == txr_token._option || tkn[0] == txr_token._default) {
+                var nodes = [], found = 0;
+                if (tkn[0] == txr_token._option) {// option <value>: ...statements
+                    if (txr_build_expr(0)) return true;
+                    _args[@_argc++] = txr_build_node;
+                    _opts[@_optc++] = [txr_node.block, tk[1], nodes];
+                } else { // default: ...statements
+                    _default = [txr_node.block, tk[1], nodes];
+                }
+                //
+                tkn = txr_build_list[|txr_build_pos++];
+                if (tkn[0] != txr_token.colon) return txr_throw_at("Expected a `:`", tkn);
+                // now read statements until we hit `option` or `}`:
+                while (txr_build_pos < txr_build_len) {
+                    tkn = txr_build_list[|txr_build_pos];
+                    if (tkn[0] == txr_token.cub_close
+                        || tkn[0] == txr_token._option
+                        || tkn[0] == txr_token._default
+                    ) break;
+                    if (txr_build_stat()) return true;
+                    nodes[@found++] = txr_build_node;
+                }
+            } else return txr_throw_at("Expected an `option` or `}`", tkn);
+        }
+        txr_build_node = [txr_node._select, tk[1], _func, _opts, _default];
+        break;
     case txr_token.cub_open: // { ... statements }
         var nodes = [], found = 0, closed = false;
         while (txr_build_pos < txr_build_len) {
@@ -26,7 +71,7 @@ switch (tk[0]) {
                 break;
             }
             if (txr_build_stat()) return true;
-            nodes[found++] = txr_build_node;
+            nodes[@found++] = txr_build_node;
         }
         if (!closed) return txr_throw_at("Unclosed {} starting", tk);
         txr_build_node = [txr_node.block, tk[1], nodes];

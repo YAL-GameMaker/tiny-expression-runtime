@@ -287,6 +287,14 @@
             }
         },
         {
+            "Key": "a11eea81-83df-48b8-991b-15db378e5474",
+            "Value": {
+                "id": "de473d23-fa23-4638-9fc9-804df24025c5",
+                "resourcePath": "objects\\obj_txr_demo_dialog\\obj_txr_demo_dialog.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "a128950b-5063-4876-b4a6-b99dbd2ea6d1",
             "Value": {
                 "id": "56f2291a-2fce-4cc9-8a1c-c3ffcd78451d",
@@ -535,6 +543,14 @@
             }
         },
         {
+            "Key": "e4900049-fa7d-ce1d-9c67-cfcfed6f15ee",
+            "Value": {
+                "id": "734a497b-d902-4ed4-1c48-6d558b664354",
+                "resourcePath": "scripts\\scr_txr_demo_dlg\\scr_txr_demo_dlg.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "e6e32184-0f76-45c8-9fe9-7b6c0c1a1471",
             "Value": {
                 "id": "816e78f0-6537-41e2-8e82-caaf2ab74429",
@@ -641,7 +657,8 @@
         "e063477f-063d-4bfd-848d-e215782db68c",
         "85c1a77f-773a-5113-dc68-5dda2eeecce9",
         "f535950d-5891-445a-9107-d42c13d13d1a",
-        "abb57acd-4d53-4f8d-9d03-73af66846d52"
+        "abb57acd-4d53-4f8d-9d03-73af66846d52",
+        "e4900049-fa7d-ce1d-9c67-cfcfed6f15ee"
     ],
     "tutorial": ""
 }

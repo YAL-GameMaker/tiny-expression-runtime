@@ -26,6 +26,8 @@ if (keyboard_check_pressed(vk_enter)) {
     }
 }
 //
+/*
+// This is how you save/load, but don't forget to save your associated objects too!
 if (keyboard_check_pressed(vk_f5)) {
     var b = buffer_create(64, buffer_grow, 1);
     txr_thread_write(global.long_exec_th, b);
@@ -44,4 +46,4 @@ if (keyboard_check_pressed(vk_f6) && file_exists("long.th")) {
     buffer_delete(b);
     global.long_exec_th = th;
     txr_thread_resume(th);
-}
+}*/

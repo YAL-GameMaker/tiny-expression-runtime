@@ -34,6 +34,9 @@ enum txr_token {
     jump_push = 26,
     jump_pop = 27,
     colon = 28,
+    _select = 29,
+    _option = 30,
+    _default = 31,
 }
 enum txr_op {
     mul  = 0x01, // *
@@ -114,6 +117,7 @@ enum txr_node {
     jump = 21, // (name:string)
     jump_push = 22, // (name:string)
     jump_pop = 23, // ()
+    _select = 24, // (call_node, nodes, ?default_node)
 }
 enum txr_unop {
     negate = 1, // -value
@@ -147,6 +151,7 @@ enum txr_action {
     set_local = 16, // (name): locals[name] = pop()
     jump_push = 17, // (pos): js.push(pc); pc = pos
     jump_pop = 18, // (): pc = js.pop()
+    _select = 19, // (pos_array, def_pos): the simplest jumptable
 }
 #macro txr_function_default global.txr_function_default_val
 txr_function_default = -1;

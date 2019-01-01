@@ -160,6 +160,9 @@ while (pos <= len) {
                     case "jump": ds_list_add(out, [txr_token.jump, inf]); break;
                     case "call": ds_list_add(out, [txr_token.jump_push, inf]); break;
                     case "back": ds_list_add(out, [txr_token.jump_pop, inf]); break;
+                    case "select": ds_list_add(out, [txr_token._select, inf]); break;
+                    case "option": ds_list_add(out, [txr_token._option, inf]); break;
+                    case "default": ds_list_add(out, [txr_token._default, inf]); break;
                     default:
                         if (string_length(name) > 8 && string_copy(name, 1, 8) == "argument") {
                             var sfx = string_delete(name, 1, 8); // substring(8) in non-GML
