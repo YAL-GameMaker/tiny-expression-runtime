@@ -6,6 +6,7 @@ var th/*:txr_thread*/ = array_create(txr_thread.sizeof);
 th[@txr_thread.actions] = arr;
 th[@txr_thread.pos] = 0;
 th[@txr_thread.stack] = ds_stack_create();
+th[@txr_thread.jumpstack] = ds_stack_create();
 var locals = ds_map_create();
 if (argd != undefined) {
     if (is_array(argd)) { // an array of arguments
