@@ -144,6 +144,8 @@ while (pos <= len) {
                 }
                 var name = string_copy(str, start, pos - start);
                 switch (name) {
+                    case "true": ds_list_add(out, [txr_token.number, inf,true]); break;
+                    case "false": ds_list_add(out, [txr_token.number, inf,false]); break;
                     case "mod": ds_list_add(out, [txr_token.op, inf, txr_op.fmod]); break;
                     case "div": ds_list_add(out, [txr_token.op, inf, txr_op.idiv]); break;
                     case "if": ds_list_add(out, [txr_token._if, inf]); break;

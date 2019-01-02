@@ -110,6 +110,14 @@ while (pos < len) {
                 case 3: v = script_execute(q[2], args[|0], args[|1], args[|2]); break;
                 case 4: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3]); break;
                 case 5: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4]); break;
+                case 6: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5]); break;
+                case 7: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5],args[|6]); break;
+                case 8: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5],args[|6],args[|7]); break;
+                case 9: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5],args[|6],args[|7], args[|9]); break;
+                case 10: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5],args[|6],args[|7], args[|9], args[|10]); break;
+                case 11: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5],args[|6],args[|7], args[|9], args[|10], args[|11]); break;
+                case 12: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5],args[|6],args[|7], args[|9], args[|10], args[|11], args[|12]); break;
+                case 13: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5],args[|6],args[|7], args[|9], args[|10], args[|11], args[|12], args[|13]); break;
                 // and so on
                 default:
                     halt = txr_sfmt("Too many arguments (%)", q[3]);
