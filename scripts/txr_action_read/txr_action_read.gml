@@ -30,6 +30,11 @@ switch (t) {
     case txr_action.set_local:
         return [t, p, buffer_read(b, buffer_string)];
         break;
+    case txr_action._select:
+        var n = buffer_read(b, buffer_u32);
+        var w = array_create(n);
+        for (var i = 0; i < n; i++) w[i] = buffer_read(b, buffer_s32);
+        return [t, p, w, buffer_read(b, buffer_s32)];
     default:
         show_error(txr_sfmt("Please add a read for action type % to txr_action_read!", t), 1);
 }

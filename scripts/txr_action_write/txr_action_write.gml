@@ -30,6 +30,13 @@ switch (a[0]) {
     case txr_action.set_local:
         buffer_write(b, buffer_string, a[2]);
         break;
+    case txr_action._select:
+        var w = a[2];
+        var n = array_length_1d(w);
+        buffer_write(b, buffer_u32, n);
+        for (var i = 0; i < n; i++) buffer_write(b, buffer_s32, w[i]);
+        buffer_write(b, buffer_s32, a[3]);
+        break;
     default:
         show_error(txr_sfmt("Please add a writer for action type % to txr_action_write!", a[0]), 1);
 }
