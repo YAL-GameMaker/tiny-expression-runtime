@@ -5,9 +5,7 @@ switch (q[0]) {
     case txr_node.number: ds_list_add(out, [txr_action.number, q[1], q[2]]); break;
     case txr_node._string: ds_list_add(out, [txr_action._string, q[1], q[2]]); break;
     case txr_node.ident:
-        if (ds_map_exists(txr_build_locals, q[2])) {
-            ds_list_add(out, [txr_action.get_local, q[1], q[2]]);
-        } else ds_list_add(out, [txr_action.ident, q[1], q[2]]);
+        if (txr_compile_getter(q)) return true;
         break;
     case txr_node._argument: ds_list_add(out, [txr_action.get_local, q[1], q[3]]); break;
     case txr_node._argument_count: ds_list_add(out, [txr_action.get_local, q[1], "argument_count"]); break;
@@ -112,16 +110,36 @@ switch (q[0]) {
         }
         break;
     case txr_node.set:
-        if (txr_compile_expr(q[3])) return true;
-        var _expr = q[2];
-        switch (_expr[0]) {
-            case txr_node.ident:
-                if (ds_map_exists(txr_build_locals, _expr[2])) {
-                    ds_list_add(out, [txr_action.set_local, q[1], _expr[2]]);
-                } else ds_list_add(out, [txr_action.set_ident, q[1], _expr[2]]);
-                break;
-            default: return txr_throw_at("Expression is not settable", _expr);
+        var _expr = q[3];
+        if (q[2] == txr_op.set) {
+            if (txr_compile_expr(q[4])) return true;
+        } else {
+            // a %= b -> get a; get b; fmod; set a
+            if (txr_compile_getter(q[3])) return true;
+            if (txr_compile_expr(q[4])) return true;
+            ds_list_add(out, [txr_action.binop, q[1], q[2]]);
         }
+        if (txr_compile_setter(q[3])) return true;
+        break;
+    case txr_node.adjfix: // a++; -> get a; push 1; add; set a
+        if (txr_compile_getter(q[2])) return true;
+        ds_list_add(out, [txr_action.number, q[1], q[3]]);
+        ds_list_add(out, [txr_action.binop, q[1], txr_op.add]);
+        if (txr_compile_setter(q[2])) return true;
+        break;
+    case txr_node.prefix: // a++; -> get a; push 1; add; dup; set a
+        if (txr_compile_getter(q[2])) return true;
+        ds_list_add(out, [txr_action.number, q[1], q[3]]);
+        ds_list_add(out, [txr_action.binop, q[1], txr_op.add]);
+        ds_list_add(out, [txr_action.dup, q[1]]);
+        if (txr_compile_setter(q[2])) return true;
+        break;
+    case txr_node.postfix:  // a++; -> get a; dup; push 1; add; set a
+        if (txr_compile_getter(q[2])) return true;
+        ds_list_add(out, [txr_action.dup, q[1]]);
+        ds_list_add(out, [txr_action.number, q[1], q[3]]);
+        ds_list_add(out, [txr_action.binop, q[1], txr_op.add]);
+        if (txr_compile_setter(q[2])) return true;
         break;
     case txr_node._while:
         // l1: {cont} <condition> jump_unless l2

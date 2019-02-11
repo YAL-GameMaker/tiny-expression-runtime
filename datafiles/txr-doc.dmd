@@ -1,0 +1,82 @@
+```set template default.html```
+```gmlapi fnames2```
+```set title TXR cheatsheet```
+```set intro
+This is a "cheat sheet" for Tiny Expression Runtime by [YellowAfterlife](https://yal.cc).
+Project files can be downloaded from [itch.io](https://yellowafterlife.itch.io/gamemaker-interpreters) \
+	or [GM Marketplace](https://marketplace.yoyogames.com/assets/7814/_).
+For questions/inquiries, use [forums](https://yellowafterlife.itch.io/gamemaker-live/community) \
+or [send me an email](//yellowafterlife@hotmail.com).
+An up-to-date version of this document can always be found [online](https://yal.cc/r/19/txr).
+
+For practical reasons, this document covers the most current version of TXR.
+```
+```set mainclass boxtt```
+
+#[TXR syntax](syntax) {
+	#[Expressions](expressions) {
+		TXR supports various primitive expressions: --{
+		--	Numbers: `4`, `4.5`, and `-4` are all good.
+			No hexadecimals at this time.
+		--	Strings: `"hello"` or `'hello'`.
+			GMS1-style (no escape characters)
+		--	Constants: `true`, `false`
+			You can add custom ones in `txr_parse`.
+		--	Parentheses: `(...)`
+			Overwhelmingly optional.
+		}
+	}
+	#[Operators](operators) {
+		TXR supports a verity of common operators.
+		
+		Binary operators, grouped by priority: --{
+		--	`*`, `/`, `%`, `div`
+		--	`+`, `-` (ECMAScript-style `"a" + 4` -> `"a4"` is allowed)
+		--	`<<`, `>>`
+		--	`&`, `|`, `^`
+		--	`==`, `!=`, `<`, `>`, `<=`, `>=`
+		--	`&&` (ES-style `(4 && 5)` -> `5` is allowed)
+		--	`||` (ES-style `(4 || 5)` -> `4` is allowed)
+		}
+		Short circuiting is supported for both `&&` and `||`.
+		
+		Unary operators: --{
+		--	`!` (unary NOT)
+		--	`-` (negation)
+		--	`~` (bit inversion)
+		--	`+` (does nothing, but lets you do `a = +4`)
+		}
+	}
+	#[Statements](statements) {
+		Starting with part 2, TXR allows for statements.
+		
+		Statements can be: --{
+		--	[Assignments](assignments)
+		--	[Variable declarations](variables)
+		--	Bracketed statements (`{...}`)
+		--	[Branching](branching)
+		--	Function calls
+		}
+	}
+	#[Variables](variables) {
+		You may declare local variables via GML-style `var` syntax
+		```
+		var i;
+		var k = 0;
+		var z = true, s = "hi";
+		```
+		Access to anything that is not a local variable will by default map to calling instance's \
+		variables. You may customize this in `txr_thread_resume` (`ident`, `set_ident`).
+	}
+	#[Assignments](assignments) {
+		You may assign variables via the conventional `name = value` syntax.
+		
+		Assignment operators (`+=`, etc.) are currently not supported.
+	}
+	#[Branching](branching) {
+		TXR supports a number of common branching statements:
+		#[if condition statement]() { }
+		#[if condition statement else else-statement] { }
+	}
+	-- todo --
+}

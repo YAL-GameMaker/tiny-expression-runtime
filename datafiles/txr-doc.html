@@ -1,0 +1,489 @@
+<html><head>
+<meta charset="UTF-8">
+<title>TXR cheatsheet</title>
+<meta name="viewport" content="width=device-width" />
+<meta name="livenode" content="#doc" />
+<meta property="theme-color" content="#FFF037" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="en_us" />
+<meta property="og:site_name" content="YellowAfterlife" />
+<meta property="og:title" content="TXR cheatsheet" />
+<meta property="og:url" content="<!--%[url]-->" />
+<meta property="og:description" content="<!--%[desc]-->" />
+<script type="text/javascript">
+if (document.location.host == "yal.cc" && location.protocol == "http:") {
+	document.location.protocol = "https:";
+}
+</script>
+<style type="text/css">
+body, #doc tt {
+	font: 15px 'Open Sans', sans-serif;
+	line-height: 1.35;
+}
+body {
+	margin: 0;
+}
+.main {
+	width: 100%;
+	min-height: 100%;
+	min-height: 100vh;
+	background-color: #f9f9f9;
+}
+.page {
+	max-width: 656px;
+	background: #ffffff;
+	margin: 0 auto;
+	padding: 8px;
+	box-shadow: 0 0 0 2px #eee;
+	min-height: 100%;
+	min-height: 100vh;
+	box-sizing: border-box;
+}
+.page > p:first-child {
+	margin-top: 0;
+}
+
+#doc, #doc ul, #doc ol {
+	padding-left: 0;
+	margin: 0;
+}
+#doc div ul, #doc div ol {
+	padding-left: 20px;
+}
+#doc div ul li {
+	list-style: disc;
+	list-style-image: url('data:image/svg+xml;base256,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="1em" viewBox="0 0 20px 1em"><circle cx="17px" cy="0.675em" r="2px"/></svg>'); 
+}
+
+#doc .header {
+	display: block;
+	outline: none;
+	text-decoration: none;
+	margin: 0;
+	font-weight: 700;
+	font-size: 100%;
+	color: #458;
+	border-left: 2px solid #f3f3f3;/* #f9f9f9*/
+	padding-left: 4px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+	cursor: pointer;
+}
+#doc .header::before {
+	display: inline-block;
+	content: "+";
+	font: 12px monospace;
+	border: 1px solid #458;
+	line-height: 11px;
+	height: 11px;
+	width: 11px;
+	text-align: center;
+	border-radius: 50%;
+	margin-right: 4px;
+	vertical-align: middle;
+	position: relative;
+	top: -1px;
+}
+#doc .item.open > .header::before {
+	content: "-";
+}
+#doc .item.empty > .header::before {
+	content: /*"·"*/" ";
+}
+#doc .header:hover {
+	border-left-color: #f3f3f3;
+	background: #f3f3f3;
+}
+#doc .header .ret-arrow {
+	font-weight: normal;
+	margin: 0 0.1em;
+}
+
+#doc a.broken {
+	color: red;
+}
+#doc p {
+	margin: 0;
+}
+#doc p + p, #doc p.pad {
+	margin-top: 0.5em;
+}
+#doc img {
+	max-width: 100%;
+}
+#doc h3 {
+	margin: 0.25em 0;
+	font-size: 125%;
+	font-weight: normal;
+	border-bottom: 1px solid #ccc;
+}
+
+#doc .content, #doc ul {
+	padding-left: 20px;
+	border-left: 2px solid #f3f3f3;
+}
+#doc tt {
+	font-weight: bold;
+}
+#doc pre {
+	font-family: Consolas, Dejavu Sans Mono, Segoe UI Mono, Ubuntu Mono, Lucida Console, monospace;
+	font-size: 9pt;
+	line-height: 1.25;
+	background: white;
+	padding: 4px 2px 4px 10px;
+	margin: 0;
+	tab-size: 4;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+#doc pre a {
+	text-decoration: none;
+}
+#doc pre a.uf {
+	background-color: #f7f0ff;
+}
+#doc pre a.kw {
+	background-color: #f0f7ff;
+}
+#doc pre a.sf, #doc pre a.sv {
+	background-color: #fff3f0;
+}
+#doc pre a:hover {
+	text-decoration: underline;
+}
+#doc abbr[title] {
+	text-decoration: underline;
+	text-decoration-color: #bbb;
+	text-decoration-style: double;
+}
+/* delay display until load */
+#doc[ready] .item:not(.open) > .content {
+	display: none;
+}
+</style>
+<style type="text/css" id="md_gml">
+/* GameMakerLanguage */
+pre.gmlmd .md { color: #7A81A9 } /* #define */
+pre.gmlmd .kw { color: #008; font-weight: bold } /* keyword */
+pre.gmlmd .co { color: #080 } /* comment */
+pre.gmlmd .nu { color: #00f } /* number */
+pre.gmlmd .nx { color: #00f } /* hex */
+pre.gmlmd .st { color: #00f } /* string */
+pre.gmlmd .ts { color: #00f } /* template string */
+pre.gmlmd .op { color: #000 } /* operator */
+pre.gmlmd .cb { color: #008; font-weight: bold } /* curly brace */
+pre.gmlmd .sv { color: #800 } /* std func */
+pre.gmlmd .sf { color: #800 } /* std var */
+pre.gmlmd .ri { color: #0078aa } /* assets */
+pre.gmlmd .uf { color: #808 } /* user func */
+pre.gmlmd .uv { color: #000 } /* user var */
+pre.gmlmd .lv { color: #648 } /* local var */
+pre.gmlmd .fd { color: #804 } /* field */
+</style>
+<style type="text/css" id="night_css">
+#night { display: none }
+label[for="night"] {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+#night:checked + .main {
+	background-color: #405070;
+}
+#night:checked + .main .page {
+	background-color: #1A202D;
+	box-shadow: 0 0 0 2px #9bccff63;
+	color: white;
+}
+#night:checked + .main a,
+#night:checked + .main a:visited,
+#night:checked + .main #doc .header,
+#night:checked + .main label[for="night"] {
+	color: #9DEC76;
+}
+#night:checked + .main #doc .header:before,
+#night:checked + .main #doc h3 {
+	border-color: #9DEC76
+}
+#night:checked + .main #doc .header,
+#night:checked + .main #doc .header:hover,
+#night:checked + .main #doc .content,
+#night:checked + .main #doc ul {
+	border-left-color: rgba(205,225,255,0.1);
+}
+#night:checked + .main #doc .header:hover,
+#night:checked + .main #doc .asset:hover {
+	background: rgba(205,225,255,0.1);
+}
+#night:checked + .main div ul li {
+	list-style-image: url('data:image/svg+xml;base256,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="1em" viewBox="0 0 20px 1em"><circle cx="17px" cy="0.675em" r="2px" fill="white"/></svg>'); 
+}
+#night:checked + .main pre {
+	color: #cccccc;
+	background: #000000;
+	border: 1px solid #3E4757;
+}
+#night:checked + .main pre.gmlmd .op { color: #CCCCCC }
+#night:checked + .main pre.gmlmd .co { color: #5B995B }
+#night:checked + .main pre.gmlmd .kw { color: #FFB871 }
+#night:checked + .main pre.gmlmd .md { color: #FFB871 }
+#night:checked + .main pre.gmlmd .cb { color: #FFB871 }
+#night:checked + .main pre.gmlmd .sf { color: #FFB871 }
+#night:checked + .main pre.gmlmd .uf { color: #FFB871 }
+#night:checked + .main pre.gmlmd .nu { color: #FF8080 }
+#night:checked + .main pre.gmlmd .st { color: #FCF320 }
+#night:checked + .main pre.gmlmd .ts { color: #FF8080 }
+#night:checked + .main pre.gmlmd .sv { color: #FF8080 }
+#night:checked + .main pre.gmlmd .gv { color: #FF80FF }
+#night:checked + .main pre.gmlmd .ri { color: #FF8080 }
+#night:checked + .main pre.gmlmd .lv { color: #FFF899 }
+#night:checked + .main pre.gmlmd .uv { color: #B2B1FF }
+#night:checked + .main pre.gmlmd .fd { color: #B2B1FF }
+
+#night:checked + .main pre.gmlmd a.uf {
+	background-color: #431;
+}
+#night:checked + .main pre.gmlmd a.kw {
+	background-color: #431;
+}
+#night:checked + .main pre.gmlmd a.sf,
+#night:checked + .main pre.gmlmd a.sv {
+	background-color: #431;
+}
+</style>
+<style>
+.main.boxtt #doc tt {
+	display: inline-block;
+	background: #FFFBE4;
+	font-family: Consolas, Ubuntu Mono, Dejavu Sans Mono, Lucida Console, monospace;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 16px;
+	padding: 0 2px;
+	border: 1px solid #E6E0C4;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	max-width: 100%;
+	word-break: break-word;
+}
+#night:checked + .main.boxtt #doc tt {
+	background-color: #000;
+	border-color: #5b7c9f;
+	color: white;
+}
+</style>
+<noscript><style>
+#doc .header::before {
+	display: none;
+}
+#doc .header:hover {
+	border-left-color: #f3f3f3;
+	background: inherit;
+}
+#doc { display: inherit }
+#doc .item:not(.open) > .content {
+	display: inherit;
+}
+</style></noscript>
+</head><body>
+<input type="checkbox" id="night" checked/>
+<div class="main boxtt">
+<script type="text/javascript">
+(function() {
+	var night = document.getElementById("night");
+	var path = "docmd night mode";
+	var ls = window.localStorage;
+	if (ls) {
+		night.checked = ls.getItem(path) == "true";
+		night.onchange = function(_) {
+			ls.setItem(path, "" + night.checked);
+		};
+	}
+})();
+</script>
+<div class="page">
+<p>This is a "cheat sheet" for Tiny Expression Runtime by <a href="https://yal.cc">YellowAfterlife</a>.
+Project files can be downloaded from <a href="https://yellowafterlife.itch.io/gamemaker-interpreters">itch.io</a> <br/>or <a href="https://marketplace.yoyogames.com/assets/7814/_">GM Marketplace</a>.
+For questions/inquiries, use <a href="https://yellowafterlife.itch.io/gamemaker-live/community">forums</a> <br/>or <a href="//yellowafterlife@hotmail.com">send me an email</a>.
+An up-to-date version of this document can always be found <a href="https://yal.cc/r/19/txr">online</a>.
+
+</p><p>For practical reasons, this document covers the most current version of TXR.</p><p>
+Click on sections to expand/collapse them.<br>
+Quick display controls: <a href="#" onclick="opt_none(); return false">Categories</a>
+&middot; <a href="#" onclick="opt_list(); return false">Sections</a>
+&middot; <a href="#" onclick="opt_all(); return false">Everything</a>
+&middot; <label for="night">Toggle night mode</label><br/>
+</p><div id="doc">
+<!--<doc--><div class="item"><a class="header" id="syntax" href="#syntax" title="(permalink)">TXR syntax</a><div class="content"><p>
+	<div class="item"><a class="header" id="expressions" href="#expressions" title="(permalink)">Expressions</a><div class="content"><p>
+		TXR supports various primitive expressions: </p><ul>
+		<li>	Numbers: <tt>4</tt>, <tt>4.5</tt>, and <tt>-4</tt> are all good.
+			No hexadecimals at this time.
+		</li><li>	Strings: <tt>"hello"</tt> or <tt>'hello'</tt>.
+			GMS1-style (no escape characters)
+		</li><li>	Constants: <tt>true</tt>, <tt>false</tt>
+			You can add custom ones in <tt>txr_parse</tt>.
+		</li><li>	Parentheses: <tt>(...)</tt>
+			Overwhelmingly optional.
+		</li></ul></div></div>
+	<div class="item"><a class="header" id="operators" href="#operators" title="(permalink)">Operators</a><div class="content"><p>
+		TXR supports a verity of common operators.
+		</p><p>
+		Binary operators, grouped by priority: </p><ul>
+		<li>	<tt>*</tt>, <tt>/</tt>, <tt>%</tt>, <tt>div</tt>
+		</li><li>	<tt>+</tt>, <tt>-</tt> (ECMAScript-style <tt>"a" + 4</tt> -&gt; <tt>"a4"</tt> is allowed)
+		</li><li>	<tt>&lt;&lt;</tt>, <tt>&gt;&gt;</tt>
+		</li><li>	<tt>&amp;</tt>, <tt>|</tt>, <tt>^</tt>
+		</li><li>	<tt>==</tt>, <tt>!=</tt>, <tt>&lt;</tt>, <tt>&gt;</tt>, <tt>&lt;=</tt>, <tt>&gt;=</tt>
+		</li><li>	<tt>&amp;&amp;</tt> (ES-style <tt>(4 &amp;&amp; 5)</tt> -&gt; <tt>5</tt> is allowed)
+		</li><li>	<tt>||</tt> (ES-style <tt>(4 || 5)</tt> -&gt; <tt>4</tt> is allowed)
+		</li></ul><p>
+		Short circuiting is supported for both <tt>&amp;&amp;</tt> and <tt>||</tt>.
+		</p><p>
+		Unary operators: </p><ul>
+		<li>	<tt>!</tt> (unary NOT)
+		</li><li>	<tt>-</tt> (negation)
+		</li><li>	<tt>~</tt> (bit inversion)
+		</li><li>	<tt>+</tt> (does nothing, but lets you do <tt>a = +4</tt>)
+		</li></ul></div></div>
+	<div class="item"><a class="header" id="statements" href="#statements" title="(permalink)">Statements</a><div class="content"><p>
+		Starting with part 2, TXR allows for statements.
+		</p><p>
+		Statements can be: </p><ul>
+		<li>	<a href="#assignments">Assignments</a>
+		</li><li>	<a href="#variables">Variable declarations</a>
+		</li><li>	Bracketed statements (<tt>{...}</tt>)
+		</li><li>	<a href="#branching">Branching</a>
+		</li><li>	Function calls
+		</li></ul></div></div>
+	<div class="item"><a class="header" id="variables" href="#variables" title="(permalink)">Variables</a><div class="content"><p>
+		You may declare local variables via GML-style <tt>var</tt> syntax
+		</p><pre class="gmlmd">
+<span class="kw">var</span> <span class="lv">i</span><span class="op">;</span>
+<span class="kw">var</span> <span class="lv">k</span> <span class="op">=</span> <span class="nu">0</span><span class="op">;</span>
+<span class="kw">var</span> <span class="lv">z</span> <span class="op">=</span> <span class="sv">true</span><span class="op">,</span> <span class="lv">s</span> <span class="op">=</span> <span class="st">"hi"</span><span class="op">;</span>
+</pre><p>Access to anything that is not a local variable will by default map to calling instance's <br/>variables. You may customize this in <tt>txr_thread_resume</tt> (<tt>ident</tt>, <tt>set_ident</tt>).
+	</p></div></div>
+	<div class="item"><a class="header" id="assignments" href="#assignments" title="(permalink)">Assignments</a><div class="content"><p>
+		You may assign variables via the conventional <tt>name = value</tt> syntax.
+		</p><p>
+		Assignment operators (<tt>+=</tt>, etc.) are currently not supported.
+	</p></div></div>
+	<div class="item"><a class="header" id="branching" href="#branching" title="(permalink)">Branching</a><div class="content"><p>
+		TXR supports a number of common branching statements:
+		<div class="item empty"><a class="header" id="if-condition-statement" href="#if-condition-statement" title="(permalink)">if condition statement</a></div>
+		<div class="item empty"><span class="header">if condition statement else else-statement</span></div>
+	</p></div></div>
+	-- todo --
+</p></div></div><!--doc>-->
+</div></div></div>
+<script>(function() {
+var doc, headers;
+//
+var path = "TXR cheatsheet";
+var state = null;
+if (window.localStorage && JSON.parse) {
+	state = window.localStorage.getItem(path);
+	state = state ? JSON.parse(state) : { };
+	if (state == null) state = { };
+}
+var isLocal = (location.host.indexOf("localhost") == 0);
+//
+function h3bind(h3) {
+	var node = h3.parentNode;
+	var snip = node.children[1];
+	var id = h3.id || h3.textContent;
+	h3.snip = snip;
+	h3.doc_set = function(z) {
+		if (z) node.classList.add("open"); else node.classList.remove("open");
+		if (state) {
+			state[id] = z;
+			window.localStorage.setItem(path, JSON.stringify(state));
+		}
+	}
+	h3.doc_hide = function() {
+		this.doc_set(false);
+	}
+	h3.doc_show = function() {
+		this.doc_set(true);
+	}
+	h3.onclick = function(_) {
+		var seen = !node.classList.contains("open");
+		h3.doc_set(seen);
+		return false;
+	};
+}
+function getHashFunc(id) {
+	var node = document.getElementById(id);
+	if (node == null) return null;
+	return function(e) {
+		while (node && node != doc) {
+			if (node.classList.contains("item")) {
+				node.classList.add("open");
+			}
+			node = node.parentElement;
+		}
+	};
+}
+// Display helpers:
+window.opt_none = function() {
+	for (var li = 0; li < headers.length; li++) headers[li].doc_hide();
+};
+window.opt_list = function() {
+	for (var li = 0; li < headers.length; li++) {
+		var h3 = headers[li];
+		if (h3.parentNode.parentNode != doc) {
+			h3.doc_hide();
+		} else h3.doc_show();
+	}
+};
+window.opt_all = function() {
+	for (var li = 0; li < headers.length; li++) headers[li].doc_show();
+};
+window.live_post = function() {
+	doc = document.getElementById("doc");
+	headers = doc.getElementsByClassName("header");
+	//
+	for (var i = 0; i < headers.length; i++) h3bind(headers[i]);
+	// Clicks in document expand the related section:
+	var anchors = doc.getElementsByTagName("a");
+	for (var i = 0; i < anchors.length; i++) {
+		var anchor = anchors[i];
+		if (anchor.classList.contains("header")) continue;
+		var href = anchor.getAttribute("href");
+		if (href[0] == "#") {
+			var fn = getHashFunc(href.substr(1));
+			if (!fn) {
+				anchor.classList.add("broken");
+				anchor.title = "(section missing)";
+			} else anchor.addEventListener("click", fn);
+		}
+	}
+	//
+	for (var li = 0; li < headers.length; li++) {
+		var h3 = headers[li];
+		var val = state ? state[h3.id || h3.textContent] : null;
+		if (val == null) val = isLocal || h3.parentNode.parentNode == doc;
+		if (val) h3.doc_show(); else h3.doc_hide();
+	}
+};
+window.live_post();
+//
+(function() {
+	var hash = document.location.hash;
+	if (hash) {
+		var _hash = hash.substr(1);
+		getHashFunc(_hash)();
+		setTimeout(function() {
+			document.location.hash = hash + " ";
+			setTimeout(function() {
+				document.location.hash = hash;
+			}, 100);
+		}, 100);
+	}
+})();
+//
+doc.setAttribute("ready", "");
+})();
+</script>
+</body></html>

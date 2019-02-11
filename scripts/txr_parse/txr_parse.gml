@@ -20,11 +20,46 @@ while (pos <= len) {
         case ord("{"): ds_list_add(out, [txr_token.cub_open, inf]); break;
         case ord("}"): ds_list_add(out, [txr_token.cub_close, inf]); break;
         case ord(","): ds_list_add(out, [txr_token.comma, inf]); break;
-        case ord("+"): ds_list_add(out, [txr_token.op, inf, txr_op.add]); break;
-        case ord("-"): ds_list_add(out, [txr_token.op, inf, txr_op.sub]); break;
-        case ord("*"): ds_list_add(out, [txr_token.op, inf, txr_op.mul]); break;
+        case ord("+"):
+            switch (string_ord_at(str, pos)) {
+                case ord("="): // +=
+                    pos += 1;
+                    ds_list_add(out, [txr_token.set, inf, txr_op.add]);
+                    break;
+                case ord("+"): // ++
+                    pos += 1;
+                    ds_list_add(out, [txr_token.adjfix, inf, 1]);
+                    break;
+                default:
+                   ds_list_add(out, [txr_token.op, inf, txr_op.add]);
+            }
+            break;
+        case ord("-"):
+            switch (string_ord_at(str, pos)) {
+                case ord("="): // -=
+                    pos += 1;
+                    ds_list_add(out, [txr_token.set, inf, txr_op.sub]);
+                    break;
+                case ord("-"): // --
+                    pos += 1;
+                    ds_list_add(out, [txr_token.adjfix, inf, -1]);
+                    break;
+                default:
+                   ds_list_add(out, [txr_token.op, inf, txr_op.sub]);
+            }
+            break;
+        case ord("*"):
+            if (string_ord_at(str, pos) == ord("=")) { // *=
+                pos += 1;
+                ds_list_add(out, [txr_token.set, inf, txr_op.mul]);
+            } else ds_list_add(out, [txr_token.op, inf, txr_op.mul]);
+            break;
         case ord("/"):
             switch (string_ord_at(str, pos)) {
+                case ord("="): // /=
+                    pos += 1;
+                    ds_list_add(out, [txr_token.set, inf, txr_op.fdiv]);
+                    break;
                 case ord("/"): // line comment
                     while (pos <= len) {
                         char = string_ord_at(str, pos);
@@ -46,7 +81,12 @@ while (pos <= len) {
                 default: ds_list_add(out, [txr_token.op, inf, txr_op.fdiv]);
             }
             break;
-        case ord("%"): ds_list_add(out, [txr_token.op, inf, txr_op.fmod]); break;
+        case ord("%"):
+            if (string_ord_at(str, pos) == ord("=")) { // %=
+                pos += 1;
+                ds_list_add(out, [txr_token.set, inf, txr_op.fmod]);
+            } else ds_list_add(out, [txr_token.op, inf, txr_op.fmod]);
+            break;
         case ord("!"):
             if (string_ord_at(str, pos) == ord("=")) { // !=
                 pos += 1;
@@ -57,7 +97,7 @@ while (pos <= len) {
             if (string_ord_at(str, pos) == ord("=")) { // ==
                 pos += 1;
                 ds_list_add(out, [txr_token.op, inf, txr_op.eq]);
-            } else ds_list_add(out, [txr_token.set, inf]);
+            } else ds_list_add(out, [txr_token.set, inf, txr_op.set]);
             break;
         case ord("<"):
             switch (string_ord_at(str, pos)) {
@@ -99,18 +139,39 @@ while (pos <= len) {
             } else return txr_throw("Unclosed string starting", txr_print_pos(inf));
             break;
         case ord("|"):
-            if (string_ord_at(str, pos) == ord("|")) { // ||
-                pos += 1;
-                ds_list_add(out, [txr_token.op, inf, txr_op.bor]);
-            } else ds_list_add(out, [txr_token.op, inf, txr_op.ior]);
+            switch (string_ord_at(str, pos)) {
+                case ord("|"): // ||
+                    pos += 1;
+                    ds_list_add(out, [txr_token.op, inf, txr_op.bor]);
+                    break;
+                case ord("="): // |=
+                    pos += 1;
+                    ds_list_add(out, [txr_token.set, inf, txr_op.ior]);
+                    break;
+                default:
+                    ds_list_add(out, [txr_token.op, inf, txr_op.ior]);
+            }
             break;
         case ord("&"):
-            if (string_ord_at(str, pos) == ord("&")) { // &&
-                pos += 1;
-                ds_list_add(out, [txr_token.op, inf, txr_op.band]);
-            } else ds_list_add(out, [txr_token.op, inf, txr_op.iand]);
+            switch (string_ord_at(str, pos)) {
+                case ord("&"): // &&
+                    pos += 1;
+                    ds_list_add(out, [txr_token.op, inf, txr_op.band]);
+                    break;
+                case ord("="): // &=
+                    pos += 1;
+                    ds_list_add(out, [txr_token.set, inf, txr_op.iand]);
+                    break;
+                default:
+                    ds_list_add(out, [txr_token.op, inf, txr_op.iand]);
+            }
             break;
-        case ord("^"): ds_list_add(out, [txr_token.op, inf, txr_op.ixor]); break;
+        case ord("^"):
+            if (string_ord_at(str, pos) == ord("=")) { // ^=
+                pos += 1;
+                ds_list_add(out, [txr_token.set, inf, txr_op.ixor]);
+            } else ds_list_add(out, [txr_token.op, inf, txr_op.ixor]);
+            break;
         default:
             if (char >= ord("0") && char <= ord("9")) {
                 var pre_dot = true;

@@ -1,8 +1,8 @@
 {
-    "id": "d7d0fd2e-b2ca-7e27-82b4-fecb4427335c",
+    "id": "21b83098-4d03-66b8-a1d7-50dde11092d1",
     "modelName": "GMScript",
     "mvc": "1.0",
-    "name": "txr_build_stat",
+    "name": "txr_compile_setter",
     "IsCompatibility": false,
     "IsDnD": false
 }

@@ -19,6 +19,13 @@ txr_function_default = scr_txr_demo_default_func;
 
 //
 var pg = txr_compile(@'
+    // try out prefix/postfix/assignment variants
+    var i = 1;
+    trace("i++", i++);
+    trace("++i", ++i);
+    --i; trace("--i;", i);
+    i += 3; trace("i+=3;", i);
+    //
     label hello: select dialog("Hello! What would you like to do?") {
         option "Count to 5":
             for (var i = 1; i <= 5; i = i + 1) {

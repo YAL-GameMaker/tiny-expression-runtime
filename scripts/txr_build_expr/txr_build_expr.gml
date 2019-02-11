@@ -73,8 +73,19 @@ switch (tk[0]) {
         if (txr_build_expr(txr_build_flag.no_ops)) return true;
         txr_build_node = [txr_node.unop, tk[1], tk[2], txr_build_node];
         break;
+    case txr_token.adjfix: // ++value
+        if (txr_build_expr(txr_build_flag.no_ops)) return true;
+        txr_build_node = [txr_node.prefix, tk[1], txr_build_node, tk[2]];
+        break;
     default: return txr_throw_at("Expected an expression", tk);
 }
+// value++?
+tk = txr_build_list[|txr_build_pos];
+if (tk[0] == txr_token.adjfix) {
+    txr_build_pos += 1;
+    txr_build_node = [txr_node.postfix, tk[1], txr_build_node, tk[2]];
+}
+// value + ...?
 if ((flags & txr_build_flag.no_ops) == 0) {
     tk = txr_build_list[|txr_build_pos];
     if (tk[0] == txr_token.op) {

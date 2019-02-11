@@ -168,6 +168,9 @@ while (pos < len) {
                 pos = posx[v];
             } else pos = q[3];
             break;
+        case txr_action.dup:
+            ds_stack_push(stack, ds_stack_top(stack));
+            break;
         default:
             halt = txr_sfmt("Can't run action ID %", q[0]);
             continue;

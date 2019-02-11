@@ -141,7 +141,7 @@ switch (tk[0]) {
             if (tkn[0] == txr_token.set) {
                 txr_build_pos += 1;
                 if (txr_build_expr(0)) return true;
-                nodes[found++] = [txr_node.set, tkn[1],
+                nodes[found++] = [txr_node.set, tkn[1], txr_op.set,
                     [txr_node.ident, tkn[1], name], txr_build_node];
             }
             // check for comma:
@@ -177,17 +177,20 @@ switch (tk[0]) {
         if (txr_build_expr(txr_build_flag.no_ops)) return true;
         var _expr = txr_build_node;
         switch (_expr[0]) {
+            case txr_node.prefix: case txr_node.postfix:
+                _expr[@1] = txr_node.adjfix;
+                break;
             case txr_node.call:
                 // select expressions are allowed to be statements,
                 // and are compiled to `discard <value>` so that we don't clog the stack
-                txr_build_node = [txr_node.discard, _expr[1], txr_build_node];
+                txr_build_node = [txr_node.discard, _expr[1], _expr];
                 break;
             default:
                 tkn = txr_build_list[|txr_build_pos];
                 if (tkn[0] == txr_token.set) { // node = value
                     txr_build_pos += 1;
                     if (txr_build_expr(0)) return true;
-                    txr_build_node = [txr_node.set, tkn[1], _expr, txr_build_node];
+                    txr_build_node = [txr_node.set, tkn[1], tkn[2], _expr, txr_build_node];
                 } else return txr_throw_at("Expected a statement", txr_build_node);
         }
 }

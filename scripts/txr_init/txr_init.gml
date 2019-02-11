@@ -18,7 +18,7 @@ enum txr_token {
     _string = 10, // "hi!"
     cub_open = 11, // {
     cub_close = 12, // }
-    set = 13, // =
+    set = 13, // = += -= etc
     unop = 14, // !
     _while = 15,
     _do = 16,
@@ -37,8 +37,10 @@ enum txr_token {
     _select = 29,
     _option = 30,
     _default = 31,
+    adjfix = 32, // (delta) ++/--
 }
 enum txr_op {
+    set  =   -1, // =
     mul  = 0x01, // *
     fdiv = 0x02, // /
     fmod = 0x03, // %
@@ -105,7 +107,7 @@ enum txr_node {
     if_then = 9, // (cond_node, then_node)
     if_then_else = 10, // (cond_node, then_node, else_node)
     _string = 11, // (val:string)
-    set = 12, // (node, value:node)
+    set = 12, // (binop, node, value:node)
     _while = 13,
     do_while = 14,
     _for = 15,
@@ -118,6 +120,9 @@ enum txr_node {
     jump_push = 22, // (name:string)
     jump_pop = 23, // ()
     _select = 24, // (call_node, nodes, ?default_node)
+    prefix = 25, // (node, delta) ++x/--x
+    postfix = 26, // (node, delta) x++/x--
+    adjfix = 27, // (node, delta) x+=1/x-=1 (statement)
 }
 enum txr_unop {
     negate = 1, // -value
@@ -152,12 +157,17 @@ enum txr_action {
     jump_push = 17, // (pos): js.push(pc); pc = pos
     jump_pop = 18, // (): pc = js.pop()
     _select = 19, // (pos_array, def_pos): the simplest jumptable
+    dup = 20, // push(top())
 }
+/// If assigned, any calls to unknown functions will instead call this with
+/// function name as the first argument
 #macro txr_function_default global.txr_function_default_val
 txr_function_default = -1;
+/// Can be assigned to by your functions to throw an error
 #macro txr_function_error global.txr_function_error_val
 txr_function_error = undefined;
-
+/// Currently executing TXR "thread". Modified by txr_thread_resume
 #macro txr_thread_current global.txr_thread_current_val
 txr_thread_current = undefined;
+// Reused
 global.txr_exec_args = ds_list_create();
