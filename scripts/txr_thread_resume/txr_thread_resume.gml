@@ -103,6 +103,7 @@ while (pos < len) {
             var i = q[3], v;
             while (--i >= 0) args[|i] = ds_stack_pop(stack);
             txr_function_error = undefined;
+            th[@txr_thread.pos] = pos;
             switch (q[3]) {
                 case 0: v = script_execute(q[2]); break;
                 case 1: v = script_execute(q[2], args[|0]); break;
@@ -170,6 +171,13 @@ while (pos < len) {
             break;
         case txr_action.dup:
             ds_stack_push(stack, ds_stack_top(stack));
+            break;
+        case txr_action._switch:
+            var v = ds_stack_pop(stack);
+            if (v == ds_stack_top(stack)) {
+                ds_stack_pop(stack);
+                pos = q[2];
+            }
             break;
         default:
             halt = txr_sfmt("Can't run action ID %", q[0]);

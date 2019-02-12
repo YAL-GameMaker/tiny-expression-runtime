@@ -61,6 +61,47 @@ switch (tk[0]) {
         }
         txr_build_node = [txr_node._select, tk[1], _func, _opts, _default];
         break;
+    case txr_token._switch: // switch (expr) { ...cases [default:] }
+        if (txr_build_expr(0)) return true;
+        var _expr = txr_build_node;
+        // this is pretty much the same as select but without argument packing
+        tkn = txr_build_list[|txr_build_pos++];
+        if (tkn[0] != txr_token.cub_open) return txr_throw_at("Expected a `{`", tkn);
+        //
+        var _args = [], _opts = [], _optc = 0;
+        var _default = undefined;
+        var closed = false;
+        while (txr_build_pos < txr_build_len) {
+            tkn = txr_build_list[|txr_build_pos++];
+            if (tkn[0] == txr_token.cub_close) {
+                closed = true;
+                break;
+            } else if (tkn[0] == txr_token._case || tkn[0] == txr_token._default) {
+                var nodes = [], found = 0;
+                if (tkn[0] == txr_token._case) {// case <value>: ...statements
+                    if (txr_build_expr(0)) return true;
+                    _args[@_optc] = txr_build_node;
+                    _opts[@_optc++] = [txr_node.block, tk[1], nodes];
+                } else { // default: ...statements
+                    _default = [txr_node.block, tk[1], nodes];
+                }
+                //
+                tkn = txr_build_list[|txr_build_pos++];
+                if (tkn[0] != txr_token.colon) return txr_throw_at("Expected a `:`", tkn);
+                // now read statements until we hit `option` or `}`:
+                while (txr_build_pos < txr_build_len) {
+                    tkn = txr_build_list[|txr_build_pos];
+                    if (tkn[0] == txr_token.cub_close
+                        || tkn[0] == txr_token._case
+                        || tkn[0] == txr_token._default
+                    ) break;
+                    if (txr_build_stat()) return true;
+                    nodes[@found++] = txr_build_node;
+                }
+            } else return txr_throw_at("Expected an `option` or `}`", tkn);
+        }
+        txr_build_node = [txr_node._switch, tk[1], _expr, _args, _opts, _default];
+        break;
     case txr_token.cub_open: // { ... statements }
         var nodes = [], found = 0, closed = false;
         while (txr_build_pos < txr_build_len) {

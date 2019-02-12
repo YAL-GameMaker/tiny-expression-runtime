@@ -88,8 +88,8 @@ switch (q[0]) {
         var optc = array_length_1d(opts);
         var sel_jmps = array_create(optc);
         var opt_jmps = array_create(optc);
-        var sel = [txr_action._select, q[1], sel_jmps, 0];
-        ds_list_add(out, sel);
+        var _sel = [txr_action._select, q[1], sel_jmps, 0];
+        ds_list_add(out, _sel);
         // options:
         for (var i = 0; i < optc; i++) {
             sel_jmps[@i] = ds_list_size(out);
@@ -99,7 +99,7 @@ switch (q[0]) {
             ds_list_add(out, jmp);
         }
         // default;
-        sel[@3] = ds_list_size(out);
+        _sel[@3] = ds_list_size(out);
         if (q[4] != undefined) {
             if (txr_compile_expr(q[4])) return true;
         }
@@ -109,8 +109,38 @@ switch (q[0]) {
             jmp[@2] = ds_list_size(out);
         }
         break;
+    case txr_node._switch:
+        var args = q[3];
+        var opts = q[4];
+        var optc = array_length_1d(opts);
+        var arg_jmps = array_create(optc);
+        // header:
+        if (txr_compile_expr(q[2])) return true;
+        for (var i = 0; i < optc; i++) { // value; switchjump <case label>
+            if (txr_compile_expr(args[i])) return true;
+            var jmp = [txr_action._switch, q[1], 0];
+            arg_jmps[@i] = jmp;
+            ds_list_add(out, jmp);
+        }
+        //
+        ds_list_add(out, [txr_action.discard, q[1]]);
+        var def_jmp = [txr_action.jump, q[1], 0];
+        ds_list_add(out, def_jmp);
+        //
+        var pos_start = ds_list_size(out);
+        for (var i = 0; i < optc; i++) {
+            var jmp = arg_jmps[i];
+            jmp[@2] = ds_list_size(out);
+            if (txr_compile_expr(opts[i])) return true;
+        }
+        //
+        def_jmp[@2] = ds_list_size(out);
+        if (q[5] != undefined) if (txr_compile_expr(q[5])) return true;
+        //
+        var pos_break = ds_list_size(out);
+        txr_compile_patch_break_continue(pos_start, pos_break, pos_break, -1);
+        break;
     case txr_node.set:
-        var _expr = q[3];
         if (q[2] == txr_op.set) {
             if (txr_compile_expr(q[4])) return true;
         } else {

@@ -14,6 +14,7 @@ switch (t) {
     case txr_action.ret:
     case txr_action.discard:
     case txr_action.jump_pop:
+    case txr_action.dup:
         return [t, p];
     case txr_action.jump:
     case txr_action.jump_unless:
@@ -21,6 +22,7 @@ switch (t) {
     case txr_action.jump_push:
     case txr_action.band:
     case txr_action.bor:
+    case txr_action._switch:
         return [t, p, buffer_read(b, buffer_s32)];
         break;
     case txr_action._string:
@@ -35,6 +37,8 @@ switch (t) {
         var w = array_create(n);
         for (var i = 0; i < n; i++) w[i] = buffer_read(b, buffer_s32);
         return [t, p, w, buffer_read(b, buffer_s32)];
+        //
+        //
     default:
         show_error(txr_sfmt("Please add a read for action type % to txr_action_read!", t), 1);
 }

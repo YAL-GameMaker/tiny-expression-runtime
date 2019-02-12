@@ -25,6 +25,13 @@ var pg = txr_compile(@'
     trace("++i", ++i);
     --i; trace("--i;", i);
     i += 3; trace("i+=3;", i);
+    // try out switch blocks:
+    for (var i = 0; i < 4; i++) switch (i) {
+        case 0: trace("0"); break;
+        case 1: trace("1 (fall-through)");
+        case 2: trace("2"); break;
+        default: trace("default");
+    }
     //
     label hello: select dialog("Hello! What would you like to do?") {
         option "Count to 5":
@@ -53,7 +60,11 @@ var pg = txr_compile(@'
         option "No": jump hello
     }
 ');
-if (pg == undefined) show_debug_message(txr_error);
+if (pg == undefined) {
+    show_debug_message(txr_error);
+} else {
+    //show_debug_message(txr_program_print(pg));
+}
 var th/*:txr_thread*/ = txr_thread_create(pg);
 if (txr_thread_resume(th) == txr_thread_status.error) {
     show_debug_message(th[txr_thread.result]);

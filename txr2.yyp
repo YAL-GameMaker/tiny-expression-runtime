@@ -47,10 +47,26 @@
             }
         },
         {
+            "Key": "0c550d0e-a5df-ac3c-5d1b-a065f5c99502",
+            "Value": {
+                "id": "e73f97a9-6807-69b1-6dde-95617d8b1552",
+                "resourcePath": "scripts\\txr_action_print\\txr_action_print.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "12218996-340f-c5a6-f556-60f1b7e334ff",
             "Value": {
                 "id": "e194f7a1-ca68-bfb9-675a-fa1c95e48cd1",
                 "resourcePath": "scripts\\txr_action_write\\txr_action_write.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "15b94055-973f-5ecc-64f3-a72cbfe17989",
+            "Value": {
+                "id": "a0d150ca-0198-7555-5b27-36495102898d",
+                "resourcePath": "scripts\\txr_program_print\\txr_program_print.yy",
                 "resourceType": "GMScript"
             }
         },
@@ -92,6 +108,14 @@
                 "id": "f73b0a91-3d33-44fb-bf49-5fbdf8349cff",
                 "resourcePath": "scripts\\txr_parse\\txr_parse.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "3688790b-c205-c76e-1a40-7c1a9a5547a5",
+            "Value": {
+                "id": "1439b153-d956-9a87-031e-4741de379a58",
+                "resourcePath": "views\\3688790b-c205-c76e-1a40-7c1a9a5547a5.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -423,6 +447,14 @@
             }
         },
         {
+            "Key": "bfe6bc77-a9f6-5af4-057c-f48748523659",
+            "Value": {
+                "id": "54e6dc60-9233-d339-bb08-48260c62b04b",
+                "resourcePath": "views\\bfe6bc77-a9f6-5af4-057c-f48748523659.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "c14b0fb4-577b-4c1b-86c7-5aa7cd0a8f8a",
             "Value": {
                 "id": "ce27f88e-2225-4f5f-b57e-fc637b96bd76",
@@ -688,12 +720,14 @@
         "4ff118d2-3d3a-efd6-a571-8ff7937c4f2f",
         "12218996-340f-c5a6-f556-60f1b7e334ff",
         "539ca63b-e175-0127-11da-621df35e9dae",
+        "0c550d0e-a5df-ac3c-5d1b-a065f5c99502",
+        "e2ee719e-4d4f-4926-f545-bb448bf74f91",
+        "73983cf8-79de-cf5e-3d77-abc854e8946c",
+        "15b94055-973f-5ecc-64f3-a72cbfe17989",
         "5166aedf-e221-30bf-a87e-1a2d62500992",
         "c6399434-636f-6f58-5577-2bb830861654",
         "c96d9c44-214a-2fa3-4972-07aa19b31da1",
         "aa32c9a3-2644-3592-2e00-9864b61ae6e3",
-        "e2ee719e-4d4f-4926-f545-bb448bf74f91",
-        "73983cf8-79de-cf5e-3d77-abc854e8946c",
         "ac35b148-8d7a-96bc-11ce-718a2a3114dc",
         "60d40080-b413-467f-b269-4c788a550b71",
         "bcbd367c-4e96-4edd-85bc-432afecb5dc2",

@@ -226,6 +226,8 @@ while (pos <= len) {
                     case "select": ds_list_add(out, [txr_token._select, inf]); break;
                     case "option": ds_list_add(out, [txr_token._option, inf]); break;
                     case "default": ds_list_add(out, [txr_token._default, inf]); break;
+                    case "switch": ds_list_add(out, [txr_token._switch, inf]); break;
+                    case "case": ds_list_add(out, [txr_token._case, inf]); break;
                     default:
                         if (string_length(name) > 8 && string_copy(name, 1, 8) == "argument") {
                             var sfx = string_delete(name, 1, 8); // substring(8) in non-GML

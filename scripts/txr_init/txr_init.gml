@@ -38,6 +38,8 @@ enum txr_token {
     _option = 30,
     _default = 31,
     adjfix = 32, // (delta) ++/--
+    _switch = 33,
+    _case = 34,
 }
 enum txr_op {
     set  =   -1, // =
@@ -123,6 +125,7 @@ enum txr_node {
     prefix = 25, // (node, delta) ++x/--x
     postfix = 26, // (node, delta) x++/x--
     adjfix = 27, // (node, delta) x+=1/x-=1 (statement)
+    _switch = 28, // (expr, case_values, case_exprs, ?default_node)
 }
 enum txr_unop {
     negate = 1, // -value
@@ -150,7 +153,7 @@ enum txr_action {
     _string = 10, // (value:string): push(value)
     set_ident = 11, // (name:string): self[name] = pop()
     band = 12, // (pos): if (peek()) pop(); else pc = pos
-    bor = 13, // (pos): if (peek()) pc = pos(); else pop()
+    bor = 13, // (pos): if (peek()) pc = pos; else pop()
     jump_if = 14, // (pos): if (pop()) pc = pos
     get_local = 15, // (name): push(locals[name])
     set_local = 16, // (name): locals[name] = pop()
@@ -158,6 +161,8 @@ enum txr_action {
     jump_pop = 18, // (): pc = js.pop()
     _select = 19, // (pos_array, def_pos): the simplest jumptable
     dup = 20, // push(top())
+    _switch = 21, // (pos): if (pop() == peek()) { pop(); pc = pos; }
+    sizeof,
 }
 /// If assigned, any calls to unknown functions will instead call this with
 /// function name as the first argument

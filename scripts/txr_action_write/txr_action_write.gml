@@ -14,6 +14,7 @@ switch (a[0]) {
     case txr_action.ret:
     case txr_action.discard:
     case txr_action.jump_pop:
+    case txr_action.dup:
         break;
     case txr_action.jump:
     case txr_action.jump_unless:
@@ -21,6 +22,7 @@ switch (a[0]) {
     case txr_action.jump_push:
     case txr_action.band:
     case txr_action.bor:
+    case txr_action._switch:
         buffer_write(b, buffer_s32, a[2]);
         break;
     case txr_action._string:
