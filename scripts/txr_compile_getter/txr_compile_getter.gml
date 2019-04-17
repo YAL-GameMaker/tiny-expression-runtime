@@ -3,6 +3,12 @@ var out/*:List*/ = txr_compile_list;
 switch (q[0]) {
     case txr_node.ident:
         var s = q[2];
+        /*// example of global_some -> global.some
+        if (string_length(s) > 7 && string_copy(s, 1, 7) == "global_") {
+            out.add([txr_action._string, q[1], string_delete(s, 1, 7)]);
+            out.add([txr_action.call, q[1], scr_txr_demo_global_get, 1]);
+        } else
+        //*/
         if (ds_map_exists(global.txr_constant_map, s)) {
             var val = global.txr_constant_map[?s];
             if (is_string(val)) {
