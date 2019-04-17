@@ -5,6 +5,7 @@ txr_function_add("draw_text", scr_txr_demo_draw_text, 3);
 txr_function_add("trace", scr_txr_demo_trace, -1);
 txr_function_add("wait", scr_txr_demo_wait, 1);
 txr_function_add("dialog", scr_txr_demo_dlg, -1);
+txr_constant_add("noone", noone);
 program = undefined;
 text = "";
 error = "";

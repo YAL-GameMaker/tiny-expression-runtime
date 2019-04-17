@@ -97,6 +97,7 @@ global.txr_op_names = ops;
 #macro txr_build_locals global.txr_build_locals_val
 txr_build_locals = ds_map_create(); // <varname:string, is_local:bool>
 global.txr_function_map = ds_map_create(); // <funcname:string, [script, argcount]>
+global.txr_constant_map = ds_map_create(); // <constname:string, value>
 enum txr_node {
     number = 1, // (val:number)
     ident = 2, // (name:string)
