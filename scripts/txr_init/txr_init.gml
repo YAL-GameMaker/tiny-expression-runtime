@@ -33,7 +33,7 @@ enum txr_token {
     jump = 25,
     jump_push = 26,
     jump_pop = 27,
-    colon = 28,
+    colon = 28, // :
     _select = 29,
     _option = 30,
     _default = 31,
@@ -141,7 +141,7 @@ txr_compile_list = ds_list_create();
 #macro txr_compile_labels global.txr_compile_labels_val
 txr_compile_labels = ds_map_create();
 enum txr_action {
-    number = 1, // (value): push(value)
+    number = 1, // (value:number): push(value)
     ident = 2, // (name): push(self[name])
     unop = 3, // (unop): push(-pop())
     binop = 4, // (op): a = pop(); b = pop(); push(binop(op, a, b))

@@ -319,6 +319,14 @@
             }
         },
         {
+            "Key": "9c904a08-0326-4581-9c12-cd20d5b023a9",
+            "Value": {
+                "id": "45481be3-0fb8-4d56-9596-cf7d0475ca24",
+                "resourcePath": "datafiles_yy\\txr-doc.dmd.yy",
+                "resourceType": "GMIncludedFile"
+            }
+        },
+        {
             "Key": "9e56cbc4-4523-4830-8120-d26651774700",
             "Value": {
                 "id": "56dee45b-c0d2-4088-9432-747ce0b6f529",

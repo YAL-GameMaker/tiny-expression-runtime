@@ -1,15 +1,21 @@
 ```set template default.html```
-```gmlapi fnames2```
 ```set title TXR cheatsheet```
+```set og:url https://yal.cc/r/19/txr```
 ```set intro
-This is a "cheat sheet" for Tiny Expression Runtime by [YellowAfterlife](https://yal.cc).
-Project files can be downloaded from [itch.io](https://yellowafterlife.itch.io/gamemaker-interpreters) \
-	or [GM Marketplace](https://marketplace.yoyogames.com/assets/7814/_).
-For questions/inquiries, use [forums](https://yellowafterlife.itch.io/gamemaker-live/community) \
-or [send me an email](//yellowafterlife@hotmail.com).
+This is a "cheat sheet" for Tiny Expression Runtime by [YellowAfterlife](https://yal.cc).\
+Project files can be downloaded
+	from [itch.io](https://yellowafterlife.itch.io/gamemaker-interpreters)
+	or [GM Marketplace](https://marketplace.yoyogames.com/assets/7814/_).\
+For questions/inquiries,
+	use [forums](https://yellowafterlife.itch.io/gamemaker-live/community)
+	or [send me an email](//yellowafterlife@hotmail.com).\
 An up-to-date version of this document can always be found [online](https://yal.cc/r/19/txr).
 
 For practical reasons, this document covers the most current version of TXR.
+```
+```gmlapi fnames2```
+```gmlkeywords
+select option
 ```
 ```set mainclass boxtt```
 
@@ -45,7 +51,17 @@ For practical reasons, this document covers the most current version of TXR.
 		--	`-` (negation)
 		--	`~` (bit inversion)
 		--	`+` (does nothing, but lets you do `a = +4`)
+		--	`++` (prefix and postfix)
+		--	`--` (prefix and postfix)
 		}
+	}
+	#[Function calls](function-calls) {
+		Functions are exposed to TXR via [txr_function_add];
+		
+		Both fixed and variable-argument-count functions are supported.
+		
+		Up to 16 arguments can be passed
+		(if you need more, add them in `txr_thread_resume`, in `txr_action.call`)
 	}
 	#[Statements](statements) {
 		Starting with part 2, TXR allows for statements.
@@ -55,7 +71,8 @@ For practical reasons, this document covers the most current version of TXR.
 		--	[Variable declarations](variables)
 		--	Bracketed statements (`{...}`)
 		--	[Branching](branching)
-		--	Function calls
+		--	[Function calls](function-calls)
+		--	Prefix/postfix increment/decrement (`v++`, `--v`, etc.)
 		}
 	}
 	#[Variables](variables) {
@@ -71,12 +88,218 @@ For practical reasons, this document covers the most current version of TXR.
 	#[Assignments](assignments) {
 		You may assign variables via the conventional `name = value` syntax.
 		
-		Assignment operators (`+=`, etc.) are currently not supported.
+		Assignment operators (`+=`, etc.) are also supported.
 	}
 	#[Branching](branching) {
 		TXR supports a number of common branching statements:
-		#[if condition statement]() { }
-		#[if condition statement else else-statement] { }
+		#[if <condition> <then-statement>](if-then) {
+			Parentheses are optional.
+		}
+		#[if <condition> <then-statement> else <else-statement>](if-then-else) {}
+		#[while <condition> <loop-statement>](while) {
+			`break`/`continue` are supported.
+		}
+		#[do <loop-statement> while <condition>](do-while) {
+			`break`/`continue` are supported.
+		}
+		#[for (<init>; <condition>; <post>) <loop-statement>](for) {
+			`break`/`continue` are supported.
+			
+			Semicolons and parentheses are optional, but maybe don't abuse that.
+		}
+		#[switch (<expr>) { ... }](switch) {
+			Common-case `switch` block.
+			
+			`case`s are to be terminated with `break`.
+			
+			Much like in GML VM, supporting arbitrary case expressions means that this is
+			a slightly more optimized pile of if-statements.
+		}
+		
+		The following are non-standard:
+		#[select (<expr>) { ... }](select) {
+			Essentially a shorthand for a way to structure a [switch] block. So,
+			```
+			select (func(1, 2)) {
+				option "A": trace("A");
+				option "B": trace("B");
+				default: trace("default");
+			}
+			```
+			is same as
+			```
+			switch (func(1, 2, "A", "B")) {
+				case 0: trace("A"); break;
+				case 1: trace("B"); break;
+				default: trace("default");
+			}
+			```
+		}
+		
+		[Gotos](https://en.wikipedia.org/wiki/Goto) are a bad way of structuring
+		your code, but can be handy for dialogues/etc:
+		#[label <label name>: <expr>](label) {
+			Declares a label that you can later jump to.
+			
+			Note that TXR expects some sort of a statement after the label.
+		}
+		#[jump <label name>](jump) {
+			Transfers the program to the specified label.
+		}
+		#[call <label name>](call) {
+			Transfer to the specified label while pushing the original location to stack.
+			
+			This allows to use labels as makeshift sub-routines.
+			
+			You can strip out this feature in `txr_parse` (see `case "call"`, `case "back"`).
+		}
+		#[back](back) {
+			Returns from a [call] back to wherever the code was previously executing.
+		}
 	}
-	-- todo --
+}
+#[TXR API](api) {
+	#[txr_function_add(name, script, arg_count)]() {
+		Registers a function for use with TXR.
+		
+		`arg_count` is the number of arguments that function takes (-1 to accept any number).
+		
+		```
+		txr_function_add("trace", scr_trace, -1);
+		```
+	}
+	#[txr_function_error]() {
+		This can be assigned a string from scripts registered as functions to throw an error into
+		the currently executing thread.
+	}
+	#[txr_function_default]() {
+		If assigned a script ID (rather than -1), any calls to non-existent functions will be
+		compiled into `default_func("function_name", ...arguments)`
+	}
+	#[txr_compile(code)->actions|undefined]() {
+		Compiles a snippet of code and returns an array of VM actions ("a program").
+		
+		If there's an error, returns `undefined` and stores error text in `txr_error`.
+		
+		```
+		var pg = txr_compile(@'
+			return "hello!";
+		');
+		```
+	}
+	#[txr_exec(actions, ?arguments:array|ds_map)->result|undefined]() {
+		The easiest way to run a TXR program.
+		
+		Internally this just does [txr_thread_create]->[txr_thread_resume]->[txr_thread_destroy].
+		
+		If all is well, sets `txr_error` to `""` and returns the result (or 0 if none).
+		
+		If there's an error, returns `undefined` and stores error text in `txr_error`.
+		
+		`args` (optional) can be an array (in which case it'll set `argument0` and so on)
+		or a ds_map (in which case it'll define said local variables).
+		```
+		var pg = txr_compile(@'
+			return "hello!";
+		');
+		show_debug_message(txr_exec(pg)); // hello!
+		
+		var pg = txr_compile(@'
+			return "hello, " + argument0 + "!";
+		');
+		show_debug_message(txr_exec(pg, "you")); // hello, you!
+		```
+	}
+	#[txr_thread_create(actions, ?args)->thread]() {
+		Sets up a "thread" for executing the specified program.
+		
+		TXR "threads" aren't too unlike Lua "threads" - they do not execute in parallel,
+		but can be suspended/resumed like coroutines.
+		
+		This does not automatically start execution - you'll need to call [txr_thread_resume].
+	}
+	#[txr_thread_destroy(thread)]() {
+		Cleans up a previously created "thread", deleting its data structures and such.
+	}
+	#[txr_thread_resume(thread, ?yield_value)->thread_status]() {
+		Starts or resumes execution of a thread.
+		
+		If resuming execution after [txr_thread_yield],
+		`yield_value` will be what is returned to the thread
+		(in other words, what your function would return).
+		```
+		var pg = txr_compile(@'
+			return "hello!";
+		');
+		var th = txr_thread_create(pg);
+		txr_thread_resume(th);
+		show_debug_message(th[txr_thread.result]); // hello!
+		txr_thread_destroy(th);
+		```
+	}
+	#[txr_thread_yield()]() {
+		Suspends the execution of current thread.
+		
+		Thread will enter `txr_thread_status.yield` state,
+		and you'll be able to resume it later by calling [txr_thread_resume] again.
+		
+		```
+		// scr_test(value)
+		show_debug_message(argument0);
+		txr_thread_yield();
+		```
+		and then
+		```
+		txr_function_add("test", scr_test, 1);
+		var pg = txr_compile(@'
+			var v = 0;
+			v += test(1);
+			v += test(2);
+			return v;
+		');
+		var th = txr_thread_create(pg);
+		txr_thread_resume(th); // prints "1"
+		show_debug_message("a");
+		txr_thread_resume(th, 4); // prints "2"
+		show_debug_message("b");
+		txr_thread_resume(th, 5); // finishes execution
+		show_debug_message(th[txr_thread.result]); // 9
+		txr_thread_destroy(th);
+		```
+	}
+	#[txr_thread]() {
+		An enum that holds "thread" field indexes, --{
+		--	`actions`: raw compiled program data that you passed to [txr_thread_create].
+		--	`pos`: raw position of "[program counter](https://en.wikipedia.org/wiki/Program_counter)" within `actions`
+			(only good for debugging)
+		--	`stack`: a program ds_stack (ditto)
+		--	`jumpstack`: a ds_stack of return locations for [call]/[back].
+		--	`locals`: a ds_map of thread's local variables.
+		--	`result`: a value dependent on status (see below)
+		--	`status`: what the thread is currently doing ([txr_thread_status])
+		}
+	}
+	#[txr_thread_status]() {
+		Indicates what the thread is currently doing,
+		--{
+		--	`none`: this thread had been destroyed, maybe not touch it.
+		--	`running`: thread is either running or prepared to run.
+		--	`finished`: execution reached the end or exited via `return`.\
+			Thread's `result` will hold the returned value (0 if none).
+		--	`error`: an error occurred during execution.\
+			Thread's `result` will hold the error text as a string
+		--	`yield`: thread suspended its execution and can be resumed later.
+		}
+	}
+	#[txr_thread_current]() {
+		Currently executing TXR "thread" (`undefined` if none).
+	}
+	#[txr_thread_write(thread, buffer)]() {
+		Serializes a "thread" in its entirety annd writes it into a buffer.
+	}
+	#[txr_thread_read(buffer)->thread]() {
+		De-serializes a previously written "thread" and returns it.
+		
+		(makes a new thread - don't forget to destroy it later)
+	}
 }

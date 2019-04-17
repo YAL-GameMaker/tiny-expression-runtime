@@ -1,3 +1,5 @@
+/// @param actions
+/// @param ?arguments:array|ds_map
 var arr = argument[0];
 var argd = argument_count > 1 ? argument[1] : undefined;
 var th/*:txr_thread*/ = txr_thread_create(arr, argd);
