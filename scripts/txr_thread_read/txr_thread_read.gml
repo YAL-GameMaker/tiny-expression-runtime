@@ -12,7 +12,7 @@ th[@txr_thread.stack] = s;
 //
 s = ds_stack_create();
 repeat (buffer_read(b, buffer_u32)) ds_stack_push(s, buffer_read(b, buffer_s32));
-th[@txr_thread.stack] = s;
+th[@txr_thread.jumpstack] = s;
 //show_debug_message(txr_sfmt("locals@%", b.tell()));
 var m = ds_map_create();
 n = buffer_read(b, buffer_u32);
