@@ -35,9 +35,10 @@ enum txr_thread {
     sizeof,
 }
 enum txr_thread_status {
-    none,
-    running,
-    finished,
-    error,
-    yield,
+    none, // not ran yet
+    running, // in process
+    finished, // finished executing in a normal way
+    error, // hit an error
+    yield, // requested to yield
+    jump, // requested to transit to a different position
 }

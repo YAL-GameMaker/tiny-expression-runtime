@@ -26,6 +26,7 @@ switch (a[0]) {
         buffer_write(b, buffer_s32, a[2]);
         break;
     case txr_action._string:
+    case txr_action.label:
     case txr_action.set_ident:
     case txr_action.ident:
     case txr_action.get_local:

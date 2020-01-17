@@ -220,6 +220,7 @@ switch (q[0]) {
     case txr_node._break: ds_list_add(out, [txr_action.jump, q[1], -10]); break;
     case txr_node._continue: ds_list_add(out, [txr_action.jump, q[1], -11]); break;
     case txr_node.label:
+        ds_list_add(out, [txr_action.label, q[1], q[2]]);
         var lbs = txr_compile_labels[?q[2]];
         if (lbs == undefined) {
             lbs = [ds_list_size(out)];

@@ -239,6 +239,14 @@
             }
         },
         {
+            "Key": "635ce7ab-66ed-f666-b360-6f42f49f072c",
+            "Value": {
+                "id": "cc4d4350-812d-45ee-9228-def4a7bfb09d",
+                "resourcePath": "scripts\\txr_thread_jump\\txr_thread_jump.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "672105e7-3276-4ba4-acbd-83b6a66af741",
             "Value": {
                 "id": "03c236de-d8e5-46e0-9fc7-ddda5a1496f6",
@@ -364,6 +372,14 @@
                 "id": "56f2291a-2fce-4cc9-8a1c-c3ffcd78451d",
                 "resourcePath": "options\\amazonfire\\options_amazonfire.yy",
                 "resourceType": "GMAmazonFireOptions"
+            }
+        },
+        {
+            "Key": "a24f0da6-1ba3-4590-89be-581e83ed071e",
+            "Value": {
+                "id": "0da49bff-8d35-0388-e47b-e644eeb5b980",
+                "resourcePath": "scripts\/scr_txr_demo_call_label\/scr_txr_demo_call_label.yy",
+                "resourceType": "GMScript"
             }
         },
         {
@@ -599,6 +615,14 @@
             }
         },
         {
+            "Key": "dede4edb-65cf-8108-4ff2-dc72fb986406",
+            "Value": {
+                "id": "8fa2df08-083b-d1d0-9cf6-d8a7c4eded46",
+                "resourcePath": "scripts\\txr_thread_jump_push\\txr_thread_jump_push.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "e036e6ec-a2e3-c97e-676f-887015eb79ea",
             "Value": {
                 "id": "ef704173-d429-a293-d875-bb6bf495eea2",
@@ -750,6 +774,8 @@
         "fbcf33ce-c6ae-d27f-2ccc-b2dccbdd514a",
         "b1f7fd39-49f7-fe9c-3885-7f6ff23d3998",
         "4ff118d2-3d3a-efd6-a571-8ff7937c4f2f",
+        "635ce7ab-66ed-f666-b360-6f42f49f072c",
+        "dede4edb-65cf-8108-4ff2-dc72fb986406",
         "12218996-340f-c5a6-f556-60f1b7e334ff",
         "539ca63b-e175-0127-11da-621df35e9dae",
         "0c550d0e-a5df-ac3c-5d1b-a065f5c99502",
@@ -771,7 +797,8 @@
         "abb57acd-4d53-4f8d-9d03-73af66846d52",
         "e4900049-fa7d-ce1d-9c67-cfcfed6f15ee",
         "9ab38e5b-d8de-c7e9-c718-085a38f9d86b",
-        "310491e0-04a6-93f1-b30d-e38aea8bff09"
+        "310491e0-04a6-93f1-b30d-e38aea8bff09",
+        "a24f0da6-1ba3-4590-89be-581e83ed071e"
     ],
     "tutorial": ""
 }

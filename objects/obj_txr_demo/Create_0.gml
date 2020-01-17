@@ -5,6 +5,7 @@ txr_function_add("draw_text", scr_txr_demo_draw_text, 3);
 txr_function_add("trace", scr_txr_demo_trace, -1);
 txr_function_add("wait", scr_txr_demo_wait, 1);
 txr_function_add("dialog", scr_txr_demo_dlg, -1);
+txr_function_add("call_label", scr_txr_demo_call_label, 1);
 txr_constant_add("noone", noone);
 program = undefined;
 text = "";
@@ -20,6 +21,8 @@ txr_function_default = scr_txr_demo_default_func;
 
 //
 var pg = txr_compile(@'
+    trace("start");
+    call_label("howdy");
     // try out prefix/postfix/assignment variants
     var i = 1;
     trace("i++", i++);
@@ -60,6 +63,10 @@ var pg = txr_compile(@'
             }
         option "No": jump hello
     }
+    return 0
+    label howdy: // called by-name via call_label above
+        trace("Howdy");
+        back
 ');
 if (pg == undefined) {
     show_debug_message(txr_error);

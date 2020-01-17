@@ -163,6 +163,7 @@ enum txr_action {
     _select = 19, // (pos_array, def_pos): the simplest jumptable
     dup = 20, // push(top())
     _switch = 21, // (pos): if (pop() == peek()) { pop(); pc = pos; }
+    label = 22, // (name:string) [does nothing]
     sizeof,
 }
 /// If assigned, any calls to unknown functions will instead call this with

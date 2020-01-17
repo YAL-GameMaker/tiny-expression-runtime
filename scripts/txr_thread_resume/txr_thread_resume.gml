@@ -20,13 +20,17 @@ th[@txr_thread.result] = val;
 var pos = th[txr_thread.pos];
 var len = array_length_1d(arr);
 var locals = th[txr_thread.locals];
-var q = undefined;
+var q = undefined; 
 var halt = undefined;
 th[@txr_thread.status] = txr_thread_status.running;
 while (pos < len) {
-    if (halt != undefined) break;
+    if (halt == txr_thread_status.jump) {
+        halt = undefined;
+        pos = th[txr_thread.pos];
+    } else if (halt != undefined) break;
     q = arr[pos++];
     switch (q[0]) {
+        case txr_action.label: break;
         case txr_action.number: ds_stack_push(stack, q[2]); break;
         case txr_action._string: ds_stack_push(stack, q[2]); break;
         case txr_action.unop:

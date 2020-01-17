@@ -1,0 +1,1 @@
+txr_thread_jump_push(txr_thread_current, argument0);
