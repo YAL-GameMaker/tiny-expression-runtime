@@ -71,6 +71,8 @@ switch (tk[0]) {
         var _args = [], _opts = [], _optc = 0;
         var _default = undefined;
         var closed = false;
+        var could_break = txr_build_can_break;
+        txr_build_can_break = true;
         while (txr_build_pos < txr_build_len) {
             tkn = txr_build_list[|txr_build_pos++];
             if (tkn[0] == txr_token.cub_close) {
@@ -100,6 +102,7 @@ switch (tk[0]) {
                 }
             } else return txr_throw_at("Expected an `option` or `}`", tkn);
         }
+        txr_build_can_break = could_break;
         txr_build_node = [txr_node._switch, tk[1], _expr, _args, _opts, _default];
         break;
     case txr_token.cub_open: // { ... statements }
