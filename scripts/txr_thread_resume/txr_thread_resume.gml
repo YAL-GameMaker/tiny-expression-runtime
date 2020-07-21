@@ -146,12 +146,19 @@ while (pos < len) {
             // thread yielded/destroyed?:
             if (th[txr_thread.status] != txr_thread_status.running) {
                 halt = th[txr_thread.status];
+                if (halt == txr_thread_status.jump) {
+                    th[@txr_thread.status] = txr_thread_status.running;
+                    ds_stack_push(stack, v);
+                }
                 continue;
             }
             ds_stack_push(stack, v);
             break;
         case txr_action.ret: pos = len; break;
-        case txr_action.discard: ds_stack_pop(stack); break;
+        case txr_action.discard:
+            if (ds_stack_empty(stack)) show_error("Discard on an empty stack! Suspicious.", 0);
+            ds_stack_pop(stack);
+            break;
         case txr_action.jump: pos = q[2]; break;
         case txr_action.jump_unless:
             if (ds_stack_pop(stack)) {
