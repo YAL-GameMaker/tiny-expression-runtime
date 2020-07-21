@@ -40,6 +40,7 @@ enum txr_token {
     adjfix = 32, // (delta) ++/--
     _switch = 33,
     _case = 34,
+    period = 35, // .
 }
 enum txr_op {
     set  =   -1, // =
@@ -127,13 +128,15 @@ enum txr_node {
     postfix = 26, // (node, delta) x++/x--
     adjfix = 27, // (node, delta) x+=1/x-=1 (statement)
     _switch = 28, // (expr, case_values, case_exprs, ?default_node)
+    field = 29, // (node, field:string)
 }
 enum txr_unop {
     negate = 1, // -value
     invert = 2, // !value
 }
 enum txr_build_flag {
-    no_ops = 1
+    no_ops = 1, // no <expr> + ...
+    no_suffix = 2, // no <expr>.field, <expr>[index], etc.
 }
 
 // compiler:
@@ -164,6 +167,8 @@ enum txr_action {
     dup = 20, // push(top())
     _switch = 21, // (pos): if (pop() == peek()) { pop(); pc = pos; }
     label = 22, // (name:string) [does nothing]
+    get_field = 23, // (name:string): push(pop().name)
+    set_field = 24, // (name:string): { v = pop(); pop().name = v; }
     sizeof,
 }
 /// If assigned, any calls to unknown functions will instead call this with

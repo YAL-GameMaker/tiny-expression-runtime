@@ -4,7 +4,7 @@ var out/*:List*/ = txr_compile_list;
 switch (q[0]) {
     case txr_node.number: ds_list_add(out, [txr_action.number, q[1], q[2]]); break;
     case txr_node._string: ds_list_add(out, [txr_action._string, q[1], q[2]]); break;
-    case txr_node.ident:
+    case txr_node.ident: case txr_node.field:
         if (txr_compile_getter(q)) return true;
         break;
     case txr_node._argument: ds_list_add(out, [txr_action.get_local, q[1], q[3]]); break;

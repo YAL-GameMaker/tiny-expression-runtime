@@ -95,6 +95,15 @@ while (pos < len) {
         case txr_action.set_ident:
             variable_instance_set(id, q[2], ds_stack_pop(stack));
             break;
+        case txr_action.get_field:
+            var v = ds_stack_pop(stack);
+            v = variable_instance_get(v, q[2]);
+            ds_stack_push(stack, v);
+            break;
+        case txr_action.set_field:
+            var v = ds_stack_pop(stack);
+            variable_instance_set(v, q[2], ds_stack_pop(stack));
+            break;
         case txr_action.get_local:
             ds_stack_push(stack, locals[?q[2]]);
             break;

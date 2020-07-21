@@ -31,6 +31,8 @@ switch (a[0]) {
     case txr_action.ident:
     case txr_action.get_local:
     case txr_action.set_local:
+    case txr_action.get_field:
+    case txr_action.set_field:
         buffer_write(b, buffer_string, a[2]);
         break;
     case txr_action._select:

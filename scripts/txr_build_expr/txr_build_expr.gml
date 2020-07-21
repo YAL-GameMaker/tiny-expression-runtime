@@ -79,18 +79,37 @@ switch (tk[0]) {
         break;
     default: return txr_throw_at("Expected an expression", tk);
 }
-// value++?
-tk = txr_build_list[|txr_build_pos];
-if (tk[0] == txr_token.adjfix) {
-    txr_build_pos += 1;
-    txr_build_node = [txr_node.postfix, tk[1], txr_build_node, tk[2]];
-}
-// value + ...?
-if ((flags & txr_build_flag.no_ops) == 0) {
+
+// handle postfixes after expression
+while (txr_build_pos < txr_build_len) {
     tk = txr_build_list[|txr_build_pos];
-    if (tk[0] == txr_token.op) {
-        txr_build_pos += 1;
-        if (txr_build_ops(tk)) return true;
+    var _break = false;
+    switch (tk[0]) {
+        case txr_token.period: // value.field?
+            if ((flags & txr_build_flag.no_suffix) == 0) {
+                txr_build_pos += 1;
+                tk = txr_build_list[|txr_build_pos];
+                if (tk[0] != txr_token.ident) return txr_throw_at("Expected a field name", tk);
+                txr_build_pos += 1;
+                txr_build_node = [txr_node.field, tk[1], txr_build_node, tk[2]];
+            } else return txr_throw_at("Unexpected `.`", tk);
+            break;
+        case txr_token.adjfix: // value++?
+            if ((flags & txr_build_flag.no_suffix) == 0) {
+                txr_build_pos += 1;
+                txr_build_node = [txr_node.postfix, tk[1], txr_build_node, tk[2]];
+            } else return txr_throw_at("Unexpected postfix", tk);
+            break;
+        case txr_token.op: // value + ...?
+            if ((flags & txr_build_flag.no_ops) == 0) {
+                txr_build_pos += 1;
+                if (txr_build_ops(tk)) return true;
+                flags |= txr_build_flag.no_suffix;
+            } else _break = true;
+            break;
+        default: _break = true;
     }
+    if (_break) break;
 }
+
 return false;

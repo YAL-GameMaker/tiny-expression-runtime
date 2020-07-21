@@ -10,6 +10,8 @@ switch (q[0]) {
     case txr_action.call: return txr_sfmt("% %(%)", s, script_get_name(q[2]), q[3]);
     case txr_action.ident: return txr_sfmt("% get ident %", s, q[2]);
     case txr_action.set_ident: return txr_sfmt("% set ident %", s, q[2]);
+    case txr_action.get_field: return txr_sfmt("% get field %", s, q[2]);
+    case txr_action.set_field: return txr_sfmt("% set field %", s, q[2]);
     case txr_action.get_local: return txr_sfmt("% get local %", s, q[2]);
     case txr_action.set_local: return txr_sfmt("% set local %", s, q[2]);
     case txr_action.jump: return txr_sfmt("% jump %", s, q[2]);

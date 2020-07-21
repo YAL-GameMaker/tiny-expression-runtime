@@ -17,5 +17,9 @@ switch (q[0]) {
             ds_list_add(out, [txr_action.set_ident, q[1], s]);
         }
         return false;
+    case txr_node.field:
+        if (txr_compile_expr(q[2])) return true;
+        ds_list_add(out, [txr_action.set_field, q[1], q[3]]);
+        return false;
     default: return txr_throw_at("Expression is not settable", q);
 }

@@ -20,6 +20,7 @@ while (pos <= len) {
         case ord("{"): ds_list_add(out, [txr_token.cub_open, inf]); break;
         case ord("}"): ds_list_add(out, [txr_token.cub_close, inf]); break;
         case ord(","): ds_list_add(out, [txr_token.comma, inf]); break;
+        case ord("."): ds_list_add(out, [txr_token.period, inf]); break;
         case ord("+"):
             switch (string_ord_at(str, pos)) {
                 case ord("="): // +=

@@ -6,13 +6,14 @@ txr_function_add("trace", scr_txr_demo_trace, -1);
 txr_function_add("wait", scr_txr_demo_wait, 1);
 txr_function_add("dialog", scr_txr_demo_dlg, -1);
 txr_function_add("call_label", scr_txr_demo_call_label, 1);
+txr_function_add("get_dummy", scr_txr_demo_get_dummy, 0);
 txr_constant_add("noone", noone);
 program = undefined;
 text = "";
 error = "";
 // other scripts or anything
 global.extra_functions = ds_map_create();
-global.extra_functions[?"hi"] = txr_compile(@'
+global.extra_functions[?"hi"] = txr_compile(/*gml*/@'
 if (argument_count > 0) {
     return "hi, " + argument0 + "!";
 } else return "hi!";
@@ -20,9 +21,16 @@ if (argument_count > 0) {
 txr_function_default = scr_txr_demo_default_func;
 
 //
-var pg = txr_compile(@'
+dummy = instance_create_depth(0, 0, 0, obj_txr_demo_wait);
+dummy.some = "hi!";
+var pg = txr_compile(/*gml*/@'
     trace("start");
     call_label("howdy");
+    // try out fields:
+    trace(dummy.some);
+    dummy.some += "!!";
+    trace(dummy.some);
+    trace(get_dummy().some);
     // try out prefix/postfix/assignment variants
     var i = 1;
     trace("i++", i++);
