@@ -15,7 +15,9 @@
         "9ab38e5b-d8de-c7e9-c718-085a38f9d86b",
         "310491e0-04a6-93f1-b30d-e38aea8bff09",
         "a24f0da6-1ba3-4590-89be-581e83ed071e",
-        "0938e5b7-9528-8157-ec81-99b1f95251b4"
+        "0938e5b7-9528-8157-ec81-99b1f95251b4",
+        "53cb0583-ed3b-4882-b1b2-78020d4f3cfb",
+        "adedb500-a5c4-434a-a1d4-953fc167a264"
     ],
     "filterType": "GMScript",
     "folderName": "TXR demo",

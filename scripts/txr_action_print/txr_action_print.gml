@@ -18,6 +18,9 @@ switch (q[0]) {
     case txr_action.jump_if: return txr_sfmt("% jump_if %", s, q[2]);
     case txr_action.jump_unless: return txr_sfmt("% jump_unless %", s, q[2]);
     case txr_action._switch: return txr_sfmt("% switch_jump %", s, q[2]);
+    case txr_action.get_array: return s + " get array";
+    case txr_action.set_array: return s + " set array";
+    case txr_action.array_literal: return txr_sfmt("% create array(%)", s, q[2]);
     default:
         s = txr_sfmt("% A%", s, q[0]);
         n = array_length_1d(q);

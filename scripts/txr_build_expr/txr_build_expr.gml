@@ -9,7 +9,7 @@ switch (tk[0]) {
         if (tkn[0] == txr_token.par_open) { // `ident(`
             txr_build_pos += 1;
             // look up the function
-            var args = [], argc = 0
+            var args = [], argc = 0;
             var fn = global.txr_function_map[?tk[2]];
             var fn_script, fn_argc;
             if (fn == undefined) {
@@ -77,6 +77,31 @@ switch (tk[0]) {
         if (txr_build_expr(txr_build_flag.no_ops)) return true;
         txr_build_node = [txr_node.prefix, tk[1], txr_build_node, tk[2]];
         break;
+    case txr_token.sqb_open: // [...values]
+        var closed = false;
+        var args = [], argc = 0;
+        while (txr_build_pos < txr_build_len) {
+            // hit a closing `]` yet?
+            tkn = txr_build_list[|txr_build_pos];
+            if (tkn[0] == txr_token.sqb_close) {
+                txr_build_pos += 1;
+                closed = true;
+                break;
+            }
+            // read the value:
+            if (txr_build_expr(0)) return true;
+            args[argc++] = txr_build_node;
+            // skip a `,`:
+            tkn = txr_build_list[|txr_build_pos];
+            if (tkn[0] == txr_token.comma) {
+                txr_build_pos += 1;
+            } else if (tkn[0] != txr_token.sqb_close) {
+                return txr_throw_at("Expected a `,` or `]`", tkn);
+            }
+        }
+        if (!closed) return txr_throw_at("Unclosed `[]` after", tk);
+        txr_build_node = [txr_node.array_literal, tk[1], args];
+        break;
     default: return txr_throw_at("Expected an expression", tk);
 }
 
@@ -92,6 +117,18 @@ while (txr_build_pos < txr_build_len) {
                 if (tk[0] != txr_token.ident) return txr_throw_at("Expected a field name", tk);
                 txr_build_pos += 1;
                 txr_build_node = [txr_node.field, tk[1], txr_build_node, tk[2]];
+            } else return txr_throw_at("Unexpected `.`", tk);
+            break;
+        case txr_token.sqb_open: // value[index]?
+            if ((flags & txr_build_flag.no_suffix) == 0) {
+                txr_build_pos += 1;
+                var node = txr_build_node;
+                if (txr_build_expr(txr_build_flag.no_ops)) return true;
+                
+                tk = txr_build_list[|txr_build_pos];
+                if (tk[0] != txr_token.sqb_close) return txr_throw_at("Expected a closing []", tk);
+                txr_build_pos += 1;
+                txr_build_node = [txr_node.array_access, tk[1], node, txr_build_node];
             } else return txr_throw_at("Unexpected `.`", tk);
             break;
         case txr_token.adjfix: // value++?

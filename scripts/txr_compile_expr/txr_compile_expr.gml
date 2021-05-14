@@ -4,7 +4,7 @@ var out/*:List*/ = txr_compile_list;
 switch (q[0]) {
     case txr_node.number: ds_list_add(out, [txr_action.number, q[1], q[2]]); break;
     case txr_node._string: ds_list_add(out, [txr_action._string, q[1], q[2]]); break;
-    case txr_node.ident: case txr_node.field:
+    case txr_node.ident: case txr_node.field: case txr_node.array_access:
         if (txr_compile_getter(q)) return true;
         break;
     case txr_node._argument: ds_list_add(out, [txr_action.get_local, q[1], q[3]]); break;
@@ -242,6 +242,14 @@ switch (q[0]) {
         break;
     case txr_node.jump_pop:
         ds_list_add(out, [txr_action.jump_pop, q[1]]);
+        break;
+    case txr_node.array_literal:
+        var args = q[2];
+        var argc = array_length_1d(args);
+        for (var i = 0; i < argc; i++) {
+            if (txr_compile_expr(args[i])) return true;
+        }
+        ds_list_add(out, [txr_action.array_literal, q[1], argc]);
         break;
     default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 }

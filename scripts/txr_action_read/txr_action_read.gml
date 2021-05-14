@@ -15,6 +15,8 @@ switch (t) {
     case txr_action.discard:
     case txr_action.jump_pop:
     case txr_action.dup:
+    case txr_action.get_array:
+    case txr_action.set_array:
         return [t, p];
     case txr_action.jump:
     case txr_action.jump_unless:
@@ -23,6 +25,7 @@ switch (t) {
     case txr_action.band:
     case txr_action.bor:
     case txr_action._switch:
+    case txr_action.array_literal:
         return [t, p, buffer_read(b, buffer_s32)];
         break;
     case txr_action._string:

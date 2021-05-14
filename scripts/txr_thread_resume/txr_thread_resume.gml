@@ -202,6 +202,35 @@ while (pos < len) {
                 pos = q[2];
             }
             break;
+        case txr_action.get_array:
+            var i = ds_stack_pop(stack);
+            var a = ds_stack_pop(stack);
+            if (is_array(a)) {
+                if (txr_is_number(i)) {
+                    if (i >= 0 && i < array_length_1d(a)) {
+                        ds_stack_push(stack, a[i]);
+                    } else halt = txr_sfmt("Index `%` is out of range (0...% excl.) for get", i, array_length_1d(a));
+                } else halt = txr_sfmt("`%` (%) is not an index for get", i, typeof(i));
+            } else halt = txr_sfmt("`%` (%) is not an array for get", a, typeof(a));
+            break;
+        case txr_action.set_array:
+            var i = ds_stack_pop(stack);
+            var a = ds_stack_pop(stack);
+            var v = ds_stack_pop(stack);
+            if (is_array(a)) {
+                if (txr_is_number(i)) {
+                    if (i >= 0 && i < 32000) {
+                        a[@i] = v;
+                    } else halt = txr_sfmt("Invalid index `%` for set", i);
+                } else halt = txr_sfmt("`%` (%) is not an index for set", i, typeof(i));
+            } else halt = txr_sfmt("`%` (%) is not an array for set", a, typeof(a));
+            break;
+        case txr_action.array_literal:
+            var i = q[2];
+            var a = array_create(i);
+            while (--i >= 0) a[i] = ds_stack_pop(stack);
+            ds_stack_push(stack, a);
+            break;
         default:
             halt = txr_sfmt("Can't run action ID %", q[0]);
             continue;

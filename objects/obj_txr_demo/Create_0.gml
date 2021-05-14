@@ -7,6 +7,8 @@ txr_function_add("wait", scr_txr_demo_wait, 1);
 txr_function_add("dialog", scr_txr_demo_dlg, -1);
 txr_function_add("call_label", scr_txr_demo_call_label, 1);
 txr_function_add("get_dummy", scr_txr_demo_get_dummy, 0);
+txr_function_add("array", scr_txr_demo_array, -1);
+txr_function_add("assert", scr_txr_demo_assert, 2);
 txr_constant_add("noone", noone);
 program = undefined;
 text = "";
@@ -27,16 +29,17 @@ var pg = txr_compile(/*gml*/@'
     trace("start");
     call_label("howdy");
     // try out fields:
-    trace(dummy.some);
+    assert(dummy.some, "hi!");
     dummy.some += "!!";
-    trace(dummy.some);
-    trace(get_dummy().some);
+    assert(dummy.some, "hi!!!");
+    assert(get_dummy().some, "hi!!!");
     // try out prefix/postfix/assignment variants
     var i = 1;
-    trace("i++", i++);
-    trace("++i", ++i);
-    --i; trace("--i;", i);
-    i += 3; trace("i+=3;", i);
+    assert(i++, 1);
+    assert(i, 2);
+    assert(++i, 3);
+    --i; assert(i, 2);
+    i += 3; assert(i, 5);
     // try out switch blocks:
     for (var i = 0; i < 4; i++) switch (i) {
         case 0: trace("0"); break;
@@ -44,6 +47,15 @@ var pg = txr_compile(/*gml*/@'
         case 2: trace("2"); break;
         default: trace("default");
     }
+    // try out arrays:
+    var arr = [1, 2, 3];
+    trace(arr);
+    assert(arr, array(1, 2, 3));
+    assert(arr[1], 2);
+    arr[1] = 4;
+    assert(arr[1], 4);
+    arr[1] += 4;
+    assert(arr[1], 8);
     //
     label hello: select dialog("Hello! What would you like to do?") {
         option "Count to 5":

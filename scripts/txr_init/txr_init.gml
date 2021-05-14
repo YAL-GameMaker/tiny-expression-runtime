@@ -41,6 +41,8 @@ enum txr_token {
     _switch = 33,
     _case = 34,
     period = 35, // .
+    sqb_open = 36,
+    sqb_close = 37,
 }
 enum txr_op {
     set  =   -1, // =
@@ -129,6 +131,8 @@ enum txr_node {
     adjfix = 27, // (node, delta) x+=1/x-=1 (statement)
     _switch = 28, // (expr, case_values, case_exprs, ?default_node)
     field = 29, // (node, field:string)
+    array_access = 30, // (node, index)
+    array_literal = 31, // (nodes)
 }
 enum txr_unop {
     negate = 1, // -value
@@ -169,6 +173,9 @@ enum txr_action {
     label = 22, // (name:string) [does nothing]
     get_field = 23, // (name:string): push(pop().name)
     set_field = 24, // (name:string): { v = pop(); pop().name = v; }
+    get_array = 25, // (): i = pop(); push(pop()[i])
+    set_array = 26, // (): v = pop(); i = pop(); pop()[i] = v;
+    array_literal = 27, // (n): 
     sizeof,
 }
 /// If assigned, any calls to unknown functions will instead call this with

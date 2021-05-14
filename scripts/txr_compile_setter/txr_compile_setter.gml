@@ -21,5 +21,10 @@ switch (q[0]) {
         if (txr_compile_expr(q[2])) return true;
         ds_list_add(out, [txr_action.set_field, q[1], q[3]]);
         return false;
+    case txr_node.array_access:
+        if (txr_compile_expr(q[2])) return true;
+        if (txr_compile_expr(q[3])) return true;
+        ds_list_add(out, [txr_action.set_array, q[1]]);
+        return false;
     default: return txr_throw_at("Expression is not settable", q);
 }

@@ -19,6 +19,8 @@ while (pos <= len) {
         case ord(")"): ds_list_add(out, [txr_token.par_close, inf]); break;
         case ord("{"): ds_list_add(out, [txr_token.cub_open, inf]); break;
         case ord("}"): ds_list_add(out, [txr_token.cub_close, inf]); break;
+        case ord("["): ds_list_add(out, [txr_token.sqb_open, inf]); break;
+        case ord("]"): ds_list_add(out, [txr_token.sqb_close, inf]); break;
         case ord(","): ds_list_add(out, [txr_token.comma, inf]); break;
         case ord("."): ds_list_add(out, [txr_token.period, inf]); break;
         case ord("+"):
