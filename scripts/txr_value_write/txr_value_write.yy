@@ -1,8 +1,12 @@
 {
-    "id": "5166aedf-e221-30bf-a87e-1a2d62500992",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "txr_value_write",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Serialization",
+    "path": "folders/Scripts/Tiny Expression Runtime/Serialization.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "txr_value_write",
+  "tags": [],
+  "resourceType": "GMScript",
 }

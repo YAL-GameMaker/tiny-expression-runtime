@@ -1,8 +1,12 @@
 {
-    "id": "e4900049-fa7d-ce1d-9c67-cfcfed6f15ee",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "scr_txr_demo_dlg",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "TXR demo",
+    "path": "folders/Scripts/TXR demo.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "scr_txr_demo_dlg",
+  "tags": [],
+  "resourceType": "GMScript",
 }

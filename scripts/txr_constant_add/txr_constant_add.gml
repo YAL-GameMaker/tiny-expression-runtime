@@ -1,7 +1,8 @@
-/// @param name
-/// @param value
+/// @param {string} name
+/// @param {string|number|undefined} value
 /// Registers a constant
-var v = argument1;
-if (is_string(v) || is_real(v) || is_bool(v) || is_int32(v) || is_int64(v)) {
-	global.txr_constant_map[?argument0] = argument1;
-} else show_error("Expected a string or a number for constant, got " + typeof(v), true);
+function txr_constant_add(_name, _value) {
+	if (is_string(_value) || is_numeric(_value) || is_undefined(_value)) {
+		global.txr_constant_map[?_name] = _value;
+	} else show_error("Expected a string or a number for constant, got " + typeof(_value), true);
+}

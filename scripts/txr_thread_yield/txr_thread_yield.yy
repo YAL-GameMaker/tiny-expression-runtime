@@ -1,8 +1,12 @@
 {
-    "id": "4ff118d2-3d3a-efd6-a571-8ff7937c4f2f",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "txr_thread_yield",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Runtime",
+    "path": "folders/Scripts/Tiny Expression Runtime/Runtime.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "txr_thread_yield",
+  "tags": [],
+  "resourceType": "GMScript",
 }

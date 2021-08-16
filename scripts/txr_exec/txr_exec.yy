@@ -1,8 +1,12 @@
 {
-    "id": "4dc16478-599a-4b35-850b-9cded2b97237",
-    "modelName": "GMScript",
-    "mvc": "1.0",
-    "name": "txr_exec",
-    "IsCompatibility": false,
-    "IsDnD": false
+  "isDnD": false,
+  "isCompatibility": false,
+  "parent": {
+    "name": "Runtime",
+    "path": "folders/Scripts/Tiny Expression Runtime/Runtime.yy",
+  },
+  "resourceVersion": "1.0",
+  "name": "txr_exec",
+  "tags": [],
+  "resourceType": "GMScript",
 }
