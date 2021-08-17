@@ -6,7 +6,7 @@
     "path": "folders/Scripts/TXR tests.yy",
   },
   "resourceVersion": "1.0",
-  "name": "test_txr_value_calls",
+  "name": "txr_test_struct",
   "tags": [],
   "resourceType": "GMScript",
 }

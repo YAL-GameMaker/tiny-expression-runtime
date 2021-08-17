@@ -234,6 +234,15 @@ function txr_thread_resume(th/*:txr_thread*/, val = undefined) {
 				while (--i >= 0) a[i] = ds_stack_pop(stack);
 				ds_stack_push(stack, a);
 				break;
+			case txr_action.object_literal:
+				var _keys = q[2];
+				var i = array_length(_keys);
+				var o = {};
+				while (--i >= 0) {
+					o[$ _keys[i]] = ds_stack_pop(stack);
+				}
+				ds_stack_push(stack, o);
+				break;
 			default:
 				halt = txr_sfmt("Can't run action ID %", q[0]);
 				continue;

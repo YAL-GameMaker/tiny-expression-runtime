@@ -258,6 +258,15 @@ function txr_compile_expr(q) {
 			}
 			ds_list_add(out, [txr_action.array_literal, q[1], argc]);
 			break;
+		case txr_node.object_literal:
+			var _keys = q[2];
+			var _values = q[3];
+			var n = array_length(_keys);
+			for (var i = 0; i < n; i++) {
+				if (txr_compile_expr(_values[i])) return true;
+			}
+			ds_list_add(out, [txr_action.object_literal, q[1], _keys]);
+			break;
 		default: return txr_throw_at("Cannot compile node type " + string(q[0]), q);
 	}
 	return false;

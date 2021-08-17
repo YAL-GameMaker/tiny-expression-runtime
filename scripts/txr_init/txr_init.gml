@@ -140,6 +140,7 @@ function txr_init() {
 		array_access = 30, // (node, index)
 		array_literal = 31, // (nodes)
 		value_call = 32, // (node, args_array)
+		object_literal = 33, // (key_strings, value_nodes)
 	}
 	enum txr_unop {
 		negate = 1, // -value
@@ -186,6 +187,7 @@ function txr_init() {
 		set_array = 26, // (): v = pop(); i = pop(); pop()[i] = v;
 		array_literal = 27, // (n): 
 		value_call = 28, // (argc): args = pop#argc(); fn = pop(); push(fn(...args))
+		object_literal = 29, // (field_names): 
 		sizeof,
 	}
 	

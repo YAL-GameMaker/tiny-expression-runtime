@@ -83,6 +83,38 @@ function txr_build_expr(flags) {
 			if (!closed) return txr_throw_at("Unclosed `[]` after", tk);
 			txr_build_node = [txr_node.array_literal, tk[1], args];
 			break;
+		case txr_token.cub_open: // {...key-value pairs }
+			var closed = false;
+			var _keys = [], _values = [], _found = 0;
+			while (txr_build_pos < txr_build_len) {
+				// hit a closing `]` yet?
+				tkn = txr_build_list[|txr_build_pos];
+				if (tkn[0] == txr_token.cub_close) {
+					txr_build_pos += 1;
+					closed = true;
+					break;
+				}
+				//
+				tkn = txr_build_list[|txr_build_pos++];
+				if (tkn[0] != txr_token.ident) return txr_throw_at("Expected a field name", tkn);
+				_keys[_found] = tkn[2];
+				//
+				tkn = txr_build_list[|txr_build_pos++];
+				if (tkn[0] != txr_token.colon) return txr_throw_at("Expected a `:`", tkn);
+				// read the value:
+				if (txr_build_expr(0)) return true;
+				_values[_found++] = txr_build_node;
+				// skip a `,`:
+				tkn = txr_build_list[|txr_build_pos];
+				if (tkn[0] == txr_token.comma) {
+					txr_build_pos += 1;
+				} else if (tkn[0] != txr_token.cub_close) {
+					return txr_throw_at("Expected a `,` or `}`", tkn);
+				}
+			}
+			if (!closed) return txr_throw_at("Unclosed `{}` after", tk);
+			txr_build_node = [txr_node.object_literal, tk[1], _keys, _values];
+			break;
 		default: return txr_throw_at("Expected an expression", tk);
 	}
 

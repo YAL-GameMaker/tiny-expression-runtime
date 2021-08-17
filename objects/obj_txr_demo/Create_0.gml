@@ -1,5 +1,5 @@
 txr_init();
-test_txr();
+txr_test_all();
 
 txr_function_add("abs", scr_txr_demo_abs, 1);
 txr_function_add("lerp", scr_txr_demo_lerp, 3);
