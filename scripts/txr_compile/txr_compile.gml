@@ -1,4 +1,4 @@
-/// @param code:string
+/// @param {string} code
 function txr_compile(argument0) {
 	if (txr_parse(argument0)) return undefined;
 	if (txr_build()) return undefined;

@@ -1,14 +1,13 @@
 /// @param txr_thread
 /// @param ?yield_value - only used if resuming a thread after a yield
-/// @return txr_thread_status
-function txr_thread_resume() {
-	var th/*:txr_thread*/ = argument[0];
-	var val = argument_count > 1 ? argument[1] : undefined;
+/// @return {int} txr_thread_status
+//!#import ds_stack_* in ds_stack
+function txr_thread_resume(th/*:txr_thread*/, val = undefined) {
 	var arr = th[txr_thread.actions];
 	if (arr == undefined) exit;
 	var _previous = txr_thread_current;
 	txr_thread_current = th;
-	var stack/*:Stack*/ = th[txr_thread.stack];
+	var stack/*:ds_stack*/ = th[txr_thread.stack];
 	switch (th[txr_thread.status]) {
 		case txr_thread_status.error:
 		case txr_thread_status.finished:
@@ -58,7 +57,7 @@ function txr_thread_resume() {
 						if (!is_string(b)) b = string(b);
 						a += b;
 					} else {
-						halt = txr_sfmt("Can't apply % to `%`[%] and `%`[%]",
+						halt = txr_sfmt("Can't apply % to `%`[%] and `%`[%]", 
 							global.txr_op_names[q[2]], a, typeof(a), b, typeof(b));
 						continue;
 					}
@@ -83,18 +82,17 @@ function txr_thread_resume() {
 						halt = txr_sfmt("Can't apply %", global.txr_op_names[q[2]]);
 						continue;
 				} else {
-					halt = txr_sfmt("Can't apply % to `%`[%] and `%`[%]",
+					halt = txr_sfmt("Can't apply % to `%`[%] and `%`[%]", 
 						global.txr_op_names[q[2]], a, typeof(a), b, typeof(b));
 					continue;
 				}
 				ds_stack_push(stack, a);
 				break;
 			case txr_action.ident:
-				var v = variable_instance_get(id, q[2]);
-				ds_stack_push(stack, v);
+				ds_stack_push(stack, self[$ q[2]]);
 				break;
 			case txr_action.set_ident:
-				variable_instance_set(id, q[2], ds_stack_pop(stack));
+				self[$ q[2]] = ds_stack_pop(stack);
 				break;
 			case txr_action.get_field:
 				var v = ds_stack_pop(stack);
@@ -106,39 +104,43 @@ function txr_thread_resume() {
 				variable_instance_set(v, q[2], ds_stack_pop(stack));
 				break;
 			case txr_action.get_local:
-				ds_stack_push(stack, locals[?q[2]]);
+				ds_stack_push(stack, locals[$ q[2]]);
 				break;
 			case txr_action.set_local:
-				locals[?q[2]] = ds_stack_pop(stack);
+				locals[$ q[2]] = ds_stack_pop(stack);
 				break;
 			case txr_action.call:
+			case txr_action.value_call:
 				var args = global.txr_exec_args;
+				var _is_value_call = (q[0] == txr_action.value_call);
 				ds_list_clear(args);
-				var i = q[3], v;
+				var argc = q[_is_value_call ? 2 : 3];
+				var i = argc, v;
 				while (--i >= 0) args[|i] = ds_stack_pop(stack);
 				txr_function_error = undefined;
 				th[@txr_thread.pos] = pos;
-				switch (q[3]) {
-					case  0: v = script_execute(q[2]); break;
-					case  1: v = script_execute(q[2], args[|0]); break;
-					case  2: v = script_execute(q[2], args[|0], args[|1]); break;
-					case  3: v = script_execute(q[2], args[|0], args[|1], args[|2]); break;
-					case  4: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3]); break;
-					case  5: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4]); break;
-					case  6: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5]); break;
-					case  7: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6]); break;
-					case  8: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7]); break;
-					case  9: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8]); break;
-					case 10: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9]); break;
-					case 11: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10]); break;
-					case 12: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11]); break;
-					case 13: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12]); break;
-					case 14: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13]); break;
-					case 15: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14]); break;
-					case 16: v = script_execute(q[2], args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14], args[|15]); break;
+				var fn = _is_value_call ? ds_stack_pop(stack) : q[2];
+				switch (argc) {
+					case  0: v = fn(); break;
+					case  1: v = fn(args[|0]); break;
+					case  2: v = fn(args[|0], args[|1]); break;
+					case  3: v = fn(args[|0], args[|1], args[|2]); break;
+					case  4: v = fn(args[|0], args[|1], args[|2], args[|3]); break;
+					case  5: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4]); break;
+					case  6: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5]); break;
+					case  7: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6]); break;
+					case  8: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7]); break;
+					case  9: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8]); break;
+					case 10: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9]); break;
+					case 11: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10]); break;
+					case 12: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11]); break;
+					case 13: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12]); break;
+					case 14: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13]); break;
+					case 15: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14]); break;
+					case 16: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14], args[|15]); break;
 					// and so on
 					default:
-						halt = txr_sfmt("Too many arguments (%)", q[3]);
+						halt = txr_sfmt("Too many arguments for a call (%)", q[3]);
 						continue;
 				}
 				// hit an error?:

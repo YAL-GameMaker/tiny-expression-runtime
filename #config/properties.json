@@ -2,6 +2,7 @@
     "indentSize": 4,
     "indentWithTabs": true,
     "linterPrefs": {
-        
-    }
+        "requireFields": true
+    },
+    "templateStringScript": "txr_sfmt"
 }

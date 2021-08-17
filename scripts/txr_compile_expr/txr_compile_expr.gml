@@ -1,7 +1,8 @@
 /// @param node
-function txr_compile_expr(argument0) {
-	var q = argument0;
-	var out/*:List*/ = txr_compile_list;
+/// @returns {bool} whether encountered an error
+//!#import ds_list_* in ds_list
+function txr_compile_expr(q) {
+	var out/*:ds_list*/ = txr_compile_list;
 	switch (q[0]) {
 		case txr_node.number: ds_list_add(out, [txr_action.number, q[1], q[2]]); break;
 		case txr_node._string: ds_list_add(out, [txr_action._string, q[1], q[2]]); break;
@@ -37,12 +38,17 @@ function txr_compile_expr(argument0) {
 			}
 			break;
 		case txr_node.call:
+		case txr_node.value_call:
+			var _is_value_call = q[0] == txr_node.value_call;
+			if (_is_value_call) if (txr_compile_expr(q[2])) return true;
 			var args = q[3];
 			var argc = array_length(args);
 			for (var i = 0; i < argc; i++) {
 				if (txr_compile_expr(args[i])) return true;
 			}
-			ds_list_add(out, [txr_action.call, q[1], q[2], argc]);
+			if (_is_value_call) {
+				ds_list_add(out, [txr_action.value_call, q[1], argc])
+			} else ds_list_add(out, [txr_action.call, q[1], q[2], argc]);
 			break;
 		case txr_node.block:
 			var nodes = q[2];

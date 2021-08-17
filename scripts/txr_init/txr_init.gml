@@ -1,9 +1,13 @@
 function txr_init() {
 	//!#import "global"
-#macro txr_error global.txr_error_val
+	
+	// configuration:
+	#macro txr_value_calls 1
+	
+	#macro txr_error global.txr_error_val
 
 	// parser:
-#macro txr_parse_tokens global.txr_parse_tokens_val
+	#macro txr_parse_tokens global.txr_parse_tokens_val
 	txr_parse_tokens = ds_list_create();
 	enum txr_token {
 		eof = 0, // <end of file>
@@ -135,6 +139,7 @@ function txr_init() {
 		field = 29, // (node, field:string)
 		array_access = 30, // (node, index)
 		array_literal = 31, // (nodes)
+		value_call = 32, // (node, args_array)
 	}
 	enum txr_unop {
 		negate = 1, // -value
@@ -180,6 +185,7 @@ function txr_init() {
 		get_array = 25, // (): i = pop(); push(pop()[i])
 		set_array = 26, // (): v = pop(); i = pop(); pop()[i] = v;
 		array_literal = 27, // (n): 
+		value_call = 28, // (argc): args = pop#argc(); fn = pop(); push(fn(...args))
 		sizeof,
 	}
 	
@@ -196,3 +202,5 @@ function txr_init() {
 	// Reused
 	global.txr_exec_args = ds_list_create();
 }
+// GMEdit hints:
+/// @typedef {buffer} Buffer

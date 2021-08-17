@@ -1,5 +1,6 @@
-function txr_parse(argument0) {
-	var str = argument0;
+/// @param {string} code
+/// @returns {bool} whether encountered an error
+function txr_parse(str) {
 	var len = string_length(str);
 	var out = txr_parse_tokens;
 	ds_list_clear(out);

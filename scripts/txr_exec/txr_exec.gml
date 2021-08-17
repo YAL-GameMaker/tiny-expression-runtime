@@ -1,22 +1,9 @@
-/// @param actions
-/// @param ?arguments:array|ds_map
-function txr_exec() {
-	var arr = argument[0];
-	var argd = argument_count > 1 ? argument[1] : undefined;
-	var th/*:txr_thread*/ = txr_thread_create(arr, argd);
-	var result = undefined;
-	switch (txr_thread_resume(th)) {
-		case txr_thread_status.finished:
-			txr_error = "";
-			result = th[txr_thread.result];
-			break;
-		case txr_thread_status.error:
-			txr_error = th[txr_thread.result];
-			break;
-		default:
-			txr_error = "Thread paused execution but you are using txr_exec instead of txr_thread_resume";
-			break;
+/// @param {string|array} code_or_actions
+/// @param {array|struct|ds_map} ?args
+function txr_exec(_code_or_actions, _args = undefined) {
+	if (is_string(_code_or_actions)) {
+		return txr_exec_string(_code_or_actions /*#as string*/, _args);
+	} else {
+		return txr_exec_actions(_code_or_actions /*#as array*/, _args);
 	}
-	txr_thread_destroy(th);
-	return result;
 }

@@ -1,4 +1,5 @@
 /// @param first
+/// @returns {bool} whether encountered an error
 function txr_build_ops(argument0) {
 	var nodes = ds_list_create();
 	ds_list_add(nodes, txr_build_node);

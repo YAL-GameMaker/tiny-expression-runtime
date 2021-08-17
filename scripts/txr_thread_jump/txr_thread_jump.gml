@@ -1,6 +1,8 @@
-function txr_thread_jump(argument0, argument1) {
+/// @param txr_thread
+/// @param label_name
+/// @returns {bool} whether succeeded
+function txr_thread_jump(th/*:txr_thread*/, label) {
 	// equivalent to running `goto <name>` in thread
-	var th/*:txr_thread*/ = argument0, label = argument1;
 	var arr = th[txr_thread.actions];
 	if (arr == undefined) exit;
 	var pos = -1;

@@ -176,6 +176,11 @@ select option
 		If assigned a script ID (rather than -1), any calls to non-existent functions will be
 		compiled into `default_func("function_name", ...arguments)`
 	}
+	#[txr_value_calls]() {
+		Mutually exclusive with above, this allows the 2.3 version of TXR to call values,
+		meaning that `missing_func()` would try to call `self.missing_func` if available
+		and throw an error otherwise.
+	}
 	#[txr_compile(code)->actions|undefined]() {
 		Compiles a snippet of code and returns an array of VM actions ("a program").
 		
@@ -185,10 +190,11 @@ select option
 		var pg = txr_compile(@'
 			return "hello!";
 		');
+		if (pg == undefined) show_debug_message("Error: " + txr_error);
 		```
 	}
-	#[txr_exec(actions, ?arguments:array|ds_map)->result|undefined]() {
-		The easiest way to run a TXR program.
+	#[txr_exec_actions(actions, ?arguments)->result|undefined]() {
+		The easiest way to run a compiled TXR program.
 		
 		Internally this just does [txr_thread_create]->[txr_thread_resume]->[txr_thread_destroy].
 		
@@ -196,27 +202,63 @@ select option
 		
 		If there's an error, returns `undefined` and stores error text in `txr_error`.
 		
-		`args` (optional) can be an array (in which case it'll set `argument0` and so on)
-		or a ds_map (in which case it'll define said local variables).
+		`arguments` (optional) can be: --{
+		--	An array\
+			This will assign the array into `argument` variable and its items into
+			`argument0`...`argumentN` for convenience.
+		--	A struct\
+			This will set initial values of specified local variables to items in the struct.
+		--	A `ds_map`\
+			Ditto, for backwards compatibility.
+		}
+		
+		Examples:
 		```
 		var pg = txr_compile(@'
 			return "hello!";
 		');
-		show_debug_message(txr_exec(pg)); // hello!
+		show_debug_message(txr_exec_actions(pg)); // hello!
 		
 		var pg = txr_compile(@'
 			return "hello, " + argument0 + "!";
 		');
-		show_debug_message(txr_exec(pg, "you")); // hello, you!
+		show_debug_message(txr_exec_actions(pg, ["you"])); // hello, you!
+		```
+		
+		*NB!* This function used to be named `txr_exec` but was renamed to avoid confusion
+		- use `txr_exec_actions` for executing a [previously compiled](txr_compile) program
+		and `txr_exec_string` for compiling and executing a snippet of code.
+	}
+	#[txr_exec_string(code, ?arguments)->result|undefined]() {
+		Further simplifies the above by also running a one-off `txr_compile` for you.
+		```
+		show_debug_message(txr_exec_string(@'
+			return "hello, " + argument0 + "!";
+		', ["you"])); // hello, you!
+		
+		show_debug_message(txr_exec_string(@'
+			var who; // (intentionally not set)
+			return "hello, " + who + "!";
+		', { who: "you" })); // hello, you!
 		```
 	}
-	#[txr_thread_create(actions, ?args)->thread]() {
+	---
+	#[txr_thread_create(actions, ?arguments)->thread]() {
 		Sets up a "thread" for executing the specified program.
+		
+		If `arguments` are provided, these are handled as per [txr_exec_actions].
 		
 		TXR "threads" aren't too unlike Lua "threads" - they do not execute in parallel,
 		but can be suspended/resumed like coroutines.
 		
 		This does not automatically start execution - you'll need to call [txr_thread_resume].
+	}
+	#[txr_thread_reset(thread, ?arguments)]() {
+		Returns a previously created thread into its initial state - keeps actions
+		but clears locals and starts execution from the beginning.
+		
+		If `arguments` are provided, these are handled as per [txr_exec_actions].\
+		(note: previously provided arguments are discarded)
 	}
 	#[txr_thread_destroy(thread)]() {
 		Cleans up a previously created "thread", deleting its data structures and such.

@@ -1,3 +1,4 @@
+/// @returns {bool} whether encountered an error
 function txr_build() {
 	txr_build_list = txr_parse_tokens;
 	txr_build_pos = 0;

@@ -1,6 +1,7 @@
-function txr_thread_jump_push(argument0, argument1) {
-	// equivalent to running `call <name>` in thread
-	var th/*:txr_thread*/ = argument0, label = argument1;
+/// @param txr_thread
+/// @param label_name
+/// @returns {bool} whether succeeded
+function txr_thread_jump_push(th/*:txr_thread*/, label) {
 	var arr = th[txr_thread.actions];
 	if (arr == undefined) exit;
 	var pos = -1;

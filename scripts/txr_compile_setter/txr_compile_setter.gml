@@ -1,6 +1,7 @@
-function txr_compile_setter(argument0) {
-	var q = argument0;
-	var out/*:List*/ = txr_compile_list;
+/// @param node
+/// @returns {bool} whether encountered an error
+function txr_compile_setter(q) {
+	var out = txr_compile_list;
 	switch (q[0]) {
 		case txr_node.ident:
 			var s = q[2];

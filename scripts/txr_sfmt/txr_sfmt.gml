@@ -3,10 +3,6 @@
 /// @param  ...values
 function txr_sfmt() {
 	// sfmt("%/% hp", 1, 2) -> "1/2 hp"
-	gml_pragma("global", @'
-		global.txr_sfmt_buf = buffer_create(1024, buffer_grow, 1);
-		global.txr_sfmt_map = ds_map_create();
-	');
 	var f = argument[0];
 	var w = global.txr_sfmt_map[?f], i, n;
 	if (w == undefined) {
@@ -38,3 +34,5 @@ function txr_sfmt() {
 	buffer_seek(b, buffer_seek_start, 0);
 	return buffer_read(b, buffer_string);
 }
+global.txr_sfmt_buf = buffer_create(1024, buffer_grow, 1);
+global.txr_sfmt_map = ds_map_create();

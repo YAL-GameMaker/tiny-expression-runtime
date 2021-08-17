@@ -22,6 +22,7 @@ function txr_action_print(argument0) {
 		case txr_action.get_array: return s + " get array";
 		case txr_action.set_array: return s + " set array";
 		case txr_action.array_literal: return txr_sfmt("% create array(%)", s, q[2]);
+		case txr_action.value_call: return txr_sfmt("% value call(%)", s, q[2]);
 		default:
 			s = txr_sfmt("% A%", s, q[0]);
 			n = array_length(q);

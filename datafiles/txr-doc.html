@@ -1,4 +1,4 @@
-<html><head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <title>TXR cheatsheet</title>
 <meta name="viewport" content="width=device-width" />
@@ -15,8 +15,7 @@ if (document.location.host == "yal.cc" && location.protocol == "http:") {
 	document.location.protocol = "https:";
 }
 </script>
-<style type="text/css">
-body, #doc tt {
+<style type="text/css">body, #doc tt {
 	font: 15px 'Open Sans', sans-serif;
 	line-height: 1.35;
 }
@@ -27,14 +26,14 @@ body {
 	width: 100%;
 	min-height: 100%;
 	min-height: 100vh;
-	background-color: #f9f9f9;
+	background-color: #899FC6;
 }
 .page {
 	max-width: 656px;
 	background: #ffffff;
 	margin: 0 auto;
 	padding: 8px;
-	box-shadow: 0 0 0 2px #eee;
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 	min-height: 100%;
 	min-height: 100vh;
 	box-sizing: border-box;
@@ -42,23 +41,19 @@ body {
 .page > p:first-child {
 	margin-top: 0;
 }
-
 #doc, #doc ul, #doc ol {
 	padding-left: 0;
 	margin: 0;
 }
-#doc div ul, #doc div ol {
+#doc article > ul, #doc article > ol {
 	padding-left: 20px;
 }
-#doc div ul li {
+#doc article ul li {
 	list-style: disc;
 	list-style-image: url('data:image/svg+xml;base256,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="1em" viewBox="0 0 20px 1em"><circle cx="17px" cy="0.675em" r="2px"/></svg>'); 
 }
 
-#doc .header {
-	display: block;
-	outline: none;
-	text-decoration: none;
+#doc header {
 	margin: 0;
 	font-weight: 700;
 	font-size: 100%;
@@ -69,7 +64,12 @@ body {
 	padding-bottom: 1px;
 	cursor: pointer;
 }
-#doc .header::before {
+#doc header a {
+	outline: none;
+	text-decoration: none;
+	color: #458;
+}
+#doc header::before {
 	display: inline-block;
 	content: "+";
 	font: 12px monospace;
@@ -84,17 +84,17 @@ body {
 	position: relative;
 	top: -1px;
 }
-#doc .item.open > .header::before {
+#doc section.open > header::before {
 	content: "-";
 }
-#doc .item.empty > .header::before {
-	content: /*"·"*/" ";
+#doc section.empty > header::before {
+	content: " "; /*"·"*/
 }
-#doc .header:hover {
+#doc header:hover {
 	border-left-color: #f3f3f3;
 	background: #f3f3f3;
 }
-#doc .header .ret-arrow {
+#doc header .ret-arrow {
 	font-weight: normal;
 	margin: 0 0.1em;
 }
@@ -118,12 +118,26 @@ body {
 	border-bottom: 1px solid #ccc;
 }
 
-#doc .content, #doc ul {
+#doc article, #doc ul {
 	padding-left: 20px;
 	border-left: 2px solid #f3f3f3;
 }
+#doc article {
+	padding-top: 0.25em;
+	padding-bottom: 0.5em;
+}
 #doc tt {
 	font-weight: bold;
+}
+#doc table {
+	border-spacing: 0;
+	color: currentColor;
+}
+#doc table, #doc table td, #doc table th {
+	border: 1px solid #f3f3f3;
+}
+#doc table td, #doc table th {
+	padding: 0.1em 0.5em;
 }
 #doc pre {
 	font-family: Consolas, Dejavu Sans Mono, Segoe UI Mono, Ubuntu Mono, Lucida Console, monospace;
@@ -132,6 +146,7 @@ body {
 	background: white;
 	padding: 4px 2px 4px 10px;
 	margin: 0;
+	-moz-tab-size: 4;
 	tab-size: 4;
 	overflow-x: auto;
 	white-space: pre-wrap;
@@ -154,16 +169,46 @@ body {
 }
 #doc abbr[title] {
 	text-decoration: underline;
+	-webkit-text-decoration-color: #bbb;
 	text-decoration-color: #bbb;
+	-webkit-text-decoration-style: double;
 	text-decoration-style: double;
 }
-/* delay display until load */
-#doc[ready] .item:not(.open) > .content {
-	display: none;
+#doc hr {
+	margin: 0.5em 0;
+	margin-right: 1em;
+	border: 0;
+	border-top: 2px dashed #f3f3f3;
 }
-</style>
-<style type="text/css" id="md_gml">
-/* GameMakerLanguage */
+#doc section + hr {
+	margin: 0;
+	height: 1em;
+	border: 1px solid #f3f3f3;
+	border-width: 1px 0 1px 0;
+}
+#doc section {
+	border-top: 1px solid #f3f3f3;
+	margin-top: 0.3em;
+}
+#doc section:first-child {
+	margin-top: 0em;
+}
+#doc section:last-child {
+	border-bottom: 1px solid #f3f3f3;
+}
+#doc section + section, #doc hr + section {
+	border-top: 0;
+	margin-top: 0;
+}
+#doc section + p {
+	border-top: 1px solid #f3f3f3;
+	padding-top: 0.3em;
+}
+/* delay display until load */
+#doc[ready] section:not(.open) > article {
+	display: none;
+}</style>
+<style type="text/css" id="lang_gml">/* GameMakerLanguage */
 pre.gmlmd .md { color: #7A81A9 } /* #define */
 pre.gmlmd .kw { color: #008; font-weight: bold } /* keyword */
 pre.gmlmd .co { color: #080 } /* comment */
@@ -180,50 +225,7 @@ pre.gmlmd .uf { color: #808 } /* user func */
 pre.gmlmd .uv { color: #000 } /* user var */
 pre.gmlmd .lv { color: #648 } /* local var */
 pre.gmlmd .fd { color: #804 } /* field */
-</style>
-<style type="text/css" id="night_css">
-#night { display: none }
-label[for="night"] {
-	color: blue;
-	text-decoration: underline;
-	cursor: pointer;
-}
-#night:checked + .main {
-	background-color: #405070;
-}
-#night:checked + .main .page {
-	background-color: #1A202D;
-	box-shadow: 0 0 0 2px #9bccff63;
-	color: white;
-}
-#night:checked + .main a,
-#night:checked + .main a:visited,
-#night:checked + .main #doc .header,
-#night:checked + .main label[for="night"] {
-	color: #9DEC76;
-}
-#night:checked + .main #doc .header:before,
-#night:checked + .main #doc h3 {
-	border-color: #9DEC76
-}
-#night:checked + .main #doc .header,
-#night:checked + .main #doc .header:hover,
-#night:checked + .main #doc .content,
-#night:checked + .main #doc ul {
-	border-left-color: rgba(205,225,255,0.1);
-}
-#night:checked + .main #doc .header:hover,
-#night:checked + .main #doc .asset:hover {
-	background: rgba(205,225,255,0.1);
-}
-#night:checked + .main div ul li {
-	list-style-image: url('data:image/svg+xml;base256,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="1em" viewBox="0 0 20px 1em"><circle cx="17px" cy="0.675em" r="2px" fill="white"/></svg>'); 
-}
-#night:checked + .main pre {
-	color: #cccccc;
-	background: #000000;
-	border: 1px solid #3E4757;
-}
+
 #night:checked + .main pre.gmlmd .op { color: #CCCCCC }
 #night:checked + .main pre.gmlmd .co { color: #5B995B }
 #night:checked + .main pre.gmlmd .kw { color: #FFB871 }
@@ -241,17 +243,63 @@ label[for="night"] {
 #night:checked + .main pre.gmlmd .uv { color: #B2B1FF }
 #night:checked + .main pre.gmlmd .fd { color: #B2B1FF }
 
-#night:checked + .main pre.gmlmd a.uf {
+#night:checked + .main pre.gmlmd a.uf,
+#night:checked + .main pre.gmlmd a.kw,
+#night:checked + .main pre.gmlmd a.sf {
 	background-color: #431;
 }
-#night:checked + .main pre.gmlmd a.kw {
-	background-color: #431;
-}
-#night:checked + .main pre.gmlmd a.sf,
 #night:checked + .main pre.gmlmd a.sv {
-	background-color: #431;
+	background-color: #422;
+}</style>
+<style type="text/css" id="night_css">#night { display: none }
+label[for="night"] {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
 }
-</style>
+#night:checked + .main {
+	background-color: #405070;
+}
+#night:checked + .main .page {
+	background-color: #1A202D;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	color: white;
+}
+#night:checked + .main a,
+#night:checked + .main a:visited,
+#night:checked + .main #doc header,
+#night:checked + .main label[for="night"] {
+	color: #9DEC76;
+}
+#night:checked + .main #doc header:before,
+#night:checked + .main #doc h3 {
+	border-color: #9DEC76
+}
+#night:checked + .main #doc header,
+#night:checked + .main #doc header:hover,
+#night:checked + .main #doc article,
+#night:checked + .main #doc section,
+#night:checked + .main #doc section + p,
+#night:checked + .main #doc hr,
+#night:checked + .main #doc ul,
+#night:checked + .main #doc table,
+#night:checked + .main #doc table td,
+#night:checked + .main #doc table th
+{
+	border-color: rgba(205,225,255,0.1);
+}
+#night:checked + .main #doc header:hover,
+#night:checked + .main #doc .asset:hover {
+	background: rgba(205,225,255,0.1);
+}
+#night:checked + .main article ul li {
+	list-style-image: url('data:image/svg+xml;base256,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="1em" viewBox="0 0 20px 1em"><circle cx="17px" cy="0.675em" r="2px" fill="white"/></svg>'); 
+}
+#night:checked + .main pre {
+	color: #cccccc;
+	background: #000000;
+	border: 1px solid #3E4757;
+}</style>
 <style>
 .main.boxtt #doc tt {
 	display: inline-block;
@@ -272,24 +320,35 @@ label[for="night"] {
 	color: white;
 }
 </style>
-<noscript><style>
-#doc .header::before {
-	display: none;
+<style type="text/css" id="print_css">@media print {
+	.main { background-color: transparent }
+	.display-controls { display: none; }
+	.page { width: 100%; box-shadow: none; }
+	#doc header::before,
+	#doc section.open header::before	{
+		content: "~";
+	}
+	#doc { display: inherit }
+	#doc section:not(.open) > article,
+	#doc[ready] section:not(.open) > article {
+		display: inherit;
+	}
+}</style>
+<noscript><style>#doc header::before {
+	content: "~";
 }
-#doc .header:hover {
+#doc header:hover {
 	border-left-color: #f3f3f3;
 	background: inherit;
 }
 #doc { display: inherit }
-#doc .item:not(.open) > .content {
+#doc section:not(.open) > article {
 	display: inherit;
-}
-</style></noscript>
+}</style></noscript>
 </head><body>
 <input type="checkbox" id="night" checked/>
 <div class="main boxtt">
-<script type="text/javascript">
-(function() {
+<script type="text/javascript">(function() {
 	var night = document.getElementById("night");
 	var path = "docmd night mode";
 	var ls = window.localStorage;
@@ -299,23 +358,24 @@ label[for="night"] {
 			ls.setItem(path, "" + night.checked);
 		};
 	}
-})();
-</script>
-<div class="page">
-<p>This is a "cheat sheet" for Tiny Expression Runtime by <a href="https://yal.cc">YellowAfterlife</a>.<br/>Project files can be downloaded
+})();</script>
+<main class="page">
+<p><p>This is a "cheat sheet" for Tiny Expression Runtime by <a href="https://yal.cc">YellowAfterlife</a>.<br/>
+Project files can be downloaded
 	from <a href="https://yellowafterlife.itch.io/gamemaker-interpreters">itch.io</a>
-	or <a href="https://marketplace.yoyogames.com/assets/7814/_">GM Marketplace</a>.<br/>For questions/inquiries,
+	or <a href="https://marketplace.yoyogames.com/assets/7814/_">GM Marketplace</a>.<br/>
+For questions/inquiries,
 	use <a href="https://yellowafterlife.itch.io/gamemaker-live/community">forums</a>
-	or <a href="//yellowafterlife@hotmail.com">send me an email</a>.<br/>An up-to-date version of this document can always be found <a href="https://yal.cc/r/19/txr">online</a>.
-
-</p><p>For practical reasons, this document covers the most current version of TXR.</p><p>
+	or <a href="//yellowafterlife@hotmail.com">send me an email</a>.<br/>
+An up-to-date version of this document can always be found <a href="https://yal.cc/r/19/txr">online</a>.
+</p><p>
+For practical reasons, this document covers the most current version of TXR.</p></p><p class="display-controls">
 Click on sections to expand/collapse them.<br>Quick display controls: <a href="#" onclick="opt_none(); return false">Categories</a>
 &middot; <a href="#" onclick="opt_list(); return false">Sections</a>
 &middot; <a href="#" onclick="opt_all(); return false">Everything</a>
 &middot; <label for="night">Toggle night mode</label><br/>
-</p><div id="doc">
-<!--<doc--><div class="item"><a class="header" id="syntax" href="#syntax" title="(permalink)">TXR syntax</a><div class="content"><p>
-	<div class="item"><a class="header" id="expressions" href="#expressions" title="(permalink)">Expressions</a><div class="content"><p>
+</p><section id="doc">
+<!--<doc--><p><section><header id="syntax"><a href="#syntax" title="(permalink)">TXR syntax</a></header><article><section><header id="expressions"><a href="#expressions" title="(permalink)">Expressions</a></header><article><p>
 		TXR supports various primitive expressions: </p><ul>
 		<li>	Numbers: <tt>4</tt>, <tt>4.5</tt>, and <tt>-4</tt> are all good.
 			No hexadecimals at this time.
@@ -325,8 +385,7 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 			You can add custom ones in <tt>txr_parse</tt>.
 		</li><li>	Parentheses: <tt>(...)</tt>
 			Overwhelmingly optional.
-		</li></ul></div></div>
-	<div class="item"><a class="header" id="operators" href="#operators" title="(permalink)">Operators</a><div class="content"><p>
+		</li></ul></article></section><section><header id="operators"><a href="#operators" title="(permalink)">Operators</a></header><article><p>
 		TXR supports a verity of common operators.
 		</p><p>
 		Binary operators, grouped by priority: </p><ul>
@@ -347,16 +406,14 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 		</li><li>	<tt>+</tt> (does nothing, but lets you do <tt>a = +4</tt>)
 		</li><li>	<tt>++</tt> (prefix and postfix)
 		</li><li>	<tt>--</tt> (prefix and postfix)
-		</li></ul></div></div>
-	<div class="item"><a class="header" id="function-calls" href="#function-calls" title="(permalink)">Function calls</a><div class="content"><p>
+		</li></ul></article></section><section><header id="function-calls"><a href="#function-calls" title="(permalink)">Function calls</a></header><article><p>
 		Functions are exposed to TXR via <a href="#txr_function_add">txr_function_add</a>;
 		</p><p>
 		Both fixed and variable-argument-count functions are supported.
 		</p><p>
 		Up to 16 arguments can be passed
 		(if you need more, add them in <tt>txr_thread_resume</tt>, in <tt>txr_action.call</tt>)
-	</p></div></div>
-	<div class="item"><a class="header" id="statements" href="#statements" title="(permalink)">Statements</a><div class="content"><p>
+	</p></article></section><section><header id="statements"><a href="#statements" title="(permalink)">Statements</a></header><article><p>
 		Starting with part 2, TXR allows for statements.
 		</p><p>
 		Statements can be: </p><ul>
@@ -366,48 +423,41 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 		</li><li>	<a href="#branching">Branching</a>
 		</li><li>	<a href="#function-calls">Function calls</a>
 		</li><li>	Prefix/postfix increment/decrement (<tt>v++</tt>, <tt>--v</tt>, etc.)
-		</li></ul></div></div>
-	<div class="item"><a class="header" id="variables" href="#variables" title="(permalink)">Variables</a><div class="content"><p>
+		</li></ul></article></section><section><header id="variables"><a href="#variables" title="(permalink)">Variables</a></header><article><p>
 		You may declare local variables via GML-style <tt>var</tt> syntax
 		</p><pre class="gmlmd">
 <span class="kw">var</span> <span class="lv">i</span><span class="op">;</span>
 <span class="kw">var</span> <span class="lv">k</span> <span class="op">=</span> <span class="nu">0</span><span class="op">;</span>
 <span class="kw">var</span> <span class="lv">z</span> <span class="op">=</span> <span class="sv">true</span><span class="op">,</span> <span class="lv">s</span> <span class="op">=</span> <span class="st">"hi"</span><span class="op">;</span>
-</pre><p>Access to anything that is not a local variable will by default map to calling instance's <br/>variables. You may customize this in <tt>txr_thread_resume</tt> (<tt>ident</tt>, <tt>set_ident</tt>).
-	</p></div></div>
-	<div class="item"><a class="header" id="assignments" href="#assignments" title="(permalink)">Assignments</a><div class="content"><p>
+</pre><p>
+		Access to anything that is not a local variable will by default map to calling instance's <br/>
+		variables. You may customize this in <tt>txr_thread_resume</tt> (<tt>ident</tt>, <tt>set_ident</tt>).
+	</p></article></section><section><header id="assignments"><a href="#assignments" title="(permalink)">Assignments</a></header><article><p>
 		You may assign variables via the conventional <tt>name = value</tt> syntax.
 		</p><p>
 		Assignment operators (<tt>+=</tt>, etc.) are also supported.
-	</p></div></div>
-	<div class="item"><a class="header" id="branching" href="#branching" title="(permalink)">Branching</a><div class="content"><p>
+	</p></article></section><section><header id="branching"><a href="#branching" title="(permalink)">Branching</a></header><article><p>
 		TXR supports a number of common branching statements:
-		<div class="item"><a class="header" id="if-then" href="#if-then" title="(permalink)">if &lt;condition&gt; &lt;then-statement&gt;</a><div class="content"><p>
+		</p><section><header id="if-then"><a href="#if-then" title="(permalink)">if &lt;condition&gt; &lt;then-statement&gt;</a></header><article><p>
 			Parentheses are optional.
-		</p></div></div>
-		<div class="item empty"><a class="header" id="if-then-else" href="#if-then-else" title="(permalink)">if &lt;condition&gt; &lt;then-statement&gt; else &lt;else-statement&gt;</a></div>
-		<div class="item"><a class="header" id="while" href="#while" title="(permalink)">while &lt;condition&gt; &lt;loop-statement&gt;</a><div class="content"><p>
+		</p></article></section><section><header id="if-then-else"><a href="#if-then-else" title="(permalink)">if &lt;condition&gt; &lt;then-statement&gt; else &lt;else-statement&gt;</a></header><article></article></section><section><header id="while"><a href="#while" title="(permalink)">while &lt;condition&gt; &lt;loop-statement&gt;</a></header><article><p>
 			<tt>break</tt>/<tt>continue</tt> are supported.
-		</p></div></div>
-		<div class="item"><a class="header" id="do-while" href="#do-while" title="(permalink)">do &lt;loop-statement&gt; while &lt;condition&gt;</a><div class="content"><p>
+		</p></article></section><section><header id="do-while"><a href="#do-while" title="(permalink)">do &lt;loop-statement&gt; while &lt;condition&gt;</a></header><article><p>
 			<tt>break</tt>/<tt>continue</tt> are supported.
-		</p></div></div>
-		<div class="item"><a class="header" id="for" href="#for" title="(permalink)">for (&lt;init&gt;; &lt;condition&gt;; &lt;post&gt;) &lt;loop-statement&gt;</a><div class="content"><p>
+		</p></article></section><section><header id="for"><a href="#for" title="(permalink)">for (&lt;init&gt;; &lt;condition&gt;; &lt;post&gt;) &lt;loop-statement&gt;</a></header><article><p>
 			<tt>break</tt>/<tt>continue</tt> are supported.
 			</p><p>
 			Semicolons and parentheses are optional, but maybe don't abuse that.
-		</p></div></div>
-		<div class="item"><a class="header" id="switch" href="#switch" title="(permalink)">switch (&lt;expr&gt;) { ... }</a><div class="content"><p>
+		</p></article></section><section><header id="switch"><a href="#switch" title="(permalink)">switch (&lt;expr&gt;) { ... }</a></header><article><p>
 			Common-case <tt>switch</tt> block.
 			</p><p>
 			<tt>case</tt>s are to be terminated with <tt>break</tt>.
 			</p><p>
 			Much like in GML VM, supporting arbitrary case expressions means that this is
 			a slightly more optimized pile of if-statements.
-		</p></div></div>
-		
+		</p></article></section><p>
 		The following are non-standard:
-		<div class="item"><a class="header" id="select" href="#select" title="(permalink)">select (&lt;expr&gt;) { ... }</a><div class="content"><p>
+		</p><section><header id="select"><a href="#select" title="(permalink)">select (&lt;expr&gt;) { ... }</a></header><article><p>
 			Essentially a shorthand for a way to structure a <a href="#switch">switch</a> block. So,
 			</p><pre class="gmlmd">
 <span class="kw">select</span> <span class="op">(</span><span class="uf">func</span><span class="op">(</span><span class="nu">1</span><span class="op">,</span> <span class="nu">2</span><span class="op">)</span><span class="op">)</span> <span class="cb">{</span>
@@ -415,66 +465,58 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
     <span class="kw">option</span> <span class="st">"B"</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span><span class="op">;</span>
     <span class="kw">default</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"default"</span><span class="op">)</span><span class="op">;</span>
 <span class="cb">}</span>
-</pre><p>is same as
+</pre><p>
+			is same as
 			</p><pre class="gmlmd">
-<a class="kw" href="#switch">switch</a> <span class="op">(</span><span class="uf">func</span><span class="op">(</span><span class="nu">1</span><span class="op">,</span> <span class="nu">2</span><span class="op">,</span> <span class="st">"A"</span><span class="op">,</span> <span class="st">"B"</span><span class="op">)</span><span class="op">)</span> <span class="cb">{</span>
+<span class="kw">switch</span> <span class="op">(</span><span class="uf">func</span><span class="op">(</span><span class="nu">1</span><span class="op">,</span> <span class="nu">2</span><span class="op">,</span> <span class="st">"A"</span><span class="op">,</span> <span class="st">"B"</span><span class="op">)</span><span class="op">)</span> <span class="cb">{</span>
     <span class="kw">case</span> <span class="nu">0</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">;</span> <span class="kw">break</span><span class="op">;</span>
     <span class="kw">case</span> <span class="nu">1</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span><span class="op">;</span> <span class="kw">break</span><span class="op">;</span>
     <span class="kw">default</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"default"</span><span class="op">)</span><span class="op">;</span>
 <span class="cb">}</span>
-</pre></div></div>
-		
+</pre></article></section><p>
 		<a href="https://en.wikipedia.org/wiki/Goto">Gotos</a> are a bad way of structuring
 		your code, but can be handy for dialogues/etc:
-		<div class="item"><a class="header" id="label" href="#label" title="(permalink)">label &lt;label name&gt;: &lt;expr&gt;</a><div class="content"><p>
+		</p><section><header id="label"><a href="#label" title="(permalink)">label &lt;label name&gt;: &lt;expr&gt;</a></header><article><p>
 			Declares a label that you can later jump to.
 			</p><p>
 			Note that TXR expects some sort of a statement after the label.
-		</p></div></div>
-		<div class="item"><a class="header" id="jump" href="#jump" title="(permalink)">jump &lt;label name&gt;</a><div class="content"><p>
+		</p></article></section><section><header id="jump"><a href="#jump" title="(permalink)">jump &lt;label name&gt;</a></header><article><p>
 			Transfers the program to the specified label.
-		</p></div></div>
-		<div class="item"><a class="header" id="call" href="#call" title="(permalink)">call &lt;label name&gt;</a><div class="content"><p>
+		</p></article></section><section><header id="call"><a href="#call" title="(permalink)">call &lt;label name&gt;</a></header><article><p>
 			Transfer to the specified label while pushing the original location to stack.
 			</p><p>
 			This allows to use labels as makeshift sub-routines.
 			</p><p>
 			You can strip out this feature in <tt>txr_parse</tt> (see <tt>case "call"</tt>, <tt>case "back"</tt>).
-		</p></div></div>
-		<div class="item"><a class="header" id="back" href="#back" title="(permalink)">back</a><div class="content"><p>
+		</p></article></section><section><header id="back"><a href="#back" title="(permalink)">back</a></header><article><p>
 			Returns from a <a href="#call">call</a> back to wherever the code was previously executing.
-		</p></div></div>
-	</p></div></div>
-</p></div></div>
-<div class="item"><a class="header" id="api" href="#api" title="(permalink)">TXR API</a><div class="content"><p>
-	<div class="item"><a class="header" id="txr_function_add" href="#txr_function_add" title="(permalink)">txr_function_add(name, script, arg_count)</a><div class="content"><p>
+		</p></article></section></article></section></article></section><section><header id="api"><a href="#api" title="(permalink)">TXR API</a></header><article><section><header id="txr_function_add"><a href="#txr_function_add" title="(permalink)">txr_function_add(name, script, arg_count)</a></header><article><p>
 		Registers a function for use with TXR.
 		</p><p>
 		<tt>arg_count</tt> is the number of arguments that function takes (-1 to accept any number).
-		
-</p><pre class="gmlmd">
+		</p><pre class="gmlmd">
 <span class="uf">txr_function_add</span><span class="op">(</span><span class="st">"trace"</span><span class="op">,</span> <span class="uf">scr_trace</span><span class="op">,</span> <span class="op">-</span><span class="nu">1</span><span class="op">)</span><span class="op">;</span>
-</pre></div></div>
-	<div class="item"><a class="header" id="txr_function_error" href="#txr_function_error" title="(permalink)">txr_function_error</a><div class="content"><p>
+</pre></article></section><section><header id="txr_function_error"><a href="#txr_function_error" title="(permalink)">txr_function_error</a></header><article><p>
 		This can be assigned a string from scripts registered as functions to throw an error into
 		the currently executing thread.
-	</p></div></div>
-	<div class="item"><a class="header" id="txr_function_default" href="#txr_function_default" title="(permalink)">txr_function_default</a><div class="content"><p>
+	</p></article></section><section><header id="txr_function_default"><a href="#txr_function_default" title="(permalink)">txr_function_default</a></header><article><p>
 		If assigned a script ID (rather than -1), any calls to non-existent functions will be
 		compiled into <tt>default_func("function_name", ...arguments)</tt>
-	</p></div></div>
-	<div class="item"><a class="header" id="txr_compile" href="#txr_compile" title="(permalink)">txr_compile(code)<span class="ret-arrow">&#10140;</span>actions|undefined</a><div class="content"><p>
+	</p></article></section><section><header id="txr_value_calls"><a href="#txr_value_calls" title="(permalink)">txr_value_calls</a></header><article><p>
+		Mutually exclusive with above, this allows the 2.3 version of TXR to call values,
+		meaning that <tt>missing_func()</tt> would try to call <tt>self.missing_func</tt> if available
+		and throw an error otherwise.
+	</p></article></section><section><header id="txr_compile"><a href="#txr_compile" title="(permalink)">txr_compile(code)&#8203;<span class="ret-arrow">&#10140;</span>actions|undefined</a></header><article><p>
 		Compiles a snippet of code and returns an array of VM actions ("a program").
 		</p><p>
 		If there's an error, returns <tt>undefined</tt> and stores error text in <tt>txr_error</tt>.
-		
-</p><pre class="gmlmd">
+		</p><pre class="gmlmd">
 <span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
     return "hello!";
 '</span><span class="op">)</span><span class="op">;</span>
-</pre></div></div>
-	<div class="item"><a class="header" id="txr_exec" href="#txr_exec" title="(permalink)">txr_exec(actions, ?arguments:array|ds_map)<span class="ret-arrow">&#10140;</span>result|undefined</a><div class="content"><p>
-		The easiest way to run a TXR program.
+<span class="kw">if</span> <span class="op">(</span><span class="lv">pg</span> <span class="op">==</span> <span class="sv">undefined</span><span class="op">)</span> <span class="sf">show_debug_message</span><span class="op">(</span><span class="st">"Error: "</span> <span class="op">+</span> <span class="uv">txr_error</span><span class="op">)</span><span class="op">;</span>
+</pre></article></section><section><header id="txr_exec_actions"><a href="#txr_exec_actions" title="(permalink)">txr_exec_actions(actions, ?arguments)&#8203;<span class="ret-arrow">&#10140;</span>result|undefined</a></header><article><p>
+		The easiest way to run a compiled TXR program.
 		</p><p>
 		Internally this just does <a href="#txr_thread_create">txr_thread_create</a>-&gt;<a href="#txr_thread_resume">txr_thread_resume</a>-&gt;<a href="#txr_thread_destroy">txr_thread_destroy</a>.
 		</p><p>
@@ -482,74 +524,100 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 		</p><p>
 		If there's an error, returns <tt>undefined</tt> and stores error text in <tt>txr_error</tt>.
 		</p><p>
-		<tt>args</tt> (optional) can be an array (in which case it'll set <tt>argument0</tt> and so on)
-		or a ds_map (in which case it'll define said local variables).
+		<tt>arguments</tt> (optional) can be: </p><ul>
+		<li>	An array<br/>
+			This will assign the array into <tt>argument</tt> variable and its items into
+			<tt>argument0</tt>...<tt>argumentN</tt> for convenience.
+		</li><li>	A struct<br/>
+			This will set initial values of specified local variables to items in the struct.
+		</li><li>	A <tt>ds_map</tt><br/>
+			Ditto, for backwards compatibility.
+		</li></ul><p>
+		Examples:
 		</p><pre class="gmlmd">
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <a class="uf" href="#txr_compile">txr_compile</a><span class="op">(</span><span class="st">@'
+<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
     return "hello!";
 '</span><span class="op">)</span><span class="op">;</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec</span><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello!</span>
+<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_actions</span><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello!</span>
 
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <a class="uf" href="#txr_compile">txr_compile</a><span class="op">(</span><span class="st">@'
+<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
     return "hello, " + argument0 + "!";
 '</span><span class="op">)</span><span class="op">;</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec</span><span class="op">(</span><span class="lv">pg</span><span class="op">,</span> <span class="st">"you"</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello, you!</span>
-</pre></div></div>
-	<div class="item"><a class="header" id="txr_thread_create" href="#txr_thread_create" title="(permalink)">txr_thread_create(actions, ?args)<span class="ret-arrow">&#10140;</span>thread</a><div class="content"><p>
+<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_actions</span><span class="op">(</span><span class="lv">pg</span><span class="op">,</span> <span class="op">[</span><span class="st">"you"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello, you!</span>
+</pre><p>
+		<b>NB!</b> This function used to be named <tt>txr_exec</tt> but was renamed to avoid confusion
+		- use <tt>txr_exec_actions</tt> for executing a <a href="#txr_compile">previously compiled</a> program
+		and <tt>txr_exec_string</tt> for compiling and executing a snippet of code.
+	</p></article></section><section><header id="txr_exec_string"><a href="#txr_exec_string" title="(permalink)">txr_exec_string(code, ?arguments)&#8203;<span class="ret-arrow">&#10140;</span>result|undefined</a></header><article><p>
+		Further simplifies the above by also running a one-off <tt>txr_compile</tt> for you.
+		</p><pre class="gmlmd">
+<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_string</span><span class="op">(</span><span class="st">@'
+    return "hello, " + argument0 + "!";
+'</span><span class="op">,</span> <span class="op">[</span><span class="st">"you"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello, you!</span>
+
+<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_string</span><span class="op">(</span><span class="st">@'
+    var who; // (intentionally not set)
+    return "hello, " + who + "!";
+'</span><span class="op">,</span> <span class="cb">{</span> <span class="uv">who</span><span class="op">:</span> <span class="st">"you"</span> <span class="cb">}</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello, you!</span>
+</pre></article></section><hr/><section><header id="txr_thread_create"><a href="#txr_thread_create" title="(permalink)">txr_thread_create(actions, ?arguments)&#8203;<span class="ret-arrow">&#10140;</span>thread</a></header><article><p>
 		Sets up a "thread" for executing the specified program.
+		</p><p>
+		If <tt>arguments</tt> are provided, these are handled as per <a href="#txr_exec_actions">txr_exec_actions</a>.
 		</p><p>
 		TXR "threads" aren't too unlike Lua "threads" - they do not execute in parallel,
 		but can be suspended/resumed like coroutines.
 		</p><p>
 		This does not automatically start execution - you'll need to call <a href="#txr_thread_resume">txr_thread_resume</a>.
-	</p></div></div>
-	<div class="item"><a class="header" id="txr_thread_destroy" href="#txr_thread_destroy" title="(permalink)">txr_thread_destroy(thread)</a><div class="content"><p>
+	</p></article></section><section><header id="txr_thread_reset"><a href="#txr_thread_reset" title="(permalink)">txr_thread_reset(thread, ?arguments)</a></header><article><p>
+		Returns a previously created thread into its initial state - keeps actions
+		but clears locals and starts execution from the beginning.
+		</p><p>
+		If <tt>arguments</tt> are provided, these are handled as per <a href="#txr_exec_actions">txr_exec_actions</a>.<br/>
+		(note: previously provided arguments are discarded)
+	</p></article></section><section><header id="txr_thread_destroy"><a href="#txr_thread_destroy" title="(permalink)">txr_thread_destroy(thread)</a></header><article><p>
 		Cleans up a previously created "thread", deleting its data structures and such.
-	</p></div></div>
-	<div class="item"><a class="header" id="txr_thread_resume" href="#txr_thread_resume" title="(permalink)">txr_thread_resume(thread, ?yield_value)<span class="ret-arrow">&#10140;</span>thread_status</a><div class="content"><p>
+	</p></article></section><section><header id="txr_thread_resume"><a href="#txr_thread_resume" title="(permalink)">txr_thread_resume(thread, ?yield_value)&#8203;<span class="ret-arrow">&#10140;</span>thread_status</a></header><article><p>
 		Starts or resumes execution of a thread.
 		</p><p>
 		If resuming execution after <a href="#txr_thread_yield">txr_thread_yield</a>,
 		<tt>yield_value</tt> will be what is returned to the thread
 		(in other words, what your function would return).
 		</p><pre class="gmlmd">
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <a class="uf" href="#txr_compile">txr_compile</a><span class="op">(</span><span class="st">@'
+<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
     return "hello!";
 '</span><span class="op">)</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">th</span> <span class="op">=</span> <a class="uf" href="#txr_thread_create">txr_thread_create</a><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">;</span>
+<span class="kw">var</span> <span class="lv">th</span> <span class="op">=</span> <span class="uf">txr_thread_create</span><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">;</span>
 <span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="lv">th</span><span class="op">[</span><a class="uv" href="#txr_thread">txr_thread</a><span class="op">.</span><span class="fd">result</span><span class="op">]</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello!</span>
-<a class="uf" href="#txr_thread_destroy">txr_thread_destroy</a><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
-</pre></div></div>
-	<div class="item"><a class="header" id="txr_thread_yield" href="#txr_thread_yield" title="(permalink)">txr_thread_yield()</a><div class="content"><p>
+<span class="sf">show_debug_message</span><span class="op">(</span><span class="lv">th</span><span class="op">[</span><span class="uv">txr_thread</span><span class="op">.</span><span class="fd">result</span><span class="op">]</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello!</span>
+<span class="uf">txr_thread_destroy</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
+</pre></article></section><section><header id="txr_thread_yield"><a href="#txr_thread_yield" title="(permalink)">txr_thread_yield()</a></header><article><p>
 		Suspends the execution of current thread.
 		</p><p>
 		Thread will enter <tt>txr_thread_status.yield</tt> state,
 		and you'll be able to resume it later by calling <a href="#txr_thread_resume">txr_thread_resume</a> again.
-		
-</p><pre class="gmlmd">
+		</p><pre class="gmlmd">
 <span class="co">// scr_test(value)</span>
 <span class="sf">show_debug_message</span><span class="op">(</span><span class="sv">argument0</span><span class="op">)</span><span class="op">;</span>
 <span class="uf">txr_thread_yield</span><span class="op">(</span><span class="op">)</span><span class="op">;</span>
-</pre><p>and then
+</pre><p>
+		and then
 		</p><pre class="gmlmd">
-<a class="uf" href="#txr_function_add">txr_function_add</a><span class="op">(</span><span class="st">"test"</span><span class="op">,</span> <span class="uf">scr_test</span><span class="op">,</span> <span class="nu">1</span><span class="op">)</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <a class="uf" href="#txr_compile">txr_compile</a><span class="op">(</span><span class="st">@'
+<span class="uf">txr_function_add</span><span class="op">(</span><span class="st">"test"</span><span class="op">,</span> <span class="uf">scr_test</span><span class="op">,</span> <span class="nu">1</span><span class="op">)</span><span class="op">;</span>
+<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
     var v = 0;
     v += test(1);
     v += test(2);
     return v;
 '</span><span class="op">)</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">th</span> <span class="op">=</span> <a class="uf" href="#txr_thread_create">txr_thread_create</a><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">;</span>
-<a class="uf" href="#txr_thread_resume">txr_thread_resume</a><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span> <span class="co">// prints "1"</span>
+<span class="kw">var</span> <span class="lv">th</span> <span class="op">=</span> <span class="uf">txr_thread_create</span><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">;</span>
+<span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span> <span class="co">// prints "1"</span>
 <span class="sf">show_debug_message</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span><span class="op">;</span>
-<a class="uf" href="#txr_thread_resume">txr_thread_resume</a><span class="op">(</span><span class="lv">th</span><span class="op">,</span> <span class="nu">4</span><span class="op">)</span><span class="op">;</span> <span class="co">// prints "2"</span>
+<span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">,</span> <span class="nu">4</span><span class="op">)</span><span class="op">;</span> <span class="co">// prints "2"</span>
 <span class="sf">show_debug_message</span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span><span class="op">;</span>
-<a class="uf" href="#txr_thread_resume">txr_thread_resume</a><span class="op">(</span><span class="lv">th</span><span class="op">,</span> <span class="nu">5</span><span class="op">)</span><span class="op">;</span> <span class="co">// finishes execution</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="lv">th</span><span class="op">[</span><a class="uv" href="#txr_thread">txr_thread</a><span class="op">.</span><span class="fd">result</span><span class="op">]</span><span class="op">)</span><span class="op">;</span> <span class="co">// 9</span>
-<a class="uf" href="#txr_thread_destroy">txr_thread_destroy</a><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
-</pre></div></div>
-	<div class="item"><a class="header" id="txr_thread" href="#txr_thread" title="(permalink)">txr_thread</a><div class="content"><p>
+<span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">,</span> <span class="nu">5</span><span class="op">)</span><span class="op">;</span> <span class="co">// finishes execution</span>
+<span class="sf">show_debug_message</span><span class="op">(</span><span class="lv">th</span><span class="op">[</span><span class="uv">txr_thread</span><span class="op">.</span><span class="fd">result</span><span class="op">]</span><span class="op">)</span><span class="op">;</span> <span class="co">// 9</span>
+<span class="uf">txr_thread_destroy</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
+</pre></article></section><section><header id="txr_thread"><a href="#txr_thread" title="(permalink)">txr_thread</a></header><article><p>
 		An enum that holds "thread" field indexes, </p><ul>
 		<li>	<tt>actions</tt>: raw compiled program data that you passed to <a href="#txr_thread_create">txr_thread_create</a>.
 		</li><li>	<tt>pos</tt>: raw position of "<a href="https://en.wikipedia.org/wiki/Program_counter">program counter</a>" within <tt>actions</tt>
@@ -559,136 +627,132 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 		</li><li>	<tt>locals</tt>: a ds_map of thread's local variables.
 		</li><li>	<tt>result</tt>: a value dependent on status (see below)
 		</li><li>	<tt>status</tt>: what the thread is currently doing (<a href="#txr_thread_status">txr_thread_status</a>)
-		</li></ul></div></div>
-	<div class="item"><a class="header" id="txr_thread_status" href="#txr_thread_status" title="(permalink)">txr_thread_status</a><div class="content"><p>
+		</li></ul></article></section><section><header id="txr_thread_status"><a href="#txr_thread_status" title="(permalink)">txr_thread_status</a></header><article><p>
 		Indicates what the thread is currently doing,
 		</p><ul>
 		<li>	<tt>none</tt>: this thread had been destroyed, maybe not touch it.
 		</li><li>	<tt>running</tt>: thread is either running or prepared to run.
-		</li><li>	<tt>finished</tt>: execution reached the end or exited via <tt>return</tt>.<br/>Thread's <tt>result</tt> will hold the returned value (0 if none).
-		</li><li>	<tt>error</tt>: an error occurred during execution.<br/>Thread's <tt>result</tt> will hold the error text as a string
+		</li><li>	<tt>finished</tt>: execution reached the end or exited via <tt>return</tt>.<br/>
+			Thread's <tt>result</tt> will hold the returned value (0 if none).
+		</li><li>	<tt>error</tt>: an error occurred during execution.<br/>
+			Thread's <tt>result</tt> will hold the error text as a string
 		</li><li>	<tt>yield</tt>: thread suspended its execution and can be resumed later.
-		</li></ul></div></div>
-	<div class="item"><a class="header" id="txr_thread_current" href="#txr_thread_current" title="(permalink)">txr_thread_current</a><div class="content"><p>
+		</li></ul></article></section><section><header id="txr_thread_current"><a href="#txr_thread_current" title="(permalink)">txr_thread_current</a></header><article><p>
 		Currently executing TXR "thread" (<tt>undefined</tt> if none).
-	</p></div></div>
-	<div class="item"><a class="header" id="txr_thread_write" href="#txr_thread_write" title="(permalink)">txr_thread_write(thread, buffer)</a><div class="content"><p>
+	</p></article></section><section><header id="txr_thread_write"><a href="#txr_thread_write" title="(permalink)">txr_thread_write(thread, buffer)</a></header><article><p>
 		Serializes a "thread" in its entirety annd writes it into a buffer.
-	</p></div></div>
-	<div class="item"><a class="header" id="txr_thread_read" href="#txr_thread_read" title="(permalink)">txr_thread_read(buffer)<span class="ret-arrow">&#10140;</span>thread</a><div class="content"><p>
+	</p></article></section><section><header id="txr_thread_read"><a href="#txr_thread_read" title="(permalink)">txr_thread_read(buffer)&#8203;<span class="ret-arrow">&#10140;</span>thread</a></header><article><p>
 		De-serializes a previously written "thread" and returns it.
 		</p><p>
 		(makes a new thread - don't forget to destroy it later)
-	</p></div></div>
-</p></div></div><!--doc>-->
-</div></div></div>
-<script>(function() {
-var doc, headers;
-//
-var path = "TXR cheatsheet";
-var state = null;
-if (window.localStorage && JSON.parse) {
-	state = window.localStorage.getItem(path);
-	state = state ? JSON.parse(state) : { };
-	if (state == null) state = { };
-}
-var isLocal = (location.host.indexOf("localhost") == 0);
-//
-function h3bind(h3) {
-	var node = h3.parentNode;
-	var snip = node.children[1];
-	var id = h3.id || h3.textContent;
-	h3.snip = snip;
-	h3.doc_set = function(z) {
-		if (z) node.classList.add("open"); else node.classList.remove("open");
-		if (state) {
-			state[id] = z;
-			window.localStorage.setItem(path, JSON.stringify(state));
-		}
+	</p></article></section></article></section></p><!--doc>-->
+</section></main></div>
+<script type="text/javascript">(function() {
+	var doc, headers;
+	//
+	var path = "TXR cheatsheet";
+	var state = null;
+	if (window.localStorage && JSON.parse) {
+		state = window.localStorage.getItem(path);
+		state = state ? JSON.parse(state) : { };
+		if (state == null) state = { };
 	}
-	h3.doc_hide = function() {
-		this.doc_set(false);
-	}
-	h3.doc_show = function() {
-		this.doc_set(true);
-	}
-	h3.onclick = function(_) {
-		var seen = !node.classList.contains("open");
-		h3.doc_set(seen);
-		return false;
-	};
-}
-function getHashFunc(id) {
-	var node = document.getElementById(id);
-	if (node == null) return null;
-	return function(e) {
-		while (node && node != doc) {
-			if (node.classList.contains("item")) {
-				node.classList.add("open");
+	var isLocal = (location.host.indexOf("localhost") == 0);
+	//
+	function h3bind(h3) {
+		var node = h3.parentNode;
+		var snip = node.children[1];
+		var id = h3.id || h3.textContent;
+		h3.snip = snip;
+		h3.doc_set = function(z) {
+			if (z) node.classList.add("open"); else node.classList.remove("open");
+			if (state) {
+				state[id] = z;
+				window.localStorage.setItem(path, JSON.stringify(state));
 			}
-			node = node.parentElement;
+		}
+		h3.doc_hide = function() {
+			this.doc_set(false);
+		}
+		h3.doc_show = function() {
+			this.doc_set(true);
+		}
+		h3.onclick = function(_) {
+			var seen = !node.classList.contains("open");
+			h3.doc_set(seen);
+			return false;
+		};
+	}
+	function getHashFunc(id) {
+		var node = document.getElementById(id);
+		if (node == null) return null;
+		return function(e) {
+			while (node && node != doc) {
+				if (node.classList.contains("item")) {
+					node.classList.add("open");
+				}
+				node = node.parentElement;
+			}
+		};
+	}
+	// Display helpers:
+	window.opt_none = function() {
+		for (var li = 0; li < headers.length; li++) headers[li].doc_hide();
+	};
+	window.opt_list = function() {
+		for (var li = 0; li < headers.length; li++) {
+			var h3 = headers[li];
+			if (h3.parentNode.parentNode != doc) {
+				h3.doc_hide();
+			} else h3.doc_show();
 		}
 	};
-}
-// Display helpers:
-window.opt_none = function() {
-	for (var li = 0; li < headers.length; li++) headers[li].doc_hide();
-};
-window.opt_list = function() {
-	for (var li = 0; li < headers.length; li++) {
-		var h3 = headers[li];
-		if (h3.parentNode.parentNode != doc) {
-			h3.doc_hide();
-		} else h3.doc_show();
-	}
-};
-window.opt_all = function() {
-	for (var li = 0; li < headers.length; li++) headers[li].doc_show();
-};
-window.live_post = function() {
-	doc = document.getElementById("doc");
-	headers = doc.getElementsByClassName("header");
-	//
-	for (var i = 0; i < headers.length; i++) h3bind(headers[i]);
-	// Clicks in document expand the related section:
-	var anchors = doc.getElementsByTagName("a");
-	for (var i = 0; i < anchors.length; i++) {
-		var anchor = anchors[i];
-		if (anchor.classList.contains("header")) continue;
-		var href = anchor.getAttribute("href");
-		if (href[0] == "#") {
-			var fn = getHashFunc(href.substr(1));
-			if (!fn) {
-				anchor.classList.add("broken");
-				anchor.title = "(section missing)";
-			} else anchor.addEventListener("click", fn);
+	window.opt_all = function() {
+		for (var li = 0; li < headers.length; li++) headers[li].doc_show();
+	};
+	window.live_post = function() {
+		doc = document.getElementById("doc");
+		headers = doc.getElementsByTagName("header");
+		//
+		for (var i = 0; i < headers.length; i++) h3bind(headers[i]);
+		// Clicks in document expand the related section:
+		var anchors = doc.getElementsByTagName("a");
+		for (var i = 0; i < anchors.length; i++) {
+			var anchor = anchors[i];
+			if (anchor.classList.contains("header")) continue;
+			var href = anchor.getAttribute("href");
+			if (href[0] == "#") {
+				var fn = getHashFunc(href.substr(1));
+				if (!fn) {
+					anchor.classList.add("broken");
+					anchor.title = "(section missing)";
+				} else anchor.addEventListener("click", fn);
+			}
 		}
-	}
+		//
+		for (var li = 0; li < headers.length; li++) {
+			var h3 = headers[li];
+			var val = state ? state[h3.id || h3.textContent] : null;
+			if (val == null) val = isLocal || h3.parentNode.parentNode == doc;
+			if (val) h3.doc_show(); else h3.doc_hide();
+		}
+	};
+	window.live_post();
 	//
-	for (var li = 0; li < headers.length; li++) {
-		var h3 = headers[li];
-		var val = state ? state[h3.id || h3.textContent] : null;
-		if (val == null) val = isLocal || h3.parentNode.parentNode == doc;
-		if (val) h3.doc_show(); else h3.doc_hide();
-	}
-};
-window.live_post();
-//
-(function() {
-	var hash = document.location.hash;
-	if (hash) {
-		var _hash = hash.substr(1);
-		getHashFunc(_hash)();
-		setTimeout(function() {
-			document.location.hash = hash + " ";
+	(function() {
+		var hash = document.location.hash;
+		if (hash) {
+			var _hash = hash.substr(1);
+			getHashFunc(_hash)();
 			setTimeout(function() {
-				document.location.hash = hash;
+				document.location.hash = hash + " ";
+				setTimeout(function() {
+					document.location.hash = hash;
+				}, 100);
 			}, 100);
-		}, 100);
-	}
-})();
-//
-doc.setAttribute("ready", "");
-})();
-</script>
+		}
+	})();
+	//
+	doc.setAttribute("ready", "");
+	})();</script>
 </body></html>

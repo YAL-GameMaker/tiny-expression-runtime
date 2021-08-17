@@ -8,5 +8,3 @@
 //!#import buffer_bool in bt.bool
 //!#import buffer_string in bt.st
 //!#import buffer_text in bt.cc
-//!#import ds_list_* in List:
-//!#import ds_stack_* in Stack:

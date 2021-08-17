@@ -1,55 +1,35 @@
 /// @param flags
-function txr_build_expr(argument0) {
-	var flags = argument0;
+function txr_build_expr(flags) {
 	var tk = txr_build_list[|txr_build_pos++];
 	switch (tk[0]) {
 		case txr_token.number: txr_build_node = [txr_node.number, tk[1], tk[2]]; break;
 		case txr_token._string: txr_build_node = [txr_node._string, tk[1], tk[2]]; break;
 		case txr_token.ident:
 			var tkn = txr_build_list[|txr_build_pos];
+			txr_build_node = [txr_node.ident, tk[1], tk[2]];
 			if (tkn[0] == txr_token.par_open) { // `ident(`
 				txr_build_pos += 1;
 				// look up the function
-				var args = [], argc = 0;
-				var fn = global.txr_function_map[?tk[2]];
-				var fn_script, fn_argc;
-				if (fn == undefined) {
-					fn_script = txr_function_default;
-					if (fn_script != -1) {
-						fn_argc = -1;
-						args[argc++] = [txr_node._string, tk[1], tk[2]];
-					} else return txr_throw_at("Unknown function `" + tk[2] + "`", tk);
+				var _args = [], _argc = 0;
+				var _fn = global.txr_function_map[?tk[2]];
+				var _fn_script, _fn_argc;
+				if (_fn == undefined) {
+					if (txr_value_calls) {
+						_fn_script = undefined;
+						_fn_argc = -1;
+					} else {
+						_fn_script = txr_function_default;
+						if (_fn_script != -1) {
+							_fn_argc = -1;
+							args[argc++] = [txr_node._string, tk[1], tk[2]];
+						} else return txr_throw_at("Unknown function `" + tk[2] + "`", tk);
+					}
 				} else {
-					fn_script = fn[0];
-					fn_argc = fn[1];
+					_fn_script = _fn[0];
+					_fn_argc = _fn[1];
 				}
-				// read the arguments and the closing `)`:
-				var closed = false;
-				while (txr_build_pos < txr_build_len) {
-					// hit a closing `)` yet?
-					tkn = txr_build_list[|txr_build_pos];
-					if (tkn[0] == txr_token.par_close) {
-						txr_build_pos += 1;
-						closed = true;
-						break;
-					}
-					// read the argument:
-					if (txr_build_expr(0)) return true;
-					args[argc++] = txr_build_node;
-					// skip a `,`:
-					tkn = txr_build_list[|txr_build_pos];
-					if (tkn[0] == txr_token.comma) {
-						txr_build_pos += 1;
-					} else if (tkn[0] != txr_token.par_close) {
-						return txr_throw_at("Expected a `,` or `)`", tkn);
-					}
-				}
-				if (!closed) return txr_throw_at("Unclosed `()` after", tk);
-				// find the function, verify argument count, and finally pack up:
-				if (fn_argc >= 0 && argc != fn_argc) return txr_throw_at("`" + tk[2] + "` takes "
-					+ string(fn_argc) + " argument(s), got " + string(argc), tk);
-				txr_build_node = [txr_node.call, tk[1], fn_script, args, fn_argc];
-			} else txr_build_node = [txr_node.ident, tk[1], tk[2]];
+				if (txr_build_expr_call(tk, _fn_script, _fn_argc, _args, _argc, txr_build_node)) return true;
+			}
 			break;
 		case txr_token._argument: txr_build_node = [txr_node._argument, tk[1], tk[2], tk[3]]; break;
 		case txr_token._argument_count: txr_build_node = [txr_node._argument_count, tk[1]]; break;
@@ -132,6 +112,14 @@ function txr_build_expr(argument0) {
 					txr_build_node = [txr_node.array_access, tk[1], node, txr_build_node];
 				} else return txr_throw_at("Unexpected `.`", tk);
 				break;
+			case txr_token.par_open: // value(...)
+				if ((flags & txr_build_flag.no_suffix) == 0) {
+					if (txr_value_calls) {
+						txr_build_pos += 1;
+						if (txr_build_expr_call(tk, undefined, -1, [], 0, txr_build_node)) return true;
+					} else return txr_throw_at("Can't call this", tk);
+				} else return txr_throw_at("Unexpected `(`", tk);
+				break;
 			case txr_token.adjfix: // value++?
 				if ((flags & txr_build_flag.no_suffix) == 0) {
 					txr_build_pos += 1;
@@ -150,5 +138,37 @@ function txr_build_expr(argument0) {
 		if (_break) break;
 	}
 
+	return false;
+}
+
+function txr_build_expr_call(tk, _fn_script, _fn_argc, _args, _argc, _value_expr) {
+	// read the arguments and the closing `)`:
+	var closed = false;
+	while (txr_build_pos < txr_build_len) {
+		// hit a closing `)` yet?
+		var tkn = txr_build_list[|txr_build_pos];
+		if (tkn[0] == txr_token.par_close) {
+			txr_build_pos += 1;
+			closed = true;
+			break;
+		}
+		// read the argument:
+		if (txr_build_expr(0)) return true;
+		_args[_argc++] = txr_build_node;
+		// skip a `,`:
+		tkn = txr_build_list[|txr_build_pos];
+		if (tkn[0] == txr_token.comma) {
+			txr_build_pos += 1;
+		} else if (tkn[0] != txr_token.par_close) {
+			return txr_throw_at("Expected a `,` or `)`", tkn);
+		}
+	}
+	if (!closed) return txr_throw_at("Unclosed `()` after", tk);
+	// find the function, verify argument count, and finally pack up:
+	if (_fn_argc >= 0 && _argc != _fn_argc) return txr_throw_at("`" + tk[2] + "` takes "
+		+ string(_fn_argc) + " argument(s), got " + string(_argc), tk);
+	if (_fn_script == undefined) {
+		txr_build_node = [txr_node.value_call, tk[1], _value_expr, _args, _fn_argc];
+	} else txr_build_node = [txr_node.call, tk[1], _fn_script, _args, _fn_argc];
 	return false;
 }

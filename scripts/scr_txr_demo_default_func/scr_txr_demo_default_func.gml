@@ -8,5 +8,5 @@ function scr_txr_demo_default_func() {
 	var i = argument_count - 1;
 	var args = array_create(i);
 	while (--i >= 0) args[i] = argument[i + 1];
-	return txr_exec(pg, args);
+	return txr_exec_actions(pg, args);
 }
