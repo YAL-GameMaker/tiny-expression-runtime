@@ -226,6 +226,7 @@ function txr_build_stat() {
 					_expr[@1] = txr_node.adjfix;
 					break;
 				case txr_node.call:
+				case txr_node.value_call:
 					// select expressions are allowed to be statements,
 					// and are compiled to `discard <value>` so that we don't clog the stack
 					txr_build_node = [txr_node.discard, _expr[1], _expr];
