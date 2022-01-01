@@ -3,7 +3,7 @@
 <title>TXR cheatsheet</title>
 <meta name="viewport" content="width=device-width" />
 <meta name="livenode" content="#doc" />
-<meta property="theme-color" content="#FFF037" />
+<meta property="theme-color" content="<section><header>FFF037</header><article></article></section>" />
 <meta property="og:type" content="article" />
 <meta property="og:locale" content="en_us" />
 <meta property="og:site_name" content="YellowAfterlife" />
@@ -15,7 +15,7 @@ if (document.location.host == "yal.cc" && location.protocol == "http:") {
 	document.location.protocol = "https:";
 }
 </script>
-<style type="text/css">body, #doc tt {
+<style type="text/css">body, #doc tt, #doc code {
 	font: 15px 'Open Sans', sans-serif;
 	line-height: 1.35;
 }
@@ -26,14 +26,14 @@ body {
 	width: 100%;
 	min-height: 100%;
 	min-height: 100vh;
-	background-color: #899FC6;
+	background-color: #f5f7f9;
 }
 .page {
 	max-width: 656px;
 	background: #ffffff;
 	margin: 0 auto;
 	padding: 8px;
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 	min-height: 100%;
 	min-height: 100vh;
 	box-sizing: border-box;
@@ -102,10 +102,10 @@ body {
 #doc a.broken {
 	color: red;
 }
-#doc p {
+#doc p, .intro p {
 	margin: 0;
 }
-#doc p + p, #doc p.pad {
+#doc p + p, .intro p + p, #doc p.pad, .display-controls {
 	margin-top: 0.5em;
 }
 #doc img {
@@ -129,6 +129,20 @@ body {
 #doc tt {
 	font-weight: bold;
 }
+#doc code {
+	display: inline-block;
+	background: #FFFBE4;
+	font-family: Consolas, Ubuntu Mono, Dejavu Sans Mono, Lucida Console, monospace;
+	font-weight: normal;
+	font-size: 12px;
+	line-height: 16px;
+	padding: 0 2px;
+	border: 1px solid #E6E0C4;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	max-width: 100%;
+	word-break: break-word;
+}
+
 #doc table {
 	border-spacing: 0;
 	color: currentColor;
@@ -208,49 +222,6 @@ body {
 #doc[ready] section:not(.open) > article {
 	display: none;
 }</style>
-<style type="text/css" id="lang_gml">/* GameMakerLanguage */
-pre.gmlmd .md { color: #7A81A9 } /* #define */
-pre.gmlmd .kw { color: #008; font-weight: bold } /* keyword */
-pre.gmlmd .co { color: #080 } /* comment */
-pre.gmlmd .nu { color: #00f } /* number */
-pre.gmlmd .nx { color: #00f } /* hex */
-pre.gmlmd .st { color: #00f } /* string */
-pre.gmlmd .ts { color: #00f } /* template string */
-pre.gmlmd .op { color: #000 } /* operator */
-pre.gmlmd .cb { color: #008; font-weight: bold } /* curly brace */
-pre.gmlmd .sv { color: #800 } /* std func */
-pre.gmlmd .sf { color: #800 } /* std var */
-pre.gmlmd .ri { color: #0078aa } /* assets */
-pre.gmlmd .uf { color: #808 } /* user func */
-pre.gmlmd .uv { color: #000 } /* user var */
-pre.gmlmd .lv { color: #648 } /* local var */
-pre.gmlmd .fd { color: #804 } /* field */
-
-#night:checked + .main pre.gmlmd .op { color: #CCCCCC }
-#night:checked + .main pre.gmlmd .co { color: #5B995B }
-#night:checked + .main pre.gmlmd .kw { color: #FFB871 }
-#night:checked + .main pre.gmlmd .md { color: #FFB871 }
-#night:checked + .main pre.gmlmd .cb { color: #FFB871 }
-#night:checked + .main pre.gmlmd .sf { color: #FFB871 }
-#night:checked + .main pre.gmlmd .uf { color: #FFB871 }
-#night:checked + .main pre.gmlmd .nu { color: #FF8080 }
-#night:checked + .main pre.gmlmd .st { color: #FCF320 }
-#night:checked + .main pre.gmlmd .ts { color: #FF8080 }
-#night:checked + .main pre.gmlmd .sv { color: #FF8080 }
-#night:checked + .main pre.gmlmd .gv { color: #FF80FF }
-#night:checked + .main pre.gmlmd .ri { color: #FF8080 }
-#night:checked + .main pre.gmlmd .lv { color: #FFF899 }
-#night:checked + .main pre.gmlmd .uv { color: #B2B1FF }
-#night:checked + .main pre.gmlmd .fd { color: #B2B1FF }
-
-#night:checked + .main pre.gmlmd a.uf,
-#night:checked + .main pre.gmlmd a.kw,
-#night:checked + .main pre.gmlmd a.sf {
-	background-color: #431;
-}
-#night:checked + .main pre.gmlmd a.sv {
-	background-color: #422;
-}</style>
 <style type="text/css" id="night_css">#night { display: none }
 label[for="night"] {
 	color: blue;
@@ -258,10 +229,10 @@ label[for="night"] {
 	cursor: pointer;
 }
 #night:checked + .main {
-	background-color: #405070;
+	background-color: #424242;
 }
 #night:checked + .main .page {
-	background-color: #1A202D;
+	background-color: #1c1c1c;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 	color: white;
 }
@@ -299,27 +270,12 @@ label[for="night"] {
 	color: #cccccc;
 	background: #000000;
 	border: 1px solid #3E4757;
-}</style>
-<style>
-.main.boxtt #doc tt {
-	display: inline-block;
-	background: #FFFBE4;
-	font-family: Consolas, Ubuntu Mono, Dejavu Sans Mono, Lucida Console, monospace;
-	font-weight: normal;
-	font-size: 12px;
-	line-height: 16px;
-	padding: 0 2px;
-	border: 1px solid #E6E0C4;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	max-width: 100%;
-	word-break: break-word;
 }
-#night:checked + .main.boxtt #doc tt {
+#night:checked + .main #doc code {
 	background-color: #000;
 	border-color: #5b7c9f;
 	color: white;
-}
-</style>
+}</style>
 <style type="text/css" id="print_css">@media print {
 	.main { background-color: transparent }
 	.display-controls { display: none; }
@@ -360,98 +316,115 @@ label[for="night"] {
 	}
 })();</script>
 <main class="page">
-<p><p>This is a "cheat sheet" for Tiny Expression Runtime by <a href="https://yal.cc">YellowAfterlife</a>.<br/>
+<section class="intro"><p>This is a "cheat sheet" for Tiny Expression Runtime by <a href="https://yal.cc">YellowAfterlife</a>.<br/>
 Project files can be downloaded
 	from <a href="https://yellowafterlife.itch.io/gamemaker-interpreters">itch.io</a>
 	or <a href="https://marketplace.yoyogames.com/assets/7814/_">GM Marketplace</a>.<br/>
 For questions/inquiries,
-	use <a href="https://yellowafterlife.itch.io/gamemaker-live/community">forums</a>
+	use <a href="https://yellowafterlife.itch.io/gamemaker-txr/community">forums</a>
 	or <a href="//yellowafterlife@hotmail.com">send me an email</a>.<br/>
 An up-to-date version of this document can always be found <a href="https://yal.cc/r/19/txr">online</a>.
 </p><p>
-For practical reasons, this document covers the most current version of TXR.</p></p><p class="display-controls">
-Click on sections to expand/collapse them.<br>Quick display controls: <a href="#" onclick="opt_none(); return false">Categories</a>
+For practical reasons, this document covers the most current version of TXR.</p></section><section class="display-controls">
+Click on sections to expand/collapse them.<br>Quick display controls:
+<a href="#" onclick="opt_none(); return false">Categories</a>
 &middot; <a href="#" onclick="opt_list(); return false">Sections</a>
 &middot; <a href="#" onclick="opt_all(); return false">Everything</a>
 &middot; <label for="night">Toggle night mode</label><br/>
-</p><section id="doc">
-<!--<doc--><p><section><header id="syntax"><a href="#syntax" title="(permalink)">TXR syntax</a></header><article><section><header id="expressions"><a href="#expressions" title="(permalink)">Expressions</a></header><article><p>
+</section><section id="doc">
+<!--<doc--><p><p>
+
+<style>
+.main { background-color: #899FC6 }
+.page { box-shadow: 0 0 8px rgba(0, 0, 0, 0.3) }
+#night:checked + .main { background-color: #405070 }
+#night:checked + .main .page { background-color: #1A202D }
+</style>
+
+
+
+
+
+
+
+
+</p><section><header id="syntax"><a href="#syntax" title="(permalink)">TXR syntax</a></header><article><section><header id="expressions"><a href="#expressions" title="(permalink)">Expressions</a></header><article><p>
 		TXR supports various primitive expressions: </p><ul>
-		<li>	Numbers: <tt>4</tt>, <tt>4.5</tt>, and <tt>-4</tt> are all good.
+		<li>	Numbers: <code>4</code>, <code>4.5</code>, and <code>-4</code> are all good.
 			No hexadecimals at this time.
-		</li><li>	Strings: <tt>"hello"</tt> or <tt>'hello'</tt>.
+		</li><li>	Strings: <code>"hello"</code> or <code>'hello'</code>.
 			GMS1-style (no escape characters)
-		</li><li>	Constants: <tt>true</tt>, <tt>false</tt>
-			You can add custom ones in <tt>txr_parse</tt>.
-		</li><li>	Parentheses: <tt>(...)</tt>
+		</li><li>	Constants: <code>true</code>, <code>false</code>
+			You can add custom ones in <code>txr_parse</code>.
+		</li><li>	Parentheses: <code>(...)</code>
 			Overwhelmingly optional.
 		</li></ul></article></section><section><header id="operators"><a href="#operators" title="(permalink)">Operators</a></header><article><p>
 		TXR supports a verity of common operators.
 		</p><p>
 		Binary operators, grouped by priority: </p><ul>
-		<li>	<tt>*</tt>, <tt>/</tt>, <tt>%</tt>, <tt>div</tt>
-		</li><li>	<tt>+</tt>, <tt>-</tt> (ECMAScript-style <tt>"a" + 4</tt> -&gt; <tt>"a4"</tt> is allowed)
-		</li><li>	<tt>&lt;&lt;</tt>, <tt>&gt;&gt;</tt>
-		</li><li>	<tt>&amp;</tt>, <tt>|</tt>, <tt>^</tt>
-		</li><li>	<tt>==</tt>, <tt>!=</tt>, <tt>&lt;</tt>, <tt>&gt;</tt>, <tt>&lt;=</tt>, <tt>&gt;=</tt>
-		</li><li>	<tt>&amp;&amp;</tt> (ES-style <tt>(4 &amp;&amp; 5)</tt> -&gt; <tt>5</tt> is allowed)
-		</li><li>	<tt>||</tt> (ES-style <tt>(4 || 5)</tt> -&gt; <tt>4</tt> is allowed)
+		<li>	<code>*</code>, <code>/</code>, <code>%</code>, <code>div</code>
+		</li><li>	<code>+</code>, <code>-</code> (ECMAScript-style <code>"a" + 4</code> -&gt; <code>"a4"</code> is allowed)
+		</li><li>	<code>&lt;&lt;</code>, <code>&gt;&gt;</code>
+		</li><li>	<code>&amp;</code>, <code>|</code>, <code>^</code>
+		</li><li>	<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>
+		</li><li>	<code>&amp;&amp;</code> (ES-style <code>(4 &amp;&amp; 5)</code> -&gt; <code>5</code> is allowed)
+		</li><li>	<code>||</code> (ES-style <code>(4 || 5)</code> -&gt; <code>4</code> is allowed)
 		</li></ul><p>
-		Short circuiting is supported for both <tt>&amp;&amp;</tt> and <tt>||</tt>.
+		Short circuiting is supported for both <code>&amp;&amp;</code> and <code>||</code>.
 		</p><p>
 		Unary operators: </p><ul>
-		<li>	<tt>!</tt> (unary NOT)
-		</li><li>	<tt>-</tt> (negation)
-		</li><li>	<tt>~</tt> (bit inversion)
-		</li><li>	<tt>+</tt> (does nothing, but lets you do <tt>a = +4</tt>)
-		</li><li>	<tt>++</tt> (prefix and postfix)
-		</li><li>	<tt>--</tt> (prefix and postfix)
+		<li>	<code>!</code> (unary NOT)
+		</li><li>	<code>-</code> (negation)
+		</li><li>	<code>~</code> (bit inversion)
+		</li><li>	<code>+</code> (does nothing, but lets you do <code>a = +4</code>)
+		</li><li>	<code>++</code> (prefix and postfix)
+		</li><li>	<code>--</code> (prefix and postfix)
 		</li></ul></article></section><section><header id="function-calls"><a href="#function-calls" title="(permalink)">Function calls</a></header><article><p>
 		Functions are exposed to TXR via <a href="#txr_function_add">txr_function_add</a>;
 		</p><p>
 		Both fixed and variable-argument-count functions are supported.
 		</p><p>
 		Up to 16 arguments can be passed
-		(if you need more, add them in <tt>txr_thread_resume</tt>, in <tt>txr_action.call</tt>)
+		(if you need more, add them in <code>txr_thread_resume</code>, in <code>txr_action.call</code>)
 	</p></article></section><section><header id="statements"><a href="#statements" title="(permalink)">Statements</a></header><article><p>
 		Starting with part 2, TXR allows for statements.
 		</p><p>
 		Statements can be: </p><ul>
 		<li>	<a href="#assignments">Assignments</a>
 		</li><li>	<a href="#variables">Variable declarations</a>
-		</li><li>	Bracketed statements (<tt>{...}</tt>)
+		</li><li>	Bracketed statements (<code>{...}</code>)
 		</li><li>	<a href="#branching">Branching</a>
 		</li><li>	<a href="#function-calls">Function calls</a>
-		</li><li>	Prefix/postfix increment/decrement (<tt>v++</tt>, <tt>--v</tt>, etc.)
+		</li><li>	Prefix/postfix increment/decrement (<code>v++</code>, <code>--v</code>, etc.)
 		</li></ul></article></section><section><header id="variables"><a href="#variables" title="(permalink)">Variables</a></header><article><p>
-		You may declare local variables via GML-style <tt>var</tt> syntax
-		</p><pre class="gmlmd">
-<span class="kw">var</span> <span class="lv">i</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">k</span> <span class="op">=</span> <span class="nu">0</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">z</span> <span class="op">=</span> <span class="sv">true</span><span class="op">,</span> <span class="lv">s</span> <span class="op">=</span> <span class="st">"hi"</span><span class="op">;</span>
+		You may declare local variables via GML-style <code>var</code> syntax
+		</p><pre>
+var i;
+var k = 0;
+var z = true, s = "hi";
 </pre><p>
 		Access to anything that is not a local variable will by default map to calling instance's <br/>
-		variables. You may customize this in <tt>txr_thread_resume</tt> (<tt>ident</tt>, <tt>set_ident</tt>).
+		variables. You may customize this in <code>txr_thread_resume</code> (<code>ident</code>, <code>set_ident</code>).
 	</p></article></section><section><header id="assignments"><a href="#assignments" title="(permalink)">Assignments</a></header><article><p>
-		You may assign variables via the conventional <tt>name = value</tt> syntax.
+		You may assign variables via the conventional <code>name = value</code> syntax.
 		</p><p>
-		Assignment operators (<tt>+=</tt>, etc.) are also supported.
+		Assignment operators (<code>+=</code>, etc.) are also supported.
 	</p></article></section><section><header id="branching"><a href="#branching" title="(permalink)">Branching</a></header><article><p>
 		TXR supports a number of common branching statements:
 		</p><section><header id="if-then"><a href="#if-then" title="(permalink)">if &lt;condition&gt; &lt;then-statement&gt;</a></header><article><p>
 			Parentheses are optional.
 		</p></article></section><section><header id="if-then-else"><a href="#if-then-else" title="(permalink)">if &lt;condition&gt; &lt;then-statement&gt; else &lt;else-statement&gt;</a></header><article></article></section><section><header id="while"><a href="#while" title="(permalink)">while &lt;condition&gt; &lt;loop-statement&gt;</a></header><article><p>
-			<tt>break</tt>/<tt>continue</tt> are supported.
+			<code>break</code>/<code>continue</code> are supported.
 		</p></article></section><section><header id="do-while"><a href="#do-while" title="(permalink)">do &lt;loop-statement&gt; while &lt;condition&gt;</a></header><article><p>
-			<tt>break</tt>/<tt>continue</tt> are supported.
+			<code>break</code>/<code>continue</code> are supported.
 		</p></article></section><section><header id="for"><a href="#for" title="(permalink)">for (&lt;init&gt;; &lt;condition&gt;; &lt;post&gt;) &lt;loop-statement&gt;</a></header><article><p>
-			<tt>break</tt>/<tt>continue</tt> are supported.
+			<code>break</code>/<code>continue</code> are supported.
 			</p><p>
 			Semicolons and parentheses are optional, but maybe don't abuse that.
 		</p></article></section><section><header id="switch"><a href="#switch" title="(permalink)">switch (&lt;expr&gt;) { ... }</a></header><article><p>
-			Common-case <tt>switch</tt> block.
+			Common-case <code>switch</code> block.
 			</p><p>
-			<tt>case</tt>s are to be terminated with <tt>break</tt>.
+			<code>case</code>s are to be terminated with <code>break</code>.
 			</p><p>
 			Much like in GML VM, supporting arbitrary case expressions means that this is
 			a slightly more optimized pile of if-statements.
@@ -459,20 +432,20 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 		The following are non-standard:
 		</p><section><header id="select"><a href="#select" title="(permalink)">select (&lt;expr&gt;) { ... }</a></header><article><p>
 			Essentially a shorthand for a way to structure a <a href="#switch">switch</a> block. So,
-			</p><pre class="gmlmd">
-<span class="kw">select</span> <span class="op">(</span><span class="uf">func</span><span class="op">(</span><span class="nu">1</span><span class="op">,</span> <span class="nu">2</span><span class="op">)</span><span class="op">)</span> <span class="cb">{</span>
-    <span class="kw">option</span> <span class="st">"A"</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">;</span>
-    <span class="kw">option</span> <span class="st">"B"</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span><span class="op">;</span>
-    <span class="kw">default</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"default"</span><span class="op">)</span><span class="op">;</span>
-<span class="cb">}</span>
+			</p><pre>
+select (func(1, 2)) {
+	option "A": trace("A");
+	option "B": trace("B");
+	default: trace("default");
+}
 </pre><p>
 			is same as
-			</p><pre class="gmlmd">
-<span class="kw">switch</span> <span class="op">(</span><span class="uf">func</span><span class="op">(</span><span class="nu">1</span><span class="op">,</span> <span class="nu">2</span><span class="op">,</span> <span class="st">"A"</span><span class="op">,</span> <span class="st">"B"</span><span class="op">)</span><span class="op">)</span> <span class="cb">{</span>
-    <span class="kw">case</span> <span class="nu">0</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">;</span> <span class="kw">break</span><span class="op">;</span>
-    <span class="kw">case</span> <span class="nu">1</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"B"</span><span class="op">)</span><span class="op">;</span> <span class="kw">break</span><span class="op">;</span>
-    <span class="kw">default</span><span class="op">:</span> <span class="uf">trace</span><span class="op">(</span><span class="st">"default"</span><span class="op">)</span><span class="op">;</span>
-<span class="cb">}</span>
+			</p><pre>
+switch (func(1, 2, "A", "B")) {
+	case 0: trace("A"); break;
+	case 1: trace("B"); break;
+	default: trace("default");
+}
 </pre></article></section><p>
 		<a href="https://en.wikipedia.org/wiki/Goto">Gotos</a> are a bad way of structuring
 		your code, but can be handy for dialogues/etc:
@@ -487,82 +460,82 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 			</p><p>
 			This allows to use labels as makeshift sub-routines.
 			</p><p>
-			You can strip out this feature in <tt>txr_parse</tt> (see <tt>case "call"</tt>, <tt>case "back"</tt>).
+			You can strip out this feature in <code>txr_parse</code> (see <code>case "call"</code>, <code>case "back"</code>).
 		</p></article></section><section><header id="back"><a href="#back" title="(permalink)">back</a></header><article><p>
 			Returns from a <a href="#call">call</a> back to wherever the code was previously executing.
 		</p></article></section></article></section></article></section><section><header id="api"><a href="#api" title="(permalink)">TXR API</a></header><article><section><header id="txr_function_add"><a href="#txr_function_add" title="(permalink)">txr_function_add(name, script, arg_count)</a></header><article><p>
 		Registers a function for use with TXR.
 		</p><p>
-		<tt>arg_count</tt> is the number of arguments that function takes (-1 to accept any number).
-		</p><pre class="gmlmd">
-<span class="uf">txr_function_add</span><span class="op">(</span><span class="st">"trace"</span><span class="op">,</span> <span class="uf">scr_trace</span><span class="op">,</span> <span class="op">-</span><span class="nu">1</span><span class="op">)</span><span class="op">;</span>
+		<code>arg_count</code> is the number of arguments that function takes (-1 to accept any number).
+		</p><pre>
+txr_function_add("trace", scr_trace, -1);
 </pre></article></section><section><header id="txr_function_error"><a href="#txr_function_error" title="(permalink)">txr_function_error</a></header><article><p>
 		This can be assigned a string from scripts registered as functions to throw an error into
 		the currently executing thread.
 	</p></article></section><section><header id="txr_function_default"><a href="#txr_function_default" title="(permalink)">txr_function_default</a></header><article><p>
 		If assigned a script ID (rather than -1), any calls to non-existent functions will be
-		compiled into <tt>default_func("function_name", ...arguments)</tt>
+		compiled into <code>default_func("function_name", ...arguments)</code>
 	</p></article></section><section><header id="txr_value_calls"><a href="#txr_value_calls" title="(permalink)">txr_value_calls</a></header><article><p>
 		Mutually exclusive with above, this allows the 2.3 version of TXR to call values,
-		meaning that <tt>missing_func()</tt> would try to call <tt>self.missing_func</tt> if available
+		meaning that <code>missing_func()</code> would try to call <code>self.missing_func</code> if available
 		and throw an error otherwise.
 	</p></article></section><section><header id="txr_compile"><a href="#txr_compile" title="(permalink)">txr_compile(code)&#8203;<span class="ret-arrow">&#10140;</span>actions|undefined</a></header><article><p>
 		Compiles a snippet of code and returns an array of VM actions ("a program").
 		</p><p>
-		If there's an error, returns <tt>undefined</tt> and stores error text in <tt>txr_error</tt>.
-		</p><pre class="gmlmd">
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
-    return "hello!";
-'</span><span class="op">)</span><span class="op">;</span>
-<span class="kw">if</span> <span class="op">(</span><span class="lv">pg</span> <span class="op">==</span> <span class="sv">undefined</span><span class="op">)</span> <span class="sf">show_debug_message</span><span class="op">(</span><span class="st">"Error: "</span> <span class="op">+</span> <span class="uv">txr_error</span><span class="op">)</span><span class="op">;</span>
+		If there's an error, returns <code>undefined</code> and stores error text in <code>txr_error</code>.
+		</p><pre>
+var pg = txr_compile(@'
+	return "hello!";
+');
+if (pg == undefined) show_debug_message("Error: " + txr_error);
 </pre></article></section><section><header id="txr_exec_actions"><a href="#txr_exec_actions" title="(permalink)">txr_exec_actions(actions, ?arguments)&#8203;<span class="ret-arrow">&#10140;</span>result|undefined</a></header><article><p>
 		The easiest way to run a compiled TXR program.
 		</p><p>
 		Internally this just does <a href="#txr_thread_create">txr_thread_create</a>-&gt;<a href="#txr_thread_resume">txr_thread_resume</a>-&gt;<a href="#txr_thread_destroy">txr_thread_destroy</a>.
 		</p><p>
-		If all is well, sets <tt>txr_error</tt> to <tt>""</tt> and returns the result (or 0 if none).
+		If all is well, sets <code>txr_error</code> to <code>""</code> and returns the result (or 0 if none).
 		</p><p>
-		If there's an error, returns <tt>undefined</tt> and stores error text in <tt>txr_error</tt>.
+		If there's an error, returns <code>undefined</code> and stores error text in <code>txr_error</code>.
 		</p><p>
-		<tt>arguments</tt> (optional) can be: </p><ul>
+		<code>arguments</code> (optional) can be: </p><ul>
 		<li>	An array<br/>
-			This will assign the array into <tt>argument</tt> variable and its items into
-			<tt>argument0</tt>...<tt>argumentN</tt> for convenience.
+			This will assign the array into <code>argument</code> variable and its items into
+			<code>argument0</code>...<code>argumentN</code> for convenience.
 		</li><li>	A struct<br/>
 			This will set initial values of specified local variables to items in the struct.
-		</li><li>	A <tt>ds_map</tt><br/>
+		</li><li>	A <code>ds_map</code><br/>
 			Ditto, for backwards compatibility.
 		</li></ul><p>
 		Examples:
-		</p><pre class="gmlmd">
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
-    return "hello!";
-'</span><span class="op">)</span><span class="op">;</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_actions</span><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello!</span>
+		</p><pre>
+var pg = txr_compile(@'
+	return "hello!";
+');
+show_debug_message(txr_exec_actions(pg)); // hello!
 
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
-    return "hello, " + argument0 + "!";
-'</span><span class="op">)</span><span class="op">;</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_actions</span><span class="op">(</span><span class="lv">pg</span><span class="op">,</span> <span class="op">[</span><span class="st">"you"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello, you!</span>
+var pg = txr_compile(@'
+	return "hello, " + argument0 + "!";
+');
+show_debug_message(txr_exec_actions(pg, ["you"])); // hello, you!
 </pre><p>
-		<b>NB!</b> This function used to be named <tt>txr_exec</tt> but was renamed to avoid confusion
-		- use <tt>txr_exec_actions</tt> for executing a <a href="#txr_compile">previously compiled</a> program
-		and <tt>txr_exec_string</tt> for compiling and executing a snippet of code.
+		<b>NB!</b> This function used to be named <code>txr_exec</code> but was renamed to avoid confusion
+		- use <code>txr_exec_actions</code> for executing a <a href="#txr_compile">previously compiled</a> program
+		and <code>txr_exec_string</code> for compiling and executing a snippet of code.
 	</p></article></section><section><header id="txr_exec_string"><a href="#txr_exec_string" title="(permalink)">txr_exec_string(code, ?arguments)&#8203;<span class="ret-arrow">&#10140;</span>result|undefined</a></header><article><p>
-		Further simplifies the above by also running a one-off <tt>txr_compile</tt> for you.
-		</p><pre class="gmlmd">
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_string</span><span class="op">(</span><span class="st">@'
-    return "hello, " + argument0 + "!";
-'</span><span class="op">,</span> <span class="op">[</span><span class="st">"you"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello, you!</span>
+		Further simplifies the above by also running a one-off <code>txr_compile</code> for you.
+		</p><pre>
+show_debug_message(txr_exec_string(@'
+	return "hello, " + argument0 + "!";
+', ["you"])); // hello, you!
 
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="uf">txr_exec_string</span><span class="op">(</span><span class="st">@'
-    var who; // (intentionally not set)
-    return "hello, " + who + "!";
-'</span><span class="op">,</span> <span class="cb">{</span> <span class="uv">who</span><span class="op">:</span> <span class="st">"you"</span> <span class="cb">}</span><span class="op">)</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello, you!</span>
+show_debug_message(txr_exec_string(@'
+	var who; // (intentionally not set)
+	return "hello, " + who + "!";
+', { who: "you" })); // hello, you!
 </pre></article></section><hr/><section><header id="txr_thread_create"><a href="#txr_thread_create" title="(permalink)">txr_thread_create(actions, ?arguments)&#8203;<span class="ret-arrow">&#10140;</span>thread</a></header><article><p>
 		Sets up a "thread" for executing the specified program.
 		</p><p>
-		If <tt>arguments</tt> are provided, these are handled as per <a href="#txr_exec_actions">txr_exec_actions</a>.
+		If <code>arguments</code> are provided, these are handled as per <a href="#txr_exec_actions">txr_exec_actions</a>.
 		</p><p>
 		TXR "threads" aren't too unlike Lua "threads" - they do not execute in parallel,
 		but can be suspended/resumed like coroutines.
@@ -572,7 +545,7 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 		Returns a previously created thread into its initial state - keeps actions
 		but clears locals and starts execution from the beginning.
 		</p><p>
-		If <tt>arguments</tt> are provided, these are handled as per <a href="#txr_exec_actions">txr_exec_actions</a>.<br/>
+		If <code>arguments</code> are provided, these are handled as per <a href="#txr_exec_actions">txr_exec_actions</a>.<br/>
 		(note: previously provided arguments are discarded)
 	</p></article></section><section><header id="txr_thread_destroy"><a href="#txr_thread_destroy" title="(permalink)">txr_thread_destroy(thread)</a></header><article><p>
 		Cleans up a previously created "thread", deleting its data structures and such.
@@ -580,65 +553,65 @@ Click on sections to expand/collapse them.<br>Quick display controls: <a href="#
 		Starts or resumes execution of a thread.
 		</p><p>
 		If resuming execution after <a href="#txr_thread_yield">txr_thread_yield</a>,
-		<tt>yield_value</tt> will be what is returned to the thread
+		<code>yield_value</code> will be what is returned to the thread
 		(in other words, what your function would return).
-		</p><pre class="gmlmd">
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
-    return "hello!";
-'</span><span class="op">)</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">th</span> <span class="op">=</span> <span class="uf">txr_thread_create</span><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">;</span>
-<span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="lv">th</span><span class="op">[</span><span class="uv">txr_thread</span><span class="op">.</span><span class="fd">result</span><span class="op">]</span><span class="op">)</span><span class="op">;</span> <span class="co">// hello!</span>
-<span class="uf">txr_thread_destroy</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
+		</p><pre>
+var pg = txr_compile(@'
+	return "hello!";
+');
+var th = txr_thread_create(pg);
+txr_thread_resume(th);
+show_debug_message(th[txr_thread.result]); // hello!
+txr_thread_destroy(th);
 </pre></article></section><section><header id="txr_thread_yield"><a href="#txr_thread_yield" title="(permalink)">txr_thread_yield()</a></header><article><p>
 		Suspends the execution of current thread.
 		</p><p>
-		Thread will enter <tt>txr_thread_status.yield</tt> state,
+		Thread will enter <code>txr_thread_status.yield</code> state,
 		and you'll be able to resume it later by calling <a href="#txr_thread_resume">txr_thread_resume</a> again.
-		</p><pre class="gmlmd">
-<span class="co">// scr_test(value)</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="sv">argument0</span><span class="op">)</span><span class="op">;</span>
-<span class="uf">txr_thread_yield</span><span class="op">(</span><span class="op">)</span><span class="op">;</span>
+		</p><pre>
+// scr_test(value)
+show_debug_message(argument0);
+txr_thread_yield();
 </pre><p>
 		and then
-		</p><pre class="gmlmd">
-<span class="uf">txr_function_add</span><span class="op">(</span><span class="st">"test"</span><span class="op">,</span> <span class="uf">scr_test</span><span class="op">,</span> <span class="nu">1</span><span class="op">)</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">pg</span> <span class="op">=</span> <span class="uf">txr_compile</span><span class="op">(</span><span class="st">@'
-    var v = 0;
-    v += test(1);
-    v += test(2);
-    return v;
-'</span><span class="op">)</span><span class="op">;</span>
-<span class="kw">var</span> <span class="lv">th</span> <span class="op">=</span> <span class="uf">txr_thread_create</span><span class="op">(</span><span class="lv">pg</span><span class="op">)</span><span class="op">;</span>
-<span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span> <span class="co">// prints "1"</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span><span class="op">;</span>
-<span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">,</span> <span class="nu">4</span><span class="op">)</span><span class="op">;</span> <span class="co">// prints "2"</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="st">"b"</span><span class="op">)</span><span class="op">;</span>
-<span class="uf">txr_thread_resume</span><span class="op">(</span><span class="lv">th</span><span class="op">,</span> <span class="nu">5</span><span class="op">)</span><span class="op">;</span> <span class="co">// finishes execution</span>
-<span class="sf">show_debug_message</span><span class="op">(</span><span class="lv">th</span><span class="op">[</span><span class="uv">txr_thread</span><span class="op">.</span><span class="fd">result</span><span class="op">]</span><span class="op">)</span><span class="op">;</span> <span class="co">// 9</span>
-<span class="uf">txr_thread_destroy</span><span class="op">(</span><span class="lv">th</span><span class="op">)</span><span class="op">;</span>
+		</p><pre>
+txr_function_add("test", scr_test, 1);
+var pg = txr_compile(@'
+	var v = 0;
+	v += test(1);
+	v += test(2);
+	return v;
+');
+var th = txr_thread_create(pg);
+txr_thread_resume(th); // prints "1"
+show_debug_message("a");
+txr_thread_resume(th, 4); // prints "2"
+show_debug_message("b");
+txr_thread_resume(th, 5); // finishes execution
+show_debug_message(th[txr_thread.result]); // 9
+txr_thread_destroy(th);
 </pre></article></section><section><header id="txr_thread"><a href="#txr_thread" title="(permalink)">txr_thread</a></header><article><p>
 		An enum that holds "thread" field indexes, </p><ul>
-		<li>	<tt>actions</tt>: raw compiled program data that you passed to <a href="#txr_thread_create">txr_thread_create</a>.
-		</li><li>	<tt>pos</tt>: raw position of "<a href="https://en.wikipedia.org/wiki/Program_counter">program counter</a>" within <tt>actions</tt>
+		<li>	<code>actions</code>: raw compiled program data that you passed to <a href="#txr_thread_create">txr_thread_create</a>.
+		</li><li>	<code>pos</code>: raw position of "<a href="https://en.wikipedia.org/wiki/Program_counter">program counter</a>" within <code>actions</code>
 			(only good for debugging)
-		</li><li>	<tt>stack</tt>: a program ds_stack (ditto)
-		</li><li>	<tt>jumpstack</tt>: a ds_stack of return locations for <a href="#call">call</a>/<a href="#back">back</a>.
-		</li><li>	<tt>locals</tt>: a ds_map of thread's local variables.
-		</li><li>	<tt>result</tt>: a value dependent on status (see below)
-		</li><li>	<tt>status</tt>: what the thread is currently doing (<a href="#txr_thread_status">txr_thread_status</a>)
+		</li><li>	<code>stack</code>: a program ds_stack (ditto)
+		</li><li>	<code>jumpstack</code>: a ds_stack of return locations for <a href="#call">call</a>/<a href="#back">back</a>.
+		</li><li>	<code>locals</code>: a ds_map of thread's local variables.
+		</li><li>	<code>result</code>: a value dependent on status (see below)
+		</li><li>	<code>status</code>: what the thread is currently doing (<a href="#txr_thread_status">txr_thread_status</a>)
 		</li></ul></article></section><section><header id="txr_thread_status"><a href="#txr_thread_status" title="(permalink)">txr_thread_status</a></header><article><p>
 		Indicates what the thread is currently doing,
 		</p><ul>
-		<li>	<tt>none</tt>: this thread had been destroyed, maybe not touch it.
-		</li><li>	<tt>running</tt>: thread is either running or prepared to run.
-		</li><li>	<tt>finished</tt>: execution reached the end or exited via <tt>return</tt>.<br/>
-			Thread's <tt>result</tt> will hold the returned value (0 if none).
-		</li><li>	<tt>error</tt>: an error occurred during execution.<br/>
-			Thread's <tt>result</tt> will hold the error text as a string
-		</li><li>	<tt>yield</tt>: thread suspended its execution and can be resumed later.
+		<li>	<code>none</code>: this thread had been destroyed, maybe not touch it.
+		</li><li>	<code>running</code>: thread is either running or prepared to run.
+		</li><li>	<code>finished</code>: execution reached the end or exited via <code>return</code>.<br/>
+			Thread's <code>result</code> will hold the returned value (0 if none).
+		</li><li>	<code>error</code>: an error occurred during execution.<br/>
+			Thread's <code>result</code> will hold the error text as a string
+		</li><li>	<code>yield</code>: thread suspended its execution and can be resumed later.
 		</li></ul></article></section><section><header id="txr_thread_current"><a href="#txr_thread_current" title="(permalink)">txr_thread_current</a></header><article><p>
-		Currently executing TXR "thread" (<tt>undefined</tt> if none).
+		Currently executing TXR "thread" (<code>undefined</code> if none).
 	</p></article></section><section><header id="txr_thread_write"><a href="#txr_thread_write" title="(permalink)">txr_thread_write(thread, buffer)</a></header><article><p>
 		Serializes a "thread" in its entirety annd writes it into a buffer.
 	</p></article></section><section><header id="txr_thread_read"><a href="#txr_thread_read" title="(permalink)">txr_thread_read(buffer)&#8203;<span class="ret-arrow">&#10140;</span>thread</a></header><article><p>

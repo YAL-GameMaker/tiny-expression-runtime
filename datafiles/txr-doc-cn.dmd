@@ -1,0 +1,290 @@
+```set template default.html```
+```set title TXR cheatsheet```
+```setmd intro
+这是 [YellowAfterlife](https://yal.cc) 为 微小表达运行时 编写的"备忘录".  
+项目文件可以从 [itch.io](https://yellowafterlife.itch.io/gamemaker-interpreters) 或 [GM Marketplace](https://marketplace.yoyogames.com/assets/7814/_)下载  
+如有疑问，请使用 [论坛](https://yellowafterlife.itch.io/gamemaker-txr/community) 或 [向我发送电子邮件](//yellowafterlife@hotmail.com).  
+本文档的最新版本始终可以在 [网上](https://yal.cc/r/19/txr) 找到.  
+翻译:yunzl  
+  
+出于实际原因，本文档介绍了TXR的最新版本.
+```
+```set quick-display-intro 点击项目以展开/折叠它们.```
+```set quick-display-controls 快速显示控件:```
+```set quick-display-categories 类别```
+```set quick-display-sections 小节```
+```set quick-display-everything 所有```
+```set quick-display-nightmode 切换夜间模式```
+```gmlapi fnames2```
+```gmlkeywords
+select option
+```
+```set tag:defcode gml```
+#[TXR 语法](syntax) {
+	#[表达式](expressions) {
+		TXR支持各种基本表达式:
+		--{
+		--	数字: `4`, `4.5`, 和 `-4` 都没问题. 不过现在不支持十六进制.
+		--	字符串: `"你好"` 或 `'你好'`. GMS1风格 (无转义字符)
+		--	常量: `true`, `false` 你可以在 `txr_parse` 添加自定义项.
+		--	括号: `(...)` 绝大多数是可选的.
+		}
+	}
+	#[运算符](operators) {
+		TXR支持多种常用运算符.
+		
+		按优先级分组的二进制运算符:
+		--{
+		--	`*`, `/`, `%`, `div`
+		--	`+`, `-` (ECMAScript风格允许 `"a" + 4` -> `"a4"` )
+		--	`<<`, `>>`
+		--	`&`, `|`, `^`
+		--	`==`, `!=`, `<`, `>`, `<=`, `>=`
+		--	`&&` (ES风格允许 `(4 && 5)` -> `5`)
+		--	`||` (ES风格允许 `(4 || 5)` -> `4`)
+		}
+		`&&` 和 `||` 都支持断路.
+		
+		一元运算符:
+		--{
+		--	`!` (一元非)
+		--	`-` (否定)
+		--	`~` (位反转)
+		--	`+` (什么都不做, 但你可以这样 `a = +4`)
+		--	`++` (前缀和后缀)
+		--	`--` (前缀和后缀)
+		}
+	}
+	#[函数调用](function-calls) {
+		函数通过 [txr_function_add] 向TXR公开;
+		
+		支持固定参数函数和可变参数函数.
+		
+		最多可以传递16个参数 (如果需要更多,请将其添加到 `txr_thread_resume` 的 `txr_action.call` 中)
+	}
+	#[语句](statements) {
+		从第2部分开始,TXR允许使用语句.
+		
+		语句可以是:
+		--{
+		--	[赋值](assignments)
+		--	[变量声明](variables)
+		--	括号语句 (`{...}`)
+		--	[分支](branching)
+		--	[函数调用](function-calls)
+		--	前缀/后缀 增量/减量 (`v++`, `--v`, ...)
+		}
+	}
+	#[变量](variables) {
+		你可以通过GML样式 `var` 语法声明局部变量
+		```
+		var i;
+		var k = 0;
+		var z = true, s = "hi";
+		```
+		默认情况下,对任何非局部变量的访问都将映射到调用实例的变量. 你可以在 `txr_thread_resume` (`ident`, `set_ident`) 自定义此选项
+	}
+	#[赋值](assignments) {
+		您可以通过传统的 `name = value` 语法分配变量.
+		
+		还支持赋值运算符 (`+=`, ...).
+	}
+	#[分支](branching) {
+		TXR支持许多常见的分支语句:
+		#[if <condition> <then-statement>](if-then) {
+			括号是可选的.
+		}
+		#[if <condition> <then-statement> else <else-statement>](if-then-else){}
+		#[while <condition> <loop-statement>](while) {
+			支持 `break`/`continue`.
+		}
+		#[do <loop-statement> while <condition>](do-while) {
+			支持 `break`/`continue`.
+		}
+		#[for (<init>; <condition>; <post>) <loop-statement>]() {
+			支持 `break`/`continue`.
+			
+			分号和括号是可选的，但最好不要滥用它.
+		}
+		#[switch (<expr>) { ... }]() {
+			常见的 `switch` 块.
+			
+			`case` 将以 `break` 终止.
+			
+			与GML-VM非常相似,支持任意大小写表达式意味着这是一堆稍微优化的if语句。
+		}
+		以下为非标准:
+		#[select (<expr>) { ... }]() {
+			本质上是一种 [switch] 方法的简写.所以,
+			```
+			select (func(1, 2)) {
+			    option "A": trace("A");
+			    option "B": trace("B");
+			    default: trace("default");
+			}
+			```
+			与之相同的
+			```
+			switch (func(1, 2, "A", "B")) {
+			    case 0: trace("A"); break;
+			    case 1: trace("B"); break;
+			    default: trace("default");
+			}
+			```
+		}
+		[Gotos](https://en.wikipedia.org/wiki/Goto)是构建代码的一种糟糕的方式，但对于对话/等等来说非常方便:
+		#[label <label name>: <expr>](label) {
+			声明稍后可以跳转到的标签.
+			
+			请注意,TXR希望标签后面有某种语句.
+		}
+		#[jump <label name>](jump) {
+			将程序跳转到指定的标签.
+		}
+		#[call <label name>](call) {
+			将程序跳转到指定的标签.
+			
+			这允许使用标签作为临时子例程.
+			
+			你可以在 `txr_parse` 中删除此功能 (参见 `case "call"`, `case "back"`).
+		}
+		#[back](back) {
+			返回到执行代码前调用[call]的位置
+		}
+	}
+}
+#[TXR API](api) {
+	#[txr_function_add(name, script, arg_count)]() {
+		注册用于TXR的函数.
+		
+		`arg_count` 函数接受的参数数 (-1接受任何数字).
+		```
+		txr_function_add("trace", scr_trace, -1);
+		```
+	}
+	#[txr_function_error](txr_function_error) {
+		可以从注册为函数的脚本中为其分配一个字符串，以便将错误抛出到当前执行的线程中.
+	}
+	#[txr_function_default](txr_function_default) {
+		如果指定了脚本ID（而不是-1），则对不存在的函数的任何调用都将编译为 `default_func("function_name", ...arguments)`
+	}
+	#[txr_compile(code)➜actions|undefined]() {
+		编译一段代码并返回一个VM行为数组（"一段程序"）
+		
+		如果有错误, 则返回 `undefined` 并将错误文本储存到 `txr_error` 中.
+		```
+		var pg = txr_compile(@'
+		    return "hello!";
+		');
+		```
+	}
+	#[txr_exec(actions, ?arguments:array|ds_map)➜result|undefined]() {
+		运行TXR程序的最简单方法.
+		
+		在内部，这只是执行 [txr_thread_create]->[txr_thread_resume]->[txr_thread_destroy].
+		
+		如果一切正常，则将 `txr_error` 设置为 `""` 并返回结果（如果没有，则返回0）
+		
+		如果有错误，则返回 `undefined` 并将错误文本存储在 `txr_error` 中
+		
+		`args` (可选) 可以是一个数组 (在这种情况下，它将设置 `argument0` 等等) 或一个 ds_map (在这种情况下，它将定义其中所述的局部变量)
+		```
+		var pg = txr_compile(@'
+		    return "hello!";
+		');
+		show_debug_message(txr_exec(pg)); // hello!
+		
+		var pg = txr_compile(@'
+		    return "hello, " + argument0 + "!";
+		');
+		show_debug_message(txr_exec(pg, "you")); // hello, you!
+		```
+	}
+	#[txr_thread_create(actions, ?args)➜thread]() {
+		设置用于执行指定程序的"线程".
+		
+		TXR "线程" 跟 lua"线程"没有太大区别 - 他们不会并行执行 但可以像协同程序一样暂停/恢复.
+		
+		这不会自动开始执行 - 你需要调用 [txr_thread_resume].
+	}
+	#[txr_thread_destroy(thread)]() {
+		清除以前创建的 "线程"，删除其数据结构等.
+	}
+	#[txr_thread_resume(thread, ?yield_value)➜thread_status]() {
+		启动或恢复线程的执行.
+		
+		如果在 [txr_thread_yield] 之后恢复执行, `yield_value` 将返回线程的内容 (换句话说,你的函数返回什么).
+		```
+		var pg = txr_compile(@'
+		    return "hello!";
+		');
+		var th = txr_thread_create(pg);
+		txr_thread_resume(th);
+		show_debug_message(th[txr_thread.result]); // hello!
+		txr_thread_destroy(th);
+		```
+	}
+	#[txr_thread_yield()]() {
+		挂起当前线程的执行.
+		
+		线程将进入 `txr_thread_status.yield` 状态, 你可以稍后调用 [txr_thread_resume] 继续.
+		```
+		// scr_test(value)
+		show_debug_message(argument0);
+		txr_thread_yield();
+		```
+		然后
+		```
+		txr_function_add("test", scr_test, 1);
+		var pg = txr_compile(@'
+		    var v = 0;
+		    v += test(1);
+		    v += test(2);
+		    return v;
+		');
+		var th = txr_thread_create(pg);
+		txr_thread_resume(th); // prints "1"
+		show_debug_message("a");
+		txr_thread_resume(th, 4); // prints "2"
+		show_debug_message("b");
+		txr_thread_resume(th, 5); // finishes execution
+		show_debug_message(th[txr_thread.result]); // 9
+		txr_thread_destroy(th);
+		```
+	}
+	#[txr_thread](txr_thread) {
+		保存"线程"字段索引的枚举,
+		--{
+		--	`actions`: 传递给 [txr_thread_create] 的原始编译程序数据.
+		--	`pos`: "[程序计数器](https://en.wikipedia.org/wiki/Program_counter)" 在 `actions` 中的原始位置（仅适用于调试）
+		--	`stack`: 程序 ds_stack (同上)
+		--	`jumpstack`:[call]/[back]后ds_stack的返回位置.
+		--	`locals`: 线程局部变量的ds_map.
+		--	`result`: 取决于状态的值（见下文）
+		--	`status`: 线程当前正在做什么 ([txr_thread_status])
+		}
+	}
+	#[txr_thread_status](txr_thread_status) {
+		表明线程当前正在执行的操作,
+		--{
+		--	`none`: 这个线程已经被销毁了,可能没碰到它.
+		--	`running`: 线程正在运行或准备运行.
+		--	`finished`: 执行已结束或通过 `return` 退出.  
+			 线程的 `result` 将保存返回值 (如果没有则为0).
+		--	`error`: 执行过程中发生错误.  
+			线程的 `result` 将错误文本作为字符串保存
+		--	`yield`: 线程挂起了它的执行,可以稍后继续.
+		}
+	}
+	#[txr_thread_current](txr_thread_current) {
+		当前正在执行的TXR"线程" (如果没有则`undefined`).
+	}
+	#[txr_thread_write(thread, buffer)]() {
+		序列化整个"线程"，并将其写入buffer.
+	}
+	#[txr_thread_read(buffer)➜thread]() {
+		反序列化以前写入的"线程"并返回它.
+		
+		（创建一个新线程-用完不要忘记销毁它）
+	}
+}
