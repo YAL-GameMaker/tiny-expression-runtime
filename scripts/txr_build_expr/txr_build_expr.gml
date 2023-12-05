@@ -21,7 +21,7 @@ function txr_build_expr(flags) {
 						_fn_script = txr_function_default;
 						if (_fn_script != -1) {
 							_fn_argc = -1;
-							args[argc++] = [txr_node._string, tk[1], tk[2]];
+							_args[_argc++] = [txr_node._string, tk[1], tk[2]];
 						} else return txr_throw_at("Unknown function `" + tk[2] + "`", tk);
 					}
 				} else {
