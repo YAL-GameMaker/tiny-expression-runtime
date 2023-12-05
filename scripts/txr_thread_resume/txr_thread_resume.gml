@@ -120,31 +120,35 @@ function txr_thread_resume(th/*:txr_thread*/, val = undefined) {
 				txr_function_error = undefined;
 				th[@txr_thread.pos] = pos;
 				var fn = _is_value_call ? ds_stack_pop(stack) : q[2];
-				switch (argc) {
-					case  0: v = fn(); break;
-					case  1: v = fn(args[|0]); break;
-					case  2: v = fn(args[|0], args[|1]); break;
-					case  3: v = fn(args[|0], args[|1], args[|2]); break;
-					case  4: v = fn(args[|0], args[|1], args[|2], args[|3]); break;
-					case  5: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4]); break;
-					case  6: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5]); break;
-					case  7: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6]); break;
-					case  8: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7]); break;
-					case  9: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8]); break;
-					case 10: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9]); break;
-					case 11: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10]); break;
-					case 12: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11]); break;
-					case 13: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12]); break;
-					case 14: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13]); break;
-					case 15: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14]); break;
-					case 16: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14], args[|15]); break;
-					// and so on
-					default:
-						halt = txr_sfmt("Too many arguments for a call (%)", q[3]);
-						continue;
+				try {
+					switch (argc) {
+						case  0: v = fn(); break;
+						case  1: v = fn(args[|0]); break;
+						case  2: v = fn(args[|0], args[|1]); break;
+						case  3: v = fn(args[|0], args[|1], args[|2]); break;
+						case  4: v = fn(args[|0], args[|1], args[|2], args[|3]); break;
+						case  5: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4]); break;
+						case  6: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5]); break;
+						case  7: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6]); break;
+						case  8: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7]); break;
+						case  9: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8]); break;
+						case 10: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9]); break;
+						case 11: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10]); break;
+						case 12: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11]); break;
+						case 13: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12]); break;
+						case 14: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13]); break;
+						case 15: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14]); break;
+						case 16: v = fn(args[|0], args[|1], args[|2], args[|3], args[|4], args[|5], args[|6], args[|7], args[|8], args[|9], args[|10], args[|11], args[|12], args[|13], args[|14], args[|15]); break;
+						// and so on
+						default:
+							halt = txr_sfmt("Too many arguments for a call (%)", q[3]);
+							continue;
+					}
+					// hit an error?:
+					halt = txr_function_error;
+				} catch (e) {
+					halt = e.message;
 				}
-				// hit an error?:
-				halt = txr_function_error;
 				if (halt != undefined) continue;
 				// thread yielded/destroyed?:
 				if (th[txr_thread.status] != txr_thread_status.running) {
