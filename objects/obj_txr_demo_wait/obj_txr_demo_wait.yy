@@ -1,52 +1,33 @@
 {
-    "spriteId": null,
-    "solid": false,
-    "visible": true,
-    "spriteMaskId": null,
-    "persistent": false,
-    "parentObjectId": null,
-    "physicsObject": false,
-    "physicsSensor": false,
-    "physicsShape": 1,
-    "physicsGroup": 0,
-    "physicsDensity": 0.5,
-    "physicsRestitution": 0.1,
-    "physicsLinearDamping": 0.1,
-    "physicsAngularDamping": 0.1,
-    "physicsFriction": 0.2,
-    "physicsStartAwake": true,
-    "physicsKinematic": false,
-    "physicsShapePoints": [
-        
-    ],
-    "eventList": [
-        {
-            "isDnD": false,
-            "eventNum": 0,
-            "eventType": 2,
-            "collisionObjectId": null,
-            "resourceVersion": "1.0",
-            "name": "",
-            "tags": [
-                
-            ],
-            "resourceType": "GMEvent"
-        }
-    ],
-    "properties": [
-        
-    ],
-    "overriddenProperties": [
-        
-    ],
-    "parent": {
-        "name": "Objects",
-        "path": "folders\/Objects.yy"
-    },
-    "resourceVersion": "1.0",
-    "name": "obj_txr_demo_wait",
-    "tags": [
-        
-    ],
-    "resourceType": "GMObject"
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "obj_txr_demo_wait",
+  "eventList": [
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":2,"isDnD":false,},
+  ],
+  "managed": true,
+  "overriddenProperties": [],
+  "parent": {
+    "name": "Objects",
+    "path": "folders/Objects.yy",
+  },
+  "parentObjectId": null,
+  "persistent": false,
+  "physicsAngularDamping": 0.1,
+  "physicsDensity": 0.5,
+  "physicsFriction": 0.2,
+  "physicsGroup": 0,
+  "physicsKinematic": false,
+  "physicsLinearDamping": 0.1,
+  "physicsObject": false,
+  "physicsRestitution": 0.1,
+  "physicsSensor": false,
+  "physicsShape": 1,
+  "physicsShapePoints": [],
+  "physicsStartAwake": true,
+  "properties": [],
+  "solid": false,
+  "spriteId": null,
+  "spriteMaskId": null,
+  "visible": true,
 }
