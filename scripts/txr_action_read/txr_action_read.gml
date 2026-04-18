@@ -28,7 +28,6 @@ function txr_action_read(argument0) {
 		case txr_action._switch:
 		case txr_action.array_literal:
 			return [t, p, buffer_read(b, buffer_s32)];
-			break;
 		case txr_action._string:
 		case txr_action.label:
 		case txr_action.set_ident:
@@ -38,7 +37,6 @@ function txr_action_read(argument0) {
 		case txr_action.get_field:
 		case txr_action.set_field:
 			return [t, p, buffer_read(b, buffer_string)];
-			break;
 		case txr_action._select:
 			var n = buffer_read(b, buffer_u32);
 			var w = array_create(n);
